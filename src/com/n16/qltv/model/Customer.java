@@ -8,10 +8,13 @@ public class Customer {
     private String addressCus;
     private Date dobCus;
     private String usrName, password;
+    private char gender;
 
     public Customer() { }
-    public Customer(String nameCus, String phoneCus, String addressCus, Date dobCus, String usrName, String password) {
+    public Customer(String nameCus, char gender, String phoneCus,
+                    String addressCus, Date dobCus, String usrName, String password) {
         this.nameCus = nameCus;
+        this.gender = gender;
         this.phoneCus = phoneCus;
         this.addressCus = addressCus;
         this.dobCus = dobCus;
@@ -26,6 +29,8 @@ public class Customer {
     public Date getDobCus() { return this.dobCus; }
     public String getUsrName() { return this.usrName; }
     public String getPassword() { return this.password; }
+    public char getGender() { return this.gender; }
+    public void setGender(char gender) { this.gender = gender; }
     public void setNameCus(String nameCus) { this.nameCus = nameCus; }
     public void setPhoneCus(String phoneCus) { this.phoneCus = phoneCus; }
     public void setAddressCus(String addressCus) { this.addressCus = addressCus; }

@@ -8,26 +8,21 @@ public class LibraryCard extends Customer {
     private String note;
 
     public LibraryCard() { }
-    public LibraryCard(String nameCus, String phoneCus, String addressCus,
+    public LibraryCard(String nameCus, char gender, String phoneCus, String addressCus,
                        Date dobCus, String usrName, String password) {
-        super(nameCus, phoneCus, addressCus, dobCus, usrName, password);
+        super(nameCus, gender, phoneCus, addressCus, dobCus, usrName, password);
     }
-    public LibraryCard(String cardId, Date startDate, Date endDate, String note) {
-        this.cardId = cardId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.note = note;
-    }
-    public LibraryCard(String nameCus, String phoneCus, String addressCus, Date dobCus, String usrName,
-                       String password, String cardId, Date startDate, Date endDate) {
-        super(nameCus, phoneCus, addressCus, dobCus, usrName, password);
+    public LibraryCard(String nameCus, char gender, String phoneCus, String addressCus,
+                       Date dobCus, String usrName, String password, String cardId, Date startDate, Date endDate) {
+        super(nameCus, gender, phoneCus, addressCus, dobCus, usrName, password);
         this.cardId = cardId;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    public LibraryCard(String nameCus, String phoneCus, String addressCus, Date dobCus, String usrName,
-                       String password, String cardId, Date startDate, Date endDate, String note) {
-        super(nameCus, phoneCus, addressCus, dobCus, usrName, password);
+    public LibraryCard(String nameCus, char gender, String phoneCus,
+                       String addressCus, Date dobCus, String usrName, String password, String cardId,
+                       Date startDate, Date endDate, String note) {
+        super(nameCus, gender, phoneCus, addressCus, dobCus, usrName, password);
         this.cardId = cardId;
         this.startDate = startDate;
         this.endDate = endDate;
