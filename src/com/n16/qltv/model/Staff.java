@@ -5,12 +5,14 @@ public class Staff {
     private String staffName;
     private String staffPhone, staffAddress;
     private String staffDob;
+    private char gender;
     private String usrName, password;
 
     public Staff() {  }
-    public Staff(String staffName, String staffPhone,
+    public Staff(String staffName, char gender, String staffPhone,
                  String staffAddress, String staffDob, String usrName, String password) {
         this.staffName = staffName;
+        this.gender = gender;
         this.staffPhone = staffPhone;
         this.staffAddress = staffAddress;
         this.staffDob = staffDob;
@@ -25,6 +27,8 @@ public class Staff {
     public String getStaffDob() { return this.staffDob; }
     public String getUsrName() { return this.usrName; }
     public String getPassword() { return this.password; }
+    public char getGender() { return this.gender; }
+    public void setGender(char gender) { this.gender = gender; }
     public void setStaffName(String staffName) { this.staffName = staffName; }
     public void setStaffPhone(String staffPhone) { this.staffPhone = staffPhone; }
     public void setStaffAddress(String staffAddress) { this.staffAddress = staffAddress; }
