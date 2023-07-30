@@ -1,6 +1,6 @@
 package com.n16.qltv.frame;
 
-import com.n16.qltv.adaptor.AddStaffAdapter;
+import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.model.Staff;
 import javax.swing.*;
 
@@ -31,8 +31,8 @@ public class StaffAddFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!");
             }
             else {
-                if(!(AddStaffAdapter.checkExistStaff(txtUsrName.getText()))) {
-                    AddStaffAdapter.addStaff(new Staff(txtName.getText(), gender, txtPhone.getText(),
+                if(!(StaffAdapter.checkExistStaff(txtUsrName.getText()))) {
+                    StaffAdapter.addStaff(new Staff(txtName.getText(), gender, txtPhone.getText(),
                             txtAddress.getText(), "2000-1-1", txtUsrName.getText(), txtPassword.getText()));
                 }
                 else {

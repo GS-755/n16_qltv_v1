@@ -7,7 +7,7 @@ import com.n16.qltv.vendor.SHA256;
 
 import javax.swing.*;
 
-public class AddStaffAdapter {
+public class StaffAdapter {
     public static void addStaff(Staff staff) {
         try {
             Connection conn = MySQL.getConnection();
