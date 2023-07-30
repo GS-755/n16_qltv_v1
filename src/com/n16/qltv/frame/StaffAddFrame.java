@@ -1,27 +1,19 @@
 package com.n16.qltv.frame;
 
+import com.n16.qltv.adaptor.AddStaffAdapter;
+import com.n16.qltv.model.Staff;
 import javax.swing.*;
 
 public class StaffAddFrame extends JFrame {
     public JPanel addPanel;
-    private JTextField txtName;
-    private JRadioButton radioMale;
-    private JRadioButton radioFemale;
-    private JTextField txtPhone;
-    private JTextField txtAddress;
-    private JTextField txtUsrName;
-    private JPasswordField txtRePassword;
-    private JPasswordField txtPassword;
+    private JTextField txtName, txtPhone, txtAddress, txtUsrName;
+    private JRadioButton radioMale, radioFemale;
+    private JPasswordField txtPassword, txtRePassword;
     private JButton btnAdd;
-    private JLabel genderLabel;
-    private JLabel nameLabel;
-    private JLabel usrNameLabel;
-    private JLabel passwordLabel;
-    private JLabel addressLabel;
-    private JLabel phoneLabel;
-    private JLabel dobLabel;
+    private JLabel nameLabel, genderLabel;
+    private JLabel usrNameLabel, passwordLabel, rePasswordLabel;
+    private JLabel addressLabel, phoneLabel, dobLabel;
     private JLabel titleLabel;
-    private JLabel rePasswordLabel;
 
     public StaffAddFrame() {
         setContentPane(addPanel);
@@ -30,5 +22,23 @@ public class StaffAddFrame extends JFrame {
         setResizable(false);
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        btnAdd.addActionListener(e -> {
+            char gender = 'm';
+            if (!(radioMale.isSelected()))
+                gender = 'f';
+            if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
+                JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!");
+            }
+            else {
+                if(!(AddStaffAdapter.checkExistStaff(txtUsrName.getText()))) {
+                    AddStaffAdapter.addStaff(new Staff(txtName.getText(), gender, txtPhone.getText(),
+                            txtAddress.getText(), "2000-1-1", txtUsrName.getText(), txtPassword.getText()));
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Đã có tài khoản trong hệ thống!");
+                }
+            }
+        });
     }
 }

@@ -20,9 +20,9 @@ public class MySQL {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(dbUrl, USER_NAME, PASSWORD);
-            System.out.println("connect successfully!");
+            System.out.println("Connect successfully!");
         } catch (Exception ex) {
-            System.out.println("connect failure!");
+            System.out.println("Connect failure :((");
             ex.printStackTrace();
         }
 

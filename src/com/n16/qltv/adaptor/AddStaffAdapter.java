@@ -1,76 +1,68 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.model.Staff;
-import java.util.Scanner;
 import java.sql.*;
-
+import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
+import com.n16.qltv.vendor.SHA256;
+
+import javax.swing.*;
 
 public class AddStaffAdapter {
-    public static Scanner scanner = new Scanner(System.in);
-    public static void testConnection() {
+    public static void addStaff(Staff staff) {
         try {
-            // Object -> SQL test code
-            int cont = 1, count = 1;
-            do {
-                char gender;
-                String name, phoneNum, address, dob, userName, password;
-                System.out.println(String.format("STAFF #%d INPUT", count));
-                System.out.print("\tStaff's name: "); name = scanner.next();
-                System.out.print("\tGender: "); gender = scanner.next().charAt(0);
-                System.out.print("\tPhone number: "); phoneNum = scanner.next();
-                System.out.print("\tAddress: "); address = scanner.next();
-                System.out.print("\tDOB (mm/dd/yyyy): "); dob = scanner.next();
-                System.out.print("\tUsername: "); userName = scanner.next();
-                System.out.print("\tPassword: "); password = scanner.next();
-                Staff staff = new Staff(name, gender, phoneNum, address, dob, userName, password);
-                // Main driver code
-                Connection conn = MySQL.getConnection();
-                String query = "INSERT INTO NhanVien ("
-                        + " TenNV,"
-                        + " NgaySinh,"
-                        + " SoDT,"
-                        + " DiaChi,"
-                        + " TenDangNhap,"
-                        + " MatKhau,"
-                        + " GioiTinh) VALUES("
-                        + "?, ?, ?, ?, ?, ?, ?)";
+            Connection conn = MySQL.getConnection();
+            String query = "INSERT INTO NhanVien ("
+                    + " TenNV,"
+                    + " NgaySinh,"
+                    + " SoDT,"
+                    + " DiaChi,"
+                    + " TenDangNhap,"
+                    + " MatKhau,"
+                    + " GioiTinh) VALUES("
+                    + "?, ?, ?, ?, ?, ?, ?)";
 
-                // set all the preparedstatement parameters
-                PreparedStatement st = conn.prepareStatement(query);
-                st.setString(1, staff.getStaffName());
-                st.setDate(2, Date.valueOf(staff.getStaffDob()));
-                st.setString(3, staff.getStaffPhone());
-                st.setString(4, staff.getStaffAddress());
-                st.setString(5, staff.getUsrName());
-                st.setString(6, staff.getPassword());
-                st.setString(7, String.format("%s", staff.getGender()));
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, staff.getStaffName());
+            st.setDate(2, Date.valueOf(staff.getStaffDob()));
+            st.setString(3, staff.getStaffPhone());
+            st.setString(4, staff.getStaffAddress());
+            st.setString(5, staff.getUsrName());
+            st.setString(6, SHA256.toSHA256(SHA256.getSHA256(staff.getPassword())));
+            st.setString(7, String.format("%s", staff.getGender()));
 
-                // execute the preparedstatement insert
-                st.executeUpdate();
-                st.close();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(
-                        "SELECT * " +
-                                "FROM nhanvien");
-                while (rs.next()) {
-                    System.out.println(String.format("%s | %s | %s | %s | %s | %s | %s | %s",
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            rs.getString(5),
-                            rs.getString(6),
-                            rs.getString(7),
-                            rs.getString(8)));
-                }
-                conn.close();
-
-                count++;
-                System.out.println("Continue? (1/0: exit): "); cont = scanner.nextInt();
-            } while(cont == 1);
+            st.executeUpdate();
+            st.close();
         } catch (Exception ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    null, "Có lỗi xảy ra :(((\nVui lòng kiểm tra đường truyền");
+        }
+    }
+
+    public static boolean checkExistStaff(String usrName) {
+        boolean check = false;
+        try {
+            String query = "SELECT * FROM nhanvien WHERE tendangnhap = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, usrName);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                if(rs.getString(6)
+                        .toString().equals(usrName)) {
+                    check = true;
+                    break;
+                }
+                else
+                    check = false;
+            }
+
+            return check;
+        } catch(Exception ex) {
+            ex.printStackTrace();
+
+            return check;
         }
     }
 }
