@@ -100,6 +100,23 @@ public class StaffAdapter {
             ex.printStackTrace();
         }
     }
+    public static void deleteStaff(String usrName) {
+        try {
+            if(checkExistStaff(usrName)) {
+                String query = "DELETE FROM nhanvien " +
+                        " WHERE TenDangNhap = ?";
+                Connection conn = MySQL.getConnection();
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, usrName);
+                ps.executeUpdate();
+            }
+            else {
+                System.out.println("Co loi xay ra :((");
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     public static ArrayList<Staff> getStaffList() {
         try {
             staffArrayList = new ArrayList<>();

@@ -38,6 +38,7 @@ public class EditFrame extends JFrame {
                         Staff staff = new Staff(txtName.getText(), gender, txtPhone.getText(), txtAddress.getText(),
                                 "2000-1-1", txtUsrName.getText(), StaffAdapter.getPassword(txtUsrName.getText()));
                         StaffAdapter.editStaff(staff);
+                        System.out.println(staff.toString());
                     }
                     else {
                         try {
@@ -48,6 +49,7 @@ public class EditFrame extends JFrame {
                                         txtAddress.getText(), "2000-1-1", txtUsrName.getText(),
                                         SHA256.toSHA256(SHA256.getSHA256(txtPassword.getText())));
                                 StaffAdapter.editStaff(staff);
+                                System.out.println(staff.toString());
                             }
                         } catch (NoSuchAlgorithmException ex) {
                             throw new RuntimeException(ex);

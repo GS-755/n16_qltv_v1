@@ -31,6 +31,15 @@ public class IndexFrame extends JFrame {
         addTableStyle(model);
         addTableData(model);
 
+        btnDelete.addActionListener(e -> {
+            StaffAdapter.deleteStaff(model.getValueAt(tableStaff.getSelectedRow(), 5).toString());
+            model.getDataVector().removeAllElements();
+            model.fireTableDataChanged();
+
+            staffArrayList = StaffAdapter.getStaffList();
+            //addTableStyle(model);
+            addTableData(model);
+        });
         btnExit.addActionListener(e -> {
             System.exit(3);
         });
