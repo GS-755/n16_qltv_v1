@@ -35,4 +35,18 @@ public class Staff {
     public void setStaffDob(String staffDob) { this.staffDob = staffDob; }
     public void setUsrName(String usrName) { this.usrName = usrName; }
     public void setPassword(String password) { this.password = password; }
+
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "staffId=" + staffId +
+                ", staffName='" + staffName + '\'' +
+                ", staffPhone='" + staffPhone + '\'' +
+                ", staffAddress='" + staffAddress + '\'' +
+                ", staffDob='" + staffDob + '\'' +
+                ", gender=" + gender +
+                ", usrName='" + usrName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

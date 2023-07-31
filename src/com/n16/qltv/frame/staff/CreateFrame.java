@@ -1,10 +1,10 @@
-package com.n16.qltv.frame;
+package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.model.Staff;
 import javax.swing.*;
 
-public class StaffAddFrame extends JFrame {
+public class CreateFrame extends JFrame {
     public JPanel addPanel;
     private JTextField txtName, txtPhone, txtAddress, txtUsrName;
     private JRadioButton radioMale, radioFemale;
@@ -15,13 +15,13 @@ public class StaffAddFrame extends JFrame {
     private JLabel addressLabel, phoneLabel, dobLabel;
     private JLabel titleLabel;
 
-    public StaffAddFrame() {
+    public CreateFrame() {
         setContentPane(addPanel);
         setTitle("Thêm Nhân viên");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 560, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         btnAdd.addActionListener(e -> {
             char gender = 'm';
@@ -29,6 +29,9 @@ public class StaffAddFrame extends JFrame {
                 gender = 'f';
             if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
                 JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!");
+            }
+            else if(txtPassword.getText().isEmpty() || txtRePassword.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Mật khẩu KHÔNG để trống.");
             }
             else {
                 if(!(StaffAdapter.checkExistStaff(txtUsrName.getText()))) {
