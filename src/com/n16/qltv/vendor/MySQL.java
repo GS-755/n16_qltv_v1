@@ -1,13 +1,8 @@
 package com.n16.qltv.vendor;
 
-import com.n16.qltv.model.Staff;
-
 import java.sql.*;
-import java.util.Scanner;
-import java.sql.Date;
 
 public class MySQL {
-    private static Scanner scanner = new Scanner(System.in);
     private static final String HOST_NAME = "localhost";
     private static final String USER_NAME = "root";
     private static final String PASSWORD = "";
