@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
 import com.n16.qltv.vendor.SHA256;
+import com.n16.qltv.vendor.Session;
 
 import javax.swing.*;
 
 public class StaffAdapter {
     private static ArrayList<Staff> staffArrayList;
+    private static Session staffSession;
 
     public static boolean checkExistStaff(String usrName) {
         boolean check = false;
@@ -141,6 +143,35 @@ public class StaffAdapter {
     }
     public static int getStaffCount() {
         return staffArrayList.size();
+    }
+    public static boolean loginAccount(String usrName, String password) {
+        boolean ans = false;
+        try {
+            String authTmp = SHA256.toSHA256(SHA256.getSHA256(password));
+            String query = "SELECT * " +
+                    "FROM nhanvien " +
+                    "WHERE tendangnhap = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, usrName);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                if(rs.getString(6).equals(usrName)
+                        && rs.getString(7).equals(authTmp)) {
+                    staffSession = new Session();
+                    staffSession.put("usrName", usrName);
+                    ans = true; break;
+                }
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            ans = false;
+
+            return ans;
+        }
+
+        return ans;
     }
     public static String getStaffPhone(String usrName) {
         String staffPhone = "";
