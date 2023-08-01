@@ -7,7 +7,6 @@ import com.n16.qltv.frame.staff.IndexFrame;
 
 public class Main {
     public static void main(String[] args) {
-        IndexFrame i = new IndexFrame();
-        CategoryForm cate = new CategoryForm();
+        IndexFrame indexFrame = new IndexFrame();
     }
 }

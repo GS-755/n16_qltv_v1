@@ -1,7 +1,8 @@
 package com.n16.qltv.adaptor;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.*;
 
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
@@ -212,5 +213,46 @@ public class StaffAdapter {
                 password = staff.getPassword();
 
         return password;
+    }
+    public static ArrayList<Staff> sortUsrName(int mode) {
+        ArrayList<Staff> sortedStaffs = new ArrayList<>();
+        staffArrayList = getStaffList();
+        switch(mode) {
+            case 1:  {
+                // Ascending sort of usrName
+                sortedStaffs.sort((s1, s2)
+                        -> s1.getUsrName().compareTo(s2.getUsrName()));
+            }
+                break;
+            case 2:  {
+                // Descending sort of usrName
+                sortedStaffs.sort((s1, s2)
+                        -> s2.getUsrName().compareTo(s1.getUsrName()));
+            }
+                break;
+        }
+
+        return sortedStaffs;
+    }
+    public static ArrayList<Staff> findStaffName(int mode, String keyword) {
+        ArrayList<Staff> foundStaffs = new ArrayList<>();
+        switch(mode) {
+            case 1: {
+                // Tìm người dùng ở chế độ tuyệt đối
+                for(Staff staff : staffArrayList)
+                    if(staff.getStaffName().equals(keyword))
+                        foundStaffs.add(staff);
+            }
+                break;
+            case 2: {
+                // Tìm người dùng ở chế độ tương đối
+                for(Staff staff : staffArrayList)
+                    if(staff.getStaffName().startsWith(keyword))
+                        foundStaffs.add(staff);
+            }
+                break;
+        }
+
+        return foundStaffs;
     }
 }

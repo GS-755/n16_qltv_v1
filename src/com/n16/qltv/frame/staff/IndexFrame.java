@@ -5,40 +5,46 @@ import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
     private JTable tableStaff;
     private JButton btnUpdate;
     private JButton btnAdd, btnEdit, btnDelete, btnExit;
-    private JLabel indexTitle;
+    private JLabel indexTitle, sortTitle, searchLabel;
     private JPanel indexFrame;
-    private ArrayList<Staff> staffArrayList;
+    private JButton btnAscUsrName, btnDescUsrName;
+    private JTextField txtSearch;
+    private JButton btnSearch;
+    private ButtonGroup radioSearchModeGroup;
+    private JRadioButton approxModeRadio, absoluteModeRadio;
+    private JLabel searchModeLabel;
     private DefaultTableModel model;
+    private ArrayList<Staff> staffArrayList;
 
     public IndexFrame() {
+        setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
         setVisible(true);
         setResizable(false);
-        setBounds(50, 50, 1024, 600);
+        setBounds(50, 50, 1024, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
 
         model = new DefaultTableModel();
         addTableStyle(model);
-        addTableData(model);
+        addTableData(model, staffArrayList);
 
         btnDelete.addActionListener(e -> {
-            StaffAdapter.deleteStaff(model.getValueAt(tableStaff.getSelectedRow(), 5).toString());
-            model.getDataVector().removeAllElements();
-            model.fireTableDataChanged();
+            StaffAdapter.deleteStaff(
+                    model.getValueAt(tableStaff.getSelectedRow(), 5).toString());
+            deleteTableData();
 
             staffArrayList = StaffAdapter.getStaffList();
-            //addTableStyle(model);
-            addTableData(model);
+            addTableStyle(model);
+            addTableData(model, staffArrayList);
         });
         btnExit.addActionListener(e -> {
             System.exit(3);
@@ -53,18 +59,34 @@ public class IndexFrame extends JFrame {
                 EditFrame ef = new EditFrame(model.getValueAt(
                         tableStaff.getSelectedRow(), 5).toString());
             }
-
         });
-        btnUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                model.getDataVector().removeAllElements();
-                model.fireTableDataChanged();
-
-                staffArrayList = StaffAdapter.getStaffList();
-                //addTableStyle(model);
-                addTableData(model);
-            }
+        btnUpdate.addActionListener(e -> {
+            deleteTableData();
+            staffArrayList = StaffAdapter.getStaffList();
+            //addTableStyle(model);
+            addTableData(model, staffArrayList);
+        });
+        btnAscUsrName.addActionListener(e -> {
+            deleteTableData();
+            staffArrayList = StaffAdapter.sortUsrName(1);
+            //addTableStyle(model);
+            addTableData(model, staffArrayList);
+        });
+        btnDescUsrName.addActionListener(e -> {
+            deleteTableData();
+            staffArrayList = StaffAdapter.sortUsrName(2);
+            //addTableStyle(model);
+            addTableData(model, staffArrayList);
+        });
+        btnSearch.addActionListener( e -> {
+            // Kiểm tra chế độ tìm kiếm
+            int mode = 1; String keyword = txtSearch.getText().trim();
+            if(!(absoluteModeRadio.isSelected()))
+                mode = 2;
+            deleteTableData();
+            staffArrayList = StaffAdapter
+                    .findStaffName(mode, keyword);
+            addTableData(model, staffArrayList);
         });
     }
     public void addTableStyle(DefaultTableModel model) {
@@ -75,8 +97,8 @@ public class IndexFrame extends JFrame {
         model.addColumn("Ngày sinh");
         model.addColumn("Tên đăng nhập");
     }
-    public void addTableData(DefaultTableModel model) {
-        for(Staff staff : staffArrayList)
+    public void addTableData(DefaultTableModel model, ArrayList<Staff> staffs) {
+        for(Staff staff : staffs)
             model.addRow(new Object[] {
                     staff.getStaffName(),
                     staff.getGender(),
@@ -87,5 +109,23 @@ public class IndexFrame extends JFrame {
             });
 
         tableStaff.setModel(model);
+    }
+    public void deleteTableData() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
+    public void setSearchModeComponents() {
+        radioSearchModeGroup = new ButtonGroup();
+        radioSearchModeGroup.add(absoluteModeRadio);
+        radioSearchModeGroup.add(approxModeRadio);
+
+        absoluteModeRadio.addActionListener(e -> {
+            radioSearchModeGroup.clearSelection();
+            absoluteModeRadio.setSelected(true);
+        });
+        approxModeRadio.addActionListener(e -> {
+            radioSearchModeGroup.clearSelection();
+            approxModeRadio.setSelected(true);
+        });
     }
 }
