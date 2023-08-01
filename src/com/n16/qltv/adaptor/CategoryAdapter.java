@@ -1,7 +1,7 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.frame.CategoryForm;
 import com.n16.qltv.model.Category;
+import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
 
 import javax.swing.*;
@@ -11,10 +11,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CategoryAdapter {
     public static Category category;
     private static Component CategoryForm;
+    private static ArrayList<Category> cateArrayList;
+    public static DefaultTableModel model;
 
     // thêm category
     public static boolean CreateCategory(String tf_NameCate) throws SQLException {
@@ -25,7 +28,6 @@ public class CategoryAdapter {
         {
             JOptionPane.showMessageDialog(CategoryForm,"Hãy nhập tên thể loại của bạn","WARNING",JOptionPane.ERROR_MESSAGE);
             return false;
-            /*JOptionPane.showMessageDialog(null,"Hãy nhập tên thể loại của bạn","WARNING",JOptionPane.ERROR_MESSAGE);*/
 
         }
         else
@@ -41,16 +43,6 @@ public class CategoryAdapter {
           //  System.out.println("không có thể loại mới được thêm vào ! ");
             return false;
         }
-        /*
-        if(category != null){
-            // tạo xong ròi thì đóng thoai :)
-            CategoryForm.dispose();
-        }
-        else
-        {
-            // hiện báo thủ:
-            JOptionPane.showMessageDialog(null,"Failed to create Category :(( ","ERROR",JOptionPane.ERROR_MESSAGE);
-        }*/
     }
 
     // hàm thêm cate và xampp
@@ -82,10 +74,11 @@ public class CategoryAdapter {
         return cateCheck;
     }
 
+
     // Load dữ liệu lên table
     public static void DataToTable(JTable CATEGORYSTable){
         try{
-            DefaultTableModel model = new DefaultTableModel();
+            model = new DefaultTableModel();
             model.addColumn("ID");
             model.addColumn("Tên thể loại");
 
@@ -133,5 +126,101 @@ public class CategoryAdapter {
         }
     }
 
+    public static void editCategory(Category category)
+    {
+        try {
+                String query = "UPDATE TheLoai " +
+                        "SET TenTheLoai = ? " +
+                        "WHERE MaTheLoai = ?";
+                Connection conn = MySQL.getConnection();
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, category.getNameCate());
+                ps.setInt(2, category.getCateId());
 
+                ps.executeUpdate();
+                ps.close();
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
+            ex.printStackTrace();
+        }
+    }
+
+    public static boolean checkExistCategory(int cateId) {
+        boolean check = false;
+        try {
+            String query = "SELECT * " +
+                    "FROM TheLoai " +
+                    "WHERE MaTheLoai = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, cateId);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                System.out.println(String.format(
+                        "%d | %s", rs.getInt(1), rs.getString(2)));
+                if(rs.getInt(1) == cateId) {
+                    check = true;
+                    break;
+                }
+                else
+                    check = false;
+            }
+
+            return check;
+        } catch(Exception ex) {
+            ex.printStackTrace();
+
+            return check;
+        }
+    }
+
+
+    public static ArrayList<Category> getCateList() {
+        try {
+            cateArrayList = new ArrayList<>();
+            String query = "SELECT * FROM TheLoai";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                cateArrayList.add(new Category(rs.getString(2)));
+            }
+            ps.close();
+
+            return cateArrayList;
+        } catch(Exception ex) {
+            ex.printStackTrace();
+
+            return null;
+        }
+    }
+
+    public static String getCateName(String CateName) {
+        String cateName = "";
+        for(Category cate : cateArrayList)
+            if(cate.getNameCate().equals(CateName))
+                cateName = cate.getNameCate();
+
+        return cateName;
+    }
+
+
+    public static void deleteCategory(Category category) {
+        try {
+
+            String query = "DELETE FROM TheLoai " +
+                    " WHERE MaTheLoai = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, category.getCateId());
+
+            ps.executeUpdate();
+            ps.close();
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
+            ex.printStackTrace();
+        }
+    }
 }
