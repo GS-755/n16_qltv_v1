@@ -45,11 +45,10 @@ public class CategoryForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(CreateCategory(tf_NameCate.getText()) == true)
+                    if(CreateCategory(tf_NameCate.getText().trim()) == true)
                     {
                         // cập nhật lại dữ liệu trên JTable
                         CategoryAdapter.updateTable(CATEGORYSTable);
-                        dispose();
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -61,7 +60,7 @@ public class CategoryForm extends JFrame{
         bnt_EditCate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    if(CATEGORYSTable.getSelectedRow() > 0)
+                    if(CATEGORYSTable.getSelectedRow() >= 0)
                     {
                         int idCate = Integer.parseInt(CategoryAdapter.model.getValueAt(
                                 CATEGORYSTable.getSelectedRow(), 0).toString());
@@ -81,7 +80,7 @@ public class CategoryForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(CATEGORYSTable.getSelectedRow() > 0)
+                if(CATEGORYSTable.getSelectedRow() >= 0)
                 {
                     int idCate = Integer.parseInt(CategoryAdapter.model.getValueAt(
                             CATEGORYSTable.getSelectedRow(), 0).toString());

@@ -20,7 +20,7 @@ public class Edit_CateFrame extends JFrame {
         //System.out.println(String.format("%d", category.getCateId()));// in kiểm thử mã
         tf_CateName.setText(category.getNameCate());
         this.category.setCateId(category.getCateId());
-        this.category.setNameCate(tf_CateName.getText());
+        this.category.setNameCate(tf_CateName.getText().trim());
         // setting cate
         setTitle("Chỉnh sửa Thể Loại");
         setVisible(true);
@@ -35,7 +35,7 @@ public class Edit_CateFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                category.setNameCate(tf_CateName.getText());
+                category.setNameCate(tf_CateName.getText().trim());
                 CategoryAdapter.editCategory(category);
                 System.out.println(category.toString());
                 CategoryForm catenew = new CategoryForm();

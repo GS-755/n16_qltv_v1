@@ -22,24 +22,22 @@ public class CategoryAdapter {
     // thêm category
     public static boolean CreateCategory(String tf_NameCate) throws SQLException {
         // lấy tên category
-        String NameCate = tf_NameCate;
+        String NameCate = tf_NameCate.trim();
         // kt tên = null
-        if(NameCate.isEmpty())
-        {
-            JOptionPane.showMessageDialog(CategoryForm,"Hãy nhập tên thể loại của bạn","WARNING",JOptionPane.ERROR_MESSAGE);
+        if(NameCate.isEmpty()) {
+            JOptionPane.showMessageDialog(CategoryForm,
+                    "Hãy nhập tên thể loại của bạn","WARNING",JOptionPane.ERROR_MESSAGE);
             return false;
-
         }
+        // Thoả mọi đk
+        if(checkExistCategory(NameCate))
+            JOptionPane.showMessageDialog(null, "Tên thể loại BỊ TRÙNG");
         else
-      // kt có trong database
-        category = addCategoryToDatabase(NameCate);
+            // Tên thể loại ko trùng trong database
+            category = addCategoryToDatabase(NameCate);
         if(category != null)
-        {
-           // System.out.println(category.getNameCate() + " đã được thêm vào csdl ");
             return true;
-        }
-        else
-        {
+        else {
           //  System.out.println("không có thể loại mới được thêm vào ! ");
             return false;
         }
@@ -145,21 +143,21 @@ public class CategoryAdapter {
         }
     }
 
-    public static boolean checkExistCategory(int cateId) {
+    public static boolean checkExistCategory(String nameCate) {
         boolean check = false;
         try {
             String query = "SELECT * " +
                     "FROM TheLoai " +
-                    "WHERE MaTheLoai = ?";
+                    "WHERE TenTheLoai = ?";
             Connection conn = MySQL.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setInt(1, cateId);
+            ps.setString(1, nameCate.trim());
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
                 System.out.println(String.format(
                         "%d | %s", rs.getInt(1), rs.getString(2)));
-                if(rs.getInt(1) == cateId) {
+                if(rs.getString(2).equals(nameCate.trim())) {
                     check = true;
                     break;
                 }
@@ -185,7 +183,7 @@ public class CategoryAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                cateArrayList.add(new Category(rs.getString(2)));
+                cateArrayList.add(new Category(rs.getString(2).trim()));
             }
             ps.close();
 
@@ -203,7 +201,7 @@ public class CategoryAdapter {
             if(cate.getNameCate().equals(CateName))
                 cateName = cate.getNameCate();
 
-        return cateName;
+        return cateName.trim();
     }
 
 
