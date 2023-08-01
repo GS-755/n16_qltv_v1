@@ -47,7 +47,13 @@ public class IndexFrame extends JFrame {
             CreateFrame cf = new CreateFrame();
         });
         btnEdit.addActionListener(e -> {
-            EditFrame ef = new EditFrame(model.getValueAt(tableStaff.getSelectedRow(), 5).toString());
+            if(tableStaff.getSelectedRow() < 0)
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
+            else {
+                EditFrame ef = new EditFrame(model.getValueAt(
+                        tableStaff.getSelectedRow(), 5).toString());
+            }
+
         });
         btnUpdate.addActionListener(new ActionListener() {
             @Override

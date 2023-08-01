@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 public class EditFrame extends JFrame {
     public JPanel addPanel;
     private JTextField txtName, txtPhone, txtAddress, txtUsrName;
+    private ButtonGroup genderRadioGroup;
     private JRadioButton radioMale, radioFemale;
     private JPasswordField txtPassword, txtRePassword;
     private JButton btnAdd;
@@ -19,6 +20,7 @@ public class EditFrame extends JFrame {
     private JLabel titleLabel;
 
     public EditFrame(String usrName) {
+        setGenderComponents();
         setContentPane(addPanel);
         setTitle("Chỉnh sửa Nhân viên");
         setVisible(true);
@@ -38,7 +40,6 @@ public class EditFrame extends JFrame {
                         Staff staff = new Staff(txtName.getText(), gender, txtPhone.getText(), txtAddress.getText(),
                                 "2000-1-1", txtUsrName.getText(), StaffAdapter.getPassword(txtUsrName.getText()));
                         StaffAdapter.editStaff(staff);
-                        System.out.println(staff.toString());
                     }
                     else {
                         try {
@@ -69,5 +70,19 @@ public class EditFrame extends JFrame {
         txtPhone.setText(StaffAdapter.getStaffPhone(usrName));
         txtUsrName.setText(usrName);
         txtUsrName.setEditable(false);
+    }
+    public void setGenderComponents() {
+        genderRadioGroup = new ButtonGroup();
+        genderRadioGroup.add(radioMale);
+        genderRadioGroup.add(radioFemale);
+
+        radioMale.addActionListener(e -> {
+            genderRadioGroup.clearSelection();
+            radioMale.setSelected(true);
+        });
+        radioFemale.addActionListener(e -> {
+            genderRadioGroup.clearSelection();
+            radioFemale.setSelected(true);
+        });
     }
 }
