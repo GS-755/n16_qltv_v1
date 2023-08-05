@@ -239,9 +239,13 @@ public class StaffAdapter {
         switch(mode) {
             case 1: {
                 // Tìm người dùng ở chế độ tuyệt đối
-                for(Staff staff : staffArrayList)
+                for(Staff staff : staffArrayList){
+                    System.out.println(staff);
                     if(staff.getStaffName().equals(keyword))
                         foundStaffs.add(staff);
+                    System.out.println(staff+" được chọn");
+                }
+
             }
                 break;
             case 2: {

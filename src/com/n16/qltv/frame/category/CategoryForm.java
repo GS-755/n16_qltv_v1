@@ -1,17 +1,17 @@
 package com.n16.qltv.frame.category;
 import com.n16.qltv.adaptor.CategoryAdapter;
-import com.n16.qltv.adaptor.StaffAdapter;
+import com.n16.qltv.frame.staff.EditFrame;
+import com.n16.qltv.frame.staff.IndexFrame;
 import com.n16.qltv.model.Category;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.n16.qltv.adaptor.CategoryAdapter.CreateCategory;
+import static com.n16.qltv.adaptor.CategoryAdapter.*;
 
 
 public class CategoryForm extends JFrame{
@@ -24,6 +24,7 @@ public class CategoryForm extends JFrame{
     private JButton bnt_CreateCate;
     private JScrollPane Table_Cate;
     private JPanel CategoryPanel;
+    private JTextField tf_Search;
     private JPanel CategoryFrom;
     private ArrayList<Category> cateArrayList;
     public CategoryForm() {
@@ -72,7 +73,6 @@ public class CategoryForm extends JFrame{
                     {
                         JOptionPane.showMessageDialog(CategoryForm,"hãy chọn 1 thể loại");
                     }
-
             }
         });
         // xóa
@@ -98,6 +98,28 @@ public class CategoryForm extends JFrame{
             }
         });
 
+
+        tf_Search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String keyword = tf_Search.getText().trim();
+                if(keyword.length() == 0)
+                {
+                    CategoryAdapter.updateTable(CATEGORYSTable);
+                }
+                model.setRowCount(0);
+                try {
+                    cateArrayList = CategoryAdapter.findCateName(keyword);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
         setVisible(true);
+    }
+    public void deleteTableData() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
     }
 }

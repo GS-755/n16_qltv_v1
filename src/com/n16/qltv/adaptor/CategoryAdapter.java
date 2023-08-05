@@ -221,4 +221,110 @@ public class CategoryAdapter {
             ex.printStackTrace();
         }
     }
+
+    // search
+    //String search = "cổ tự";
+    /*public static void searchCate_Al(String search,JTable CATEGORYSTable)
+    {
+        search.trim();
+        try {
+            DefaultTableModel model = (DefaultTableModel) CATEGORYSTable.getModel();
+            model.setRowCount(0); // xóa dữ liệu trong bảng
+            String query="SELECT * FROM TheLoai WHERE TenTheLoai LIKE ''%?%''";
+            System.out.println(query);
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, search );
+
+            ResultSet resultSet = ps.executeQuery();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("MaTheLoai");
+                    String name = resultSet.getString("TenTheLoai");
+                    model.addRow(new Object[]{id, name});
+                }
+                resultSet.close();
+                ps.close();
+                conn.close();
+
+        }
+        catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
+            ex.printStackTrace();
+        }
+
+
+
+        try{
+            model = new DefaultTableModel();
+            model.addColumn("ID");
+            model.addColumn("Tên thể loại");
+
+            String query = "SELECT * " +
+                    "FROM TheLoai " +
+                    "WHERE TenTheLoai = ?";
+            Connection conn = MySQL.getConnection();
+
+            // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, search.trim());
+            ResultSet rs = ps.executeQuery();
+            //model.setRowCount(0);
+            while (rs.next()) {
+                int id = rs.getInt("MaTheLoai");
+                String name = rs.getString("TenTheLoai");
+                model.addRow(new Object[]{id, name});
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+
+            CATEGORYSTable.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+*/
+
+    public static ArrayList<Category> findCateName(String keyword) throws SQLException {
+        ArrayList<Category> foundCate = new ArrayList<>();
+        for (Category cate : cateArrayList) {
+                if(cate.getNameCate().contains(keyword))
+                {
+                    foundCate.add(cate);
+                    GetIDCate_UpLoadDataTable(cate.getNameCate());
+                }
+        }
+
+        return foundCate;
+    }
+
+
+/*    public static void upcatedate(JTable CATEGORYSTable,ArrayList<Category> cates)
+    {
+        for(Category category : cates)
+        {
+                model.addRow(new Object[]
+                        {
+                        category.getNameCate()
+                });
+        }
+        CATEGORYSTable.setModel(model);
+    }*/
+
+    public static void GetIDCate_UpLoadDataTable( String cateName) throws SQLException {
+        String query = "SELECT * FROM TheLoai " +
+                " WHERE TenTheLoai = ?";
+        Connection conn = MySQL.getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, cateName);
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("MaTheLoai");
+            String name = resultSet.getString("TenTheLoai");
+            model.addRow(new Object[]{id, name});
+        }
+        ps.close();
+    }
+
 }
