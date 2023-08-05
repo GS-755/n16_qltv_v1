@@ -9,7 +9,6 @@ import com.n16.qltv.model.Publisher;
 
 public class Main {
     public static void main(String[] args) {
-
-        PublisherFrom pui = new PublisherFrom();
+        IndexFrame indexFrame = new IndexFrame();
     }
 }

@@ -5,7 +5,6 @@ import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
@@ -22,6 +21,7 @@ public class IndexFrame extends JFrame {
     private JLabel searchModeLabel;
     private DefaultTableModel model;
     private ArrayList<Staff> staffArrayList;
+    private final int DELAY_TIME = 1800;
 
     public IndexFrame() {
         setSearchModeComponents();
@@ -43,8 +43,12 @@ public class IndexFrame extends JFrame {
             deleteTableData();
 
             staffArrayList = StaffAdapter.getStaffList();
-            addTableStyle(model);
-            addTableData(model, staffArrayList);
+            //addTableStyle(model);
+            try {
+                addTableData(model, staffArrayList);
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
         });
         btnExit.addActionListener(e -> {
             System.exit(3);
@@ -61,10 +65,7 @@ public class IndexFrame extends JFrame {
             }
         });
         btnUpdate.addActionListener(e -> {
-            deleteTableData();
-            staffArrayList = StaffAdapter.getStaffList();
-            //addTableStyle(model);
-            addTableData(model, staffArrayList);
+            refreshTableData();
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
@@ -109,6 +110,12 @@ public class IndexFrame extends JFrame {
             });
 
         tableStaff.setModel(model);
+    }
+    public void refreshTableData() {
+        deleteTableData();
+        staffArrayList = StaffAdapter.getStaffList();
+        //addTableStyle(model);
+        addTableData(model, staffArrayList);
     }
     public void deleteTableData() {
         model.getDataVector().removeAllElements();
