@@ -3,7 +3,10 @@ package com.n16.qltv.frame.staff;
 import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Staff;
+import com.n16.qltv.vendor.SHA256;
+
 import javax.swing.*;
+import java.security.NoSuchAlgorithmException;
 
 public class CreateFrame extends JFrame {
     public JPanel addPanel;
@@ -27,20 +30,16 @@ public class CreateFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         btnAdd.addActionListener(e -> {
+            Validation.clearValidation();
             char gender = 'm';
             if (!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
-                JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!");
-            }
-            else if(txtPassword.getText().isEmpty() || txtRePassword.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Mật khẩu KHÔNG để trống.");
-            }
-            else {
-                if(!(StaffAdapter.checkExistStaff(txtUsrName.getText()))) {
-                    Validation.clearValidation();
-
-                    Staff staff = new Staff();
+            if(!(StaffAdapter.checkExistStaff(txtUsrName.getText()))) {
+                if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
+                    Validation.createValidation("Mật khẩu KHÔNG trùng khớp");
+                }
+                Staff staff = new Staff();
+                try {
                     staff.setStaffName(txtName.getText());
                     staff.setGender(gender);
                     staff.setStaffPhone(txtPhone.getText());
@@ -48,16 +47,30 @@ public class CreateFrame extends JFrame {
                     staff.setStaffDob("2000-1-1");
                     staff.setUsrName(txtUsrName.getText());
                     staff.setPassword(txtPassword.getText());
+                    if(Validation.isStrongPassword(staff.getPassword())) {
+                        String authTmp = SHA256.toSHA256(SHA256.
+                                getSHA256(txtPassword.getText()));
+                        staff.setPassword(authTmp);
+                    }
+                    else {
+                        Validation.createValidation(
+                                "Mật khẩu KHÔNG MẠNH \n (Phải có ký tự hoa, thường, đặc biệt và số)");
+                    }
+                } catch (NoSuchAlgorithmException ex) {
+                    throw new RuntimeException(ex);
+                }
 
-                    Validation.staffValidation(staff);
-                    if(Validation.getErrCount() != 0)
-                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
-                    else
-                        StaffAdapter.addStaff(staff);
+                Validation.staffValidation(staff);
+                if(Validation.getErrCount() != 0) {
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Đã có tài khoản trong hệ thống!");
+                    StaffAdapter.addStaff(staff);
+                    JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!");
                 }
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Đã có tài khoản trong hệ thống!");
             }
         });
     }

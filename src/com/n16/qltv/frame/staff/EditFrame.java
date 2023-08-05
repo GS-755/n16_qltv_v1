@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.adaptor.StaffAdapter;
+import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.SHA256;
 
@@ -13,7 +14,7 @@ public class EditFrame extends JFrame {
     private ButtonGroup genderRadioGroup;
     private JRadioButton radioMale, radioFemale;
     private JPasswordField txtPassword, txtRePassword;
-    private JButton btnAdd;
+    private JButton btnEdit;
     private JLabel nameLabel, genderLabel;
     private JLabel usrNameLabel, passwordLabel, rePasswordLabel;
     private JLabel addressLabel, phoneLabel, dobLabel;
@@ -30,37 +31,74 @@ public class EditFrame extends JFrame {
 
         setComponents(usrName);
 
-        btnAdd.addActionListener(e -> {
+        btnEdit.addActionListener(e -> {
+            Validation.clearValidation();
+
             char gender = 'm';
             if (!(radioMale.isSelected()))
                 gender = 'f';
-            else {
-                if(StaffAdapter.checkExistStaff(txtUsrName.getText())) {
-                    if(txtPassword.getText().isEmpty() || txtRePassword.getText().isEmpty()) {
-                        Staff staff = new Staff(txtName.getText(), gender, txtPhone.getText(), txtAddress.getText(),
-                                "2000-1-1", txtUsrName.getText(), StaffAdapter.getPassword(txtUsrName.getText()));
-                        StaffAdapter.editStaff(staff);
+
+            if(StaffAdapter.checkExistStaff(txtUsrName.getText())) {
+                Staff staff = new Staff();
+                if(txtPassword.getText().isEmpty()
+                        || txtRePassword.getText().isEmpty()) {
+                    staff.setStaffName(txtName.getText());
+                    staff.setGender(gender);
+                    staff.setStaffDob("2000-1-1");
+                    staff.setStaffAddress(txtAddress.getText());
+                    staff.setStaffPhone(txtPhone.getText());
+                    staff.setUsrName(usrName.trim());
+                    String authTmp = StaffAdapter.getPassword(usrName.trim());
+                    staff.setPassword(authTmp);
+
+                    Validation.staffValidation(staff);
+                    if(Validation.getErrCount() != 0) {
+                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else {
-                        try {
-                            if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
-                                JOptionPane.showMessageDialog(null, "Mật khẩu không trùng khớp!");
-                            } else {
-                                Staff staff = new Staff(txtName.getText(), gender, txtPhone.getText(),
-                                        txtAddress.getText(), "2000-1-1", txtUsrName.getText(),
-                                        SHA256.toSHA256(SHA256.getSHA256(txtPassword.getText())));
-                                StaffAdapter.editStaff(staff);
-                                System.out.println(staff.toString());
-                            }
-                        } catch (NoSuchAlgorithmException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        StaffAdapter.editStaff(staff);
+                        JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công.");
                     }
-
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "KHÔNG có tài khoản trong hệ thống!");
+                    try {
+                        if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
+                            Validation.createValidation("Mật khẩu KHÔNG trùng khớp");
+                        } else {
+                            staff.setStaffName(txtName.getText());
+                            staff.setGender(gender);
+                            staff.setStaffPhone(txtPhone.getText());
+                            staff.setStaffAddress(txtAddress.getText());
+                            staff.setStaffDob("2000-1-1");
+                            staff.setUsrName(usrName.trim());
+                            staff.setPassword(txtPassword.getText());
+                            if(Validation.isStrongPassword(staff.getPassword())) {
+                                String authTmp = SHA256.toSHA256(SHA256.
+                                        getSHA256(staff.getPassword()));
+                                staff.setPassword(authTmp);
+                            }
+                            else {
+                                Validation.createValidation(
+                                        "Mật khẩu KHÔNG MẠNH \n (Phải có ký tự hoa, thường, đặc biệt và số)");
+                            }
+
+                            Validation.staffValidation(staff);
+                            if(Validation.getErrCount() != 0) {
+                                JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                            }
+                            else {
+                                StaffAdapter.editStaff(staff);
+                                JOptionPane.showMessageDialog(
+                                        null, "Cập nhật thông tin thành công.");
+                            }
+                        }
+                    } catch (NoSuchAlgorithmException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "KHÔNG có tài khoản trong hệ thống!");
             }
         });
     }
