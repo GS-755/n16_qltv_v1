@@ -1,7 +1,5 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.frame.Publisher.PublisherFrom;
-import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.MySQL;
 

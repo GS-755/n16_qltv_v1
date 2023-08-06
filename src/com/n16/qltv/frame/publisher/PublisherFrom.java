@@ -1,8 +1,6 @@
-package com.n16.qltv.frame.Publisher;
+package com.n16.qltv.frame.publisher;
 
-import com.n16.qltv.adaptor.CategoryAdapter;
 import com.n16.qltv.adaptor.PublisherAdapter;
-import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 
 import javax.swing.*;
@@ -11,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.n16.qltv.adaptor.CategoryAdapter.CreateCategory;
 import static com.n16.qltv.adaptor.PublisherAdapter.CreatePulisher;
 
 public class PublisherFrom extends JFrame {
