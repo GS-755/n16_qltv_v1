@@ -38,14 +38,11 @@ public class IndexFrame extends JFrame {
         addTableData(model, staffArrayList);
 
         btnDelete.addActionListener(e -> {
-            StaffAdapter.deleteStaff(
-                    model.getValueAt(tableStaff.getSelectedRow(), 5).toString());
-            deleteTableData();
-
-            staffArrayList = StaffAdapter.getStaffList();
-            //addTableStyle(model);
+            String usrName = model.getValueAt(tableStaff.getSelectedRow(), 5).toString();
+            DeleteFrame df = new DeleteFrame(usrName.trim());
             try {
-                addTableData(model, staffArrayList);
+                if(!df.isVisible())
+                    refreshTableData();
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
@@ -102,7 +99,7 @@ public class IndexFrame extends JFrame {
         for(Staff staff : staffs)
             model.addRow(new Object[] {
                     staff.getStaffName(),
-                    staff.getGender(),
+                    staff.getStrGender(),
                     staff.getStaffPhone(),
                     staff.getStaffAddress(),
                     staff.getStaffDob(),

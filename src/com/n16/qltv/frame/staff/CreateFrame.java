@@ -61,7 +61,7 @@ public class CreateFrame extends JFrame {
                 }
 
                 Validation.staffValidation(staff);
-                if(Validation.getErrCount() != 0) {
+                if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
                 else {
