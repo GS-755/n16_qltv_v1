@@ -13,13 +13,22 @@ public class Validation {
     public static void setErr(ArrayList<String> newErr) { err = newErr; }
 
     public static void createValidation(String newErr) { err.add(newErr); }
+    public static void loginValidation(String usrName, String password) {
+        if(usrName.isEmpty()
+                || usrName.isBlank()) {
+            createValidation("Tên đăng nhập KHÔNG để trống");
+        }
+        if(password.isEmpty()
+                || password.isBlank())
+            createValidation("Mật khẩu KHÔNG để trống");
+    }
     public static void staffValidation(Staff staff) {
         if(staff.getStaffName().isEmpty()
                 || staff.getStaffName().isBlank()) {
             createValidation("Tên nhân viên KHÔNG để trống");
         }
         else if(isString(staff.getStaffName())) {
-            createValidation("Tên nhân viên KHÔNG hợp lệ.");
+            createValidation("Tên nhân viên KHÔNG hợp lệ");
         }
         if(staff.getUsrName().isEmpty()
                 || staff.getUsrName().isBlank()) {
