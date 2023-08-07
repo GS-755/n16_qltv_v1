@@ -45,5 +45,6 @@ public class DeleteFrame extends JFrame {
         labelDob.setText(foundStaff.get(0).getStaffDob());
         labelAddress.setText(foundStaff.get(0).getStaffAddress());
         labelUsrName.setText(foundStaff.get(0).getUsrName());
+        labelPhoneNum.setText(foundStaff.get(0).getStaffPhone());
     }
 }
