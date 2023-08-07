@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.admin;
 
 import com.n16.qltv.adaptor.AdminAdapter;
+import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.frame.staff.IndexFrame;
 
 import javax.swing.*;
@@ -22,16 +23,24 @@ public class LoginFrame extends JFrame {
         setTitle("Đăng nhập Admin");
 
         btnLogin.addActionListener(e -> {
+            Validation.clearValidation();
             String usrName = txtUsrName.getText().trim();
             String password = txtPassword.getText();
-            boolean isLoggedIn = AdminAdapter.
-                    isLoggedIn(usrName, password);
-            if(isLoggedIn) {
-                dispose();
-                IndexFrame indexFrame = new IndexFrame();
+            Validation.loginValidation(usrName, password);
+            if(Validation.getErrCount() > 0) {
+                JOptionPane.showMessageDialog(null, Validation.getStrValidation());
             }
             else {
-                JOptionPane.showMessageDialog(null, "SAI thông tin đăng nhập.");
+                boolean isLoggedIn = AdminAdapter.
+                        isLoggedIn(usrName, password);
+                if(isLoggedIn) {
+                    JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
+                    dispose();
+                    IndexFrame indexFrame = new IndexFrame();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "SAI thông tin đăng nhập.");
+                }
             }
         });
     }
