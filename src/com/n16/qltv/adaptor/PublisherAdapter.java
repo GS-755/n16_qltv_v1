@@ -7,6 +7,8 @@ import com.n16.qltv.vendor.MySQL;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +23,8 @@ public class PublisherAdapter {
     private static ArrayList<Publisher> puliArrayList;
 
     public static DefaultTableModel model;// khai báo data table
+    private static Label support_sreach;
+
 
     // lấy danh sách pulis
     public static ArrayList<Publisher> getPuliList() {
@@ -198,4 +202,129 @@ public class PublisherAdapter {
             return check;
         }
     }
+
+
+
+    public static void editPublisher(Publisher publisher,int id){
+        try {
+            String query = "UPDATE nhaxb " +
+                    "SET TenNXB = ? " +
+                    ", Email = ? " +
+                    ", DiaChi = ? " +
+                    ", TenNgDaiDien = ? " +
+                    "WHERE MaNXB = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, publisher.getPublisherName());
+            ps.setString(2, publisher.getPublisherEmail());
+            ps.setString(3, publisher.getPublisherAddress());
+            ps.setString(4, publisher.getPublisherRepresen());
+            ps.setInt(5, id);
+
+
+            ps.executeUpdate();
+            ps.close();
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
+            ex.printStackTrace();
+        }
+    }
+
+    public static void deletePuli(int id) {
+        try {
+
+            String query = "DELETE FROM nhaxb " +
+                    " WHERE MaNXB = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+            ps.close();
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
+            ex.printStackTrace();
+        }
+    }
+
+    public static String name;
+    public static String address;
+    public static ArrayList<Publisher> findPuliName(String keyword,JTable Puli_Table,JLabel support_sreach) throws SQLException {
+        ArrayList<Publisher> foundPuli = new ArrayList<>();
+        for (Publisher pulis : puliArrayList) {
+            if(pulis.getPublisherName().contains(keyword))
+            {
+                foundPuli.add(pulis);
+                // check tên + địa chỉ
+                System.out.println(pulis.getPublisherName()+""+pulis.getPublisherAddress());
+                //
+                 name = pulis.getPublisherName();
+                 address = pulis.getPublisherAddress();
+                //SupportPuliName(pulis.getPublisherName(),pulis.getPublisherAddress());
+                support_sreach.setText("Có Phải bạn đang tìm: " + name +" - tại: "+ address);
+                String text_Light = support_sreach.getText().toString().trim();
+                System.out.println(support_sreach.getText().toString().trim());
+                for (int i = 0; i < text_Light.length() ; i++) {
+                       /* if(keyword == support_sreach.getText().trim())
+                        {*/
+                            //text_Light.setSelectionForeground(Color.WHITE);
+                            Color color=new Color(255,0,0);
+                            support_sreach.setForeground(color);
+                      /* }*/
+
+
+                }
+                GetIDPulis_UpLoadDataTable(pulis.getPublisherName(),pulis.getPublisherAddress());
+            }
+        }
+        return foundPuli;
+    }
+
+    public static void GetIDPulis_UpLoadDataTable( String puliName,String puliAddress) throws SQLException {
+        String query = "SELECT * FROM nhaxb " +
+                " WHERE TenNXB = ? "+
+                "AND DiaChi = ? ";
+        Connection conn = MySQL.getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, puliName);
+        ps.setString(2, puliAddress);
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("MaNXB");
+            String name = resultSet.getString("TenNXB");
+            String email = resultSet.getString("Email");
+            String address = resultSet.getString("DiaChi");
+            String rep = resultSet.getString("TenNgDaiDien");
+
+            model.addRow(new Object[]{id,name,email,address,rep});
+
+        }
+
+        ps.close();
+    }
+
+
+    // chỉ dùng cho nhaxb
+    public static void Quick_support_sreach(JTable Puli_Table) throws SQLException {
+        String query = "SELECT * FROM nhaxb " +
+                " WHERE TenNXB = ? "+
+                "AND DiaChi = ? ";
+        Connection conn = MySQL.getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("MaNXB");
+            String name = resultSet.getString("TenNXB");
+            String email = resultSet.getString("Email");
+            String address = resultSet.getString("DiaChi");
+            String rep = resultSet.getString("TenNgDaiDien");
+
+            model.addRow(new Object[]{id,name,email,address,rep});
+        }
+        Puli_Table.setModel(model);
+        ps.close();
+    }
+
 }
