@@ -2,7 +2,7 @@ package com.n16.qltv.frame.admin;
 
 import com.n16.qltv.adaptor.AdminAdapter;
 import com.n16.qltv.adaptor.Validation;
-import com.n16.qltv.frame.staff.IndexFrame;
+import com.n16.qltv.vendor.Session;
 
 import javax.swing.*;
 

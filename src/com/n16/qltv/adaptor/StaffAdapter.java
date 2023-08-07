@@ -13,7 +13,6 @@ import javax.swing.*;
 
 public class StaffAdapter {
     private static ArrayList<Staff> staffArrayList;
-    private static Session staffSession;
 
     public static boolean checkExistStaff(String usrName) {
         boolean check = false;
@@ -146,7 +145,6 @@ public class StaffAdapter {
         return staffArrayList.size();
     }
     public static boolean loginAccount(String usrName, String password) {
-        boolean ans = false;
         try {
             String authTmp = SHA256.toSHA256(SHA256.getSHA256(password));
             String query = "SELECT * " +
@@ -160,19 +158,17 @@ public class StaffAdapter {
             while(rs.next()) {
                 if(rs.getString(6).equals(usrName)
                         && rs.getString(7).equals(authTmp)) {
-                    staffSession = new Session();
-                    staffSession.put("usrName", usrName);
-                    ans = true; break;
+                    Session.put("usrName", SHA256.
+                            toSHA256(SHA256.getSHA256(usrName)));
+
+                    return true;
                 }
             }
         } catch(Exception ex) {
             ex.printStackTrace();
-            ans = false;
-
-            return ans;
         }
 
-        return ans;
+        return false;
     }
     public static String getStaffPhone(String usrName) {
         String staffPhone = "";

@@ -2,17 +2,14 @@ package com.n16.qltv.adaptor;
 
 import com.n16.qltv.vendor.MySQL;
 import com.n16.qltv.vendor.SHA256;
+import com.n16.qltv.vendor.Session;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AdminAdapter {
     public static boolean isLoggedIn(String usrName, String password) {
         String authTmp = "";
-        boolean check = false;
         try {
             authTmp = SHA256.toSHA256(SHA256
                     .getSHA256(password));
@@ -33,14 +30,16 @@ public class AdminAdapter {
             while(rs.next()) {
                 if(rs.getString(1).equals(usrName)
                         && rs.getString(2).equals(authTmp)) {
-                    check = true;
-                    break;
+                    Session.put("admin", SHA256.
+                            toSHA256(SHA256.getSHA256(usrName)));
+
+                    return true;
                 }
             }
-        } catch(SQLException ex) {
-            ex.printStackTrace();
+        } catch(SQLException | NoSuchAlgorithmException ex) {
+            throw new RuntimeException(ex);
         }
 
-        return check;
+        return false;
     }
 }

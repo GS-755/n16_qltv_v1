@@ -12,7 +12,7 @@ public class IndexFrame extends JFrame {
     private JButton btnUpdate;
     private JButton btnAdd, btnEdit, btnDelete, btnExit;
     private JLabel indexTitle, sortTitle, searchLabel;
-    private JPanel indexFrame;
+    public JPanel indexFrame;
     private JButton btnAscUsrName, btnDescUsrName;
     private JTextField txtSearch;
     private JButton btnSearch;
@@ -30,7 +30,7 @@ public class IndexFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
 
         model = new DefaultTableModel();
