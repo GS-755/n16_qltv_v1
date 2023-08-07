@@ -1,5 +1,6 @@
 package com.n16.qltv.adaptor;
 
+import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Staff;
 
 import java.util.ArrayList;
@@ -13,12 +14,32 @@ public class Validation {
     public static void setErr(ArrayList<String> newErr) { err = newErr; }
 
     public static void createValidation(String newErr) { err.add(newErr); }
+    public static void authorValidation(Author author) {
+        if(author.getAuthorName().isEmpty()
+                || author.getAuthorName().isBlank()) {
+            createValidation("Tên tác giả KHÔNG được để trống");
+        }
+        else if(!isString(author.getAuthorName())) {
+            createValidation("Tên tác giả KHÔNG hợp lệ");
+        }
+        else if(author.getAuthorName().length() < 4
+                || author.getAuthorName().length() > 20) {
+            createValidation("Tên tác giả phải từ 4 -> 20 ký tự");
+        }
+        if(author.getAuthorAddress().isEmpty()
+                || author.getAuthorAddress().isBlank()) {
+            createValidation("Website KHÔNG được để trống");
+        }
+        else if(!isValidWebsite(author.getAuthorAddress())) {
+            createValidation("Website KHÔNG hợp lệ");
+        }
+    }
     public static void staffValidation(Staff staff) {
         if(staff.getStaffName().isEmpty()
                 || staff.getStaffName().isBlank()) {
             createValidation("Tên nhân viên KHÔNG để trống");
         }
-        else if(isString(staff.getStaffName())) {
+        else if(!isString(staff.getStaffName())) {
             createValidation("Tên nhân viên KHÔNG hợp lệ.");
         }
         if(staff.getUsrName().isEmpty()
@@ -61,12 +82,17 @@ public class Validation {
 
         return m.matches();
     }
-    public static boolean isString (String name) {
-        String ePatten = "^[||p{L} '-]+$";
-        Pattern p = Pattern.compile(ePatten);
-        Matcher m = p.matcher(name);
+    public static boolean isString(String name) {
+        // Kiểm tra xem chuỗi có chứa số không
+        if(name.matches(".*\\d.*")) {
+            return false;
+        }
+        // Kiểm tra xem chuỗi có chứa ký tự đặc biệt không
+        if(name.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            return false;
+        }
 
-        return m.matches();
+        return true;
     }
     public static boolean isStrongPassword(String password) {
         // Kiểm tra chứa chữ số
@@ -91,5 +117,16 @@ public class Validation {
     public static boolean isDigit(String mobileNo) {
         return mobileNo.chars()
                 .allMatch(Character::isDigit);
+    }
+    public static boolean isValidWebsite(String input) {
+        // Kiểm tra chuỗi có chứa khoảng trắng hay không
+        if (input.contains(" ")) {
+            return false;
+        }
+        // Kiểm tra chuỗi theo mẫu regex
+        String regex = "^(www\\.)?[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(regex);
+
+        return pattern.matcher(input).matches();
     }
 }
