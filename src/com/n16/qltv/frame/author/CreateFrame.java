@@ -48,6 +48,7 @@ public class CreateFrame extends JFrame{
                 else {
                     AuthorAdapter.addAuthor(author);
                     JOptionPane.showMessageDialog(null, "Tạo tác giả thành công");
+                    dispose();
                 }
             }
             else {

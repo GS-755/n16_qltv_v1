@@ -1,20 +1,18 @@
 package com.n16.qltv.frame.author;
 
 import com.n16.qltv.adaptor.AuthorAdapter;
+import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Author;
 
 import javax.swing.*;
 
 public class EditFrame extends JFrame {
     private JPanel panel1;
-    private JTextField tfName;
-    private JTextField tfAddress;
-    private JTextField tfNote;
+    private JTextField tfName, tfAddress, tfNote;
     private JButton btnAdd;
-    private JLabel nameLabel;
-    private JLabel addressLabel;
-    private JLabel noteLabel;
-    private JLabel titleLabel;
+    private JLabel nameLabel, addressLabel;
+    private JLabel noteLabel, titleLabel;
+
     public EditFrame(String auName) {
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
@@ -26,14 +24,30 @@ public class EditFrame extends JFrame {
         setComponents(auName);
 
         btnAdd.addActionListener(e -> {
+            Validation.clearValidation();
             if(AuthorAdapter.checkExist(tfName.getText())) {
-                if(!tfName.getText().isEmpty()
-                        || tfAddress.getText().isEmpty()) {
-                    Author author = new Author(tfName.getText(),tfAddress.getText(),tfNote.getText());
-                    AuthorAdapter.editAuthor(author);
+                Author author = new Author();
+                author.setAuthorName(auName);
+                String website = AuthorAdapter.
+                        formatWebsite(tfAddress.getText()).trim();
+                if(website.isEmpty()) {
+                    author.setAuthorAddress(tfAddress.getText().trim());
+                } else {
+                    author.setAuthorAddress(website);
                 }
-                else {
-                    JOptionPane.showMessageDialog(null, "Dữ liệu nhập vào KHÔNG bỏ trống.");
+                if(tfNote.getText().isEmpty()
+                        || tfNote.getText().isBlank()) {
+                    author.setAuthorNote("");
+                } else {
+                    author.setAuthorNote(tfNote.getText());
+                }
+                Validation.authorValidation(author);
+                if(Validation.getErrCount() > 0) {
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                } else {
+                    AuthorAdapter.editAuthor(author);
+                    JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+                    dispose();
                 }
             }
             else {
