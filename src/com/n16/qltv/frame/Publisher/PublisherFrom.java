@@ -54,13 +54,33 @@ public class PublisherFrom extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    if(CreatePulisher(tf_NamePulisher.getText().trim(),
-                            tf_EmailPulisher.getText().trim(),
-                            tf_PulisherAddress.getText().trim(),
-                            tf_PulisherRepresen.getText().trim()) == true)
+                    Validation.clearValidation();
+                    if(Puli_Table.getSelectedRow() < 0) {
+                        Validation.createValidation("hãy chọn 1 một Nhà Xuất Bản");
+                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                    }
+                    else
                     {
-                        // cập nhật lại dữ liệu trên JTable
-                        PublisherAdapter.updateTable(Puli_Table);
+                        Publisher publisher = new Publisher();
+                        publisher.setPublisherName(tf_NamePulisher.getText().toString().trim());
+                        publisher.setPublisherEmail(tf_NamePulisher.getText().toString().trim());
+                        publisher.setPublisherAddress(tf_NamePulisher.getText().toString().trim());
+                        publisher.setPublisherRepresen(tf_NamePulisher.getText().toString().trim());
+                        Validation.clearValidation();
+                        Validation.publisherValidation(publisher);
+                        if(Validation.getErrCount() != 0) {
+                            JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                        }
+                        else {
+                            if(CreatePulisher(tf_NamePulisher.getText().trim(),
+                                    tf_EmailPulisher.getText().trim(),
+                                    tf_PulisherAddress.getText().trim(),
+                                    tf_PulisherRepresen.getText().trim()) == true)
+                            {
+                                // cập nhật lại dữ liệu trên JTable
+                                PublisherAdapter.DataToTable(Puli_Table);
+                            }
+                        }
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -71,7 +91,7 @@ public class PublisherFrom extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Validation.clearValidation();
-                if(Puli_Table.getSelectedRow() <= 0) {
+                if(Puli_Table.getSelectedRow() < 0) {
                     Validation.createValidation("hãy chọn 1 một Nhà Xuất Bản");
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
@@ -201,7 +221,7 @@ public class PublisherFrom extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-
+                PublisherAdapter.DataToTable(Puli_Table);
                 String keyword = tf_Search.getText().toString().trim();
                 if(keyword.length() == 0)
                 {
@@ -223,6 +243,7 @@ public class PublisherFrom extends JFrame {
                     model.setRowCount(0);
                     //support_sreach.setVisible(true);
                     try {
+                        PulisherArrayList = PublisherAdapter.getPuliList();
                         PulisherArrayList = PublisherAdapter.findPuliName(keyword, Puli_Table, support_sreach);
                         support_sreach.setVisible(true);
                         bnt_suport.setVisible(true);
@@ -240,8 +261,9 @@ public class PublisherFrom extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    model.setRowCount(0);
-                    PublisherAdapter.Quick_support_sreach(Puli_Table);
+
+                    PublisherAdapter.Quick_support_sreach(Puli_Table,support_sreach,bnt_suport);
+
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }

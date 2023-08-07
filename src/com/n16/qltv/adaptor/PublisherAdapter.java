@@ -1,10 +1,8 @@
 package com.n16.qltv.adaptor;
-
 import com.n16.qltv.frame.Publisher.PublisherFrom;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.MySQL;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
@@ -15,17 +13,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-
 public class PublisherAdapter {
     public static Publisher publisher;
     private static Component PublisherFrom;
     private static ArrayList<Publisher> puliArrayList;
 
     public static DefaultTableModel model;// khai báo data table
-    private static Label support_sreach;
-
-
+    private static String name;
+    private static String address;
     // lấy danh sách pulis
     public static ArrayList<Publisher> getPuliList() {
         try {
@@ -49,7 +44,6 @@ public class PublisherAdapter {
             return null;
         }
     }
-
     // thêm dữ liệu vào table
     public static void DataToTable(JTable Puli_Table){
         try{
@@ -59,11 +53,8 @@ public class PublisherAdapter {
             model.addColumn("Email");
             model.addColumn("Dịa Chỉ");
             model.addColumn("Tên người đại diện");
-
-
             String query = "SELECT * FROM nhaxb ";// ? là dữ liệu nhập vào !
             Connection conn = MySQL.getConnection();
-
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
@@ -78,18 +69,15 @@ public class PublisherAdapter {
             rs.close();
             preparedStatement.close();
             conn.close();
-
             Puli_Table.setModel(model);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
     //upload table data khi bị chỉnh sửa dữ liệu
     public static void updateTable(JTable Puli_Table) {
         DefaultTableModel model = (DefaultTableModel) Puli_Table.getModel();
         model.setRowCount(0); // xóa dữ liệu trong bảng
-
         try {
             String query = "SELECT * FROM nhaxb";
             Connection conn = MySQL.getConnection();
@@ -110,15 +98,15 @@ public class PublisherAdapter {
             e.printStackTrace();
         }
     }
-
     // kt pulis
     public static boolean CreatePulisher(String Name,String Email, String Address, String Rep) throws SQLException {
-
         // lấy Thông tin puli
         // kt thông tin input puli = null
+        System.out.println(Name+" "+ Email +" " + Address + " " + Rep + " truyền vào hàm create");
         if(Name.isEmpty()||Email.isEmpty()||Address.isEmpty()||Rep.isEmpty()) {
             JOptionPane.showMessageDialog(PublisherFrom,
-                    "Hãy nhập đầy đủ thông tin của \n \tNhà Xuất Bản " + Name,"WARNING",JOptionPane.ERROR_MESSAGE);
+                    "Hãy nhập đầy đủ thông tin của \n \tNhà Xuất Bản " + Name,
+                    "WARNING",JOptionPane.ERROR_MESSAGE);
             return false;
         }
         // Thoả mọi đk
@@ -127,6 +115,7 @@ public class PublisherAdapter {
         else
             // Tên thể loại ko trùng trong database
             publisher = addPulisherToDatabase( Name, Email,  Address,  Rep);
+
         if(publisher != null)
             return true;
         else {
@@ -134,7 +123,6 @@ public class PublisherAdapter {
             return false;
         }
     }
-
     // thêm puli
     private static Publisher addPulisherToDatabase(String Name, String Email,
                                                    String Address, String Rep) throws SQLException {
@@ -157,6 +145,7 @@ public class PublisherAdapter {
             if (rowsInserted > 0)
             {
                 puliCheck = publi;
+                //updateTable(Puli_Table);
             }
             // Đóng kết nối CSLD
             preparedStatement.close();
@@ -167,7 +156,6 @@ public class PublisherAdapter {
         }
         return puliCheck;
     }
-
     // trùng tên trùng địa chỉ => 1 NSX
     // trùng tên khác địa chỉ duyệt
     public static boolean checkExistCategory(String name, String Address) {
@@ -202,9 +190,6 @@ public class PublisherAdapter {
             return check;
         }
     }
-
-
-
     public static void editPublisher(Publisher publisher,int id){
         try {
             String query = "UPDATE nhaxb " +
@@ -220,8 +205,6 @@ public class PublisherAdapter {
             ps.setString(3, publisher.getPublisherAddress());
             ps.setString(4, publisher.getPublisherRepresen());
             ps.setInt(5, id);
-
-
             ps.executeUpdate();
             ps.close();
         } catch(Exception ex) {
@@ -229,7 +212,6 @@ public class PublisherAdapter {
             ex.printStackTrace();
         }
     }
-
     public static void deletePuli(int id) {
         try {
 
@@ -246,10 +228,10 @@ public class PublisherAdapter {
             ex.printStackTrace();
         }
     }
+    public static ArrayList<Publisher> findPuliName(String keyword,JTable Puli_Table,JLabel support_sreach)
+            throws SQLException {
 
-    public static String name;
-    public static String address;
-    public static ArrayList<Publisher> findPuliName(String keyword,JTable Puli_Table,JLabel support_sreach) throws SQLException {
+        model.setRowCount(0);
         ArrayList<Publisher> foundPuli = new ArrayList<>();
         for (Publisher pulis : puliArrayList) {
             if(pulis.getPublisherName().contains(keyword))
@@ -271,15 +253,12 @@ public class PublisherAdapter {
                             Color color=new Color(255,0,0);
                             support_sreach.setForeground(color);
                       /* }*/
-
-
                 }
                 GetIDPulis_UpLoadDataTable(pulis.getPublisherName(),pulis.getPublisherAddress());
             }
         }
         return foundPuli;
     }
-
     public static void GetIDPulis_UpLoadDataTable( String puliName,String puliAddress) throws SQLException {
         String query = "SELECT * FROM nhaxb " +
                 " WHERE TenNXB = ? "+
@@ -295,17 +274,12 @@ public class PublisherAdapter {
             String email = resultSet.getString("Email");
             String address = resultSet.getString("DiaChi");
             String rep = resultSet.getString("TenNgDaiDien");
-
             model.addRow(new Object[]{id,name,email,address,rep});
-
         }
-
         ps.close();
     }
-
-
     // chỉ dùng cho nhaxb
-    public static void Quick_support_sreach(JTable Puli_Table) throws SQLException {
+    public static void Quick_support_sreach(JTable Puli_Table,JLabel support_sreach,JButton bnt_suport) throws SQLException {
         String query = "SELECT * FROM nhaxb " +
                 " WHERE TenNXB = ? "+
                 "AND DiaChi = ? ";
@@ -313,6 +287,7 @@ public class PublisherAdapter {
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, name);
         ps.setString(2, address);
+        System.out.println( "tên với địa chỉ truyền vào hàm Quick search "+ name + " - " + address);
         ResultSet resultSet = ps.executeQuery();
         while (resultSet.next()) {
             int id = resultSet.getInt("MaNXB");
@@ -320,11 +295,15 @@ public class PublisherAdapter {
             String email = resultSet.getString("Email");
             String address = resultSet.getString("DiaChi");
             String rep = resultSet.getString("TenNgDaiDien");
-
+            model.setRowCount(0);
             model.addRow(new Object[]{id,name,email,address,rep});
-        }
-        Puli_Table.setModel(model);
-        ps.close();
-    }
 
+
+        }
+
+        Puli_Table.setModel(model);
+        support_sreach.setVisible(false);
+        bnt_suport.setVisible(false);
+        //ps.close();
+    }
 }
