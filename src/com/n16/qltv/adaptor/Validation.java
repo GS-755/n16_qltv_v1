@@ -1,6 +1,5 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Staff;
 
 import java.util.ArrayList;
@@ -33,6 +32,15 @@ public class Validation {
         else if(!isValidWebsite(author.getAuthorAddress())) {
             createValidation("Website KHÔNG hợp lệ");
         }
+    }
+    public static void loginValidation(String usrName, String password) {
+        if(usrName.isEmpty()
+                || usrName.isBlank()) {
+            createValidation("Tên đăng nhập KHÔNG để trống");
+        }
+        if(password.isEmpty()
+                || password.isBlank())
+            createValidation("Mật khẩu KHÔNG để trống");
     }
     public static void staffValidation(Staff staff) {
         if(staff.getStaffName().isEmpty()
@@ -82,17 +90,12 @@ public class Validation {
 
         return m.matches();
     }
-    public static boolean isString(String name) {
-        // Kiểm tra xem chuỗi có chứa số không
-        if(name.matches(".*\\d.*")) {
-            return false;
-        }
-        // Kiểm tra xem chuỗi có chứa ký tự đặc biệt không
-        if(name.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
-            return false;
-        }
+    public static boolean isString (String name) {
+        String ePatten = "^[||p{L} '-]+$";
+        Pattern p = Pattern.compile(ePatten);
+        Matcher m = p.matcher(name);
 
-        return true;
+        return m.matches();
     }
     public static boolean isStrongPassword(String password) {
         // Kiểm tra chứa chữ số
@@ -117,16 +120,5 @@ public class Validation {
     public static boolean isDigit(String mobileNo) {
         return mobileNo.chars()
                 .allMatch(Character::isDigit);
-    }
-    public static boolean isValidWebsite(String input) {
-        // Kiểm tra chuỗi có chứa khoảng trắng hay không
-        if (input.contains(" ")) {
-            return false;
-        }
-        // Kiểm tra chuỗi theo mẫu regex
-        String regex = "^(www\\.)?[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,}$";
-        Pattern pattern = Pattern.compile(regex);
-
-        return pattern.matcher(input).matches();
     }
 }

@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Session {
-    private Map<String, Object> data = new HashMap<>();
+    private static Map<String, Object> data = new HashMap<>();
 
-    public Session() { }
-
-    public Object get(String key) { return this.data.get(key); }
-    public void put(String key, Object value) { this.data.put(key, value); }
-    public void remove(String key) { this.data.remove(key); }
+    public static Object get(String key) { return data.get(key); }
+    public static void put(String key, Object value) { data.put(key, value); }
+    public static void remove(String key) { data.remove(key); }
 }

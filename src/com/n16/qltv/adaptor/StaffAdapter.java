@@ -13,7 +13,6 @@ import javax.swing.*;
 
 public class StaffAdapter {
     private static ArrayList<Staff> staffArrayList;
-    private static Session staffSession;
 
     public static boolean checkExistStaff(String usrName) {
         boolean check = false;
@@ -88,19 +87,18 @@ public class StaffAdapter {
                 ps.setString(2, staff.getStaffDob());
                 ps.setString(3, staff.getStaffPhone());
                 ps.setString(4, staff.getStaffAddress());
-                ps.setString(5, staff.getPassword());
+                ps.setString(5, SHA256.toSHA256(SHA256.getSHA256(staff.getPassword())));
                 ps.setString(6, String.format("%s", staff.getGender()));
                 ps.setString(7, staff.getUsrName());
 
                 ps.executeUpdate();
+                ps.close();
             }
             else {
-                JOptionPane.showMessageDialog(
-                        null, "Lỗi tham số :((( \n Vui lòng kiểm tra lại.");
+                JOptionPane.showMessageDialog(null, "Lỗi tham số :((( \n Vui lòng kiểm tra lại.");
             }
         } catch(Exception ex) {
-            JOptionPane.showMessageDialog(
-                    null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
             ex.printStackTrace();
         }
     }
@@ -113,6 +111,9 @@ public class StaffAdapter {
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, usrName);
                 ps.executeUpdate();
+            }
+            else {
+                System.out.println("Co loi xay ra :((");
             }
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -157,15 +158,16 @@ public class StaffAdapter {
             while(rs.next()) {
                 if(rs.getString(6).equals(usrName)
                         && rs.getString(7).equals(authTmp)) {
-                    staffSession = new Session();
-                    staffSession.put("usrName", usrName);
+                    Session.put("usrName", SHA256.
+                            toSHA256(SHA256.getSHA256(usrName)));
+
                     return true;
                 }
             }
         } catch(Exception ex) {
             ex.printStackTrace();
-            return false;
         }
+
         return false;
     }
     public static String getStaffPhone(String usrName) {
@@ -209,7 +211,8 @@ public class StaffAdapter {
         return password;
     }
     public static ArrayList<Staff> sortUsrName(int mode) {
-        ArrayList<Staff> sortedStaffs = getStaffList();
+        ArrayList<Staff> sortedStaffs = new ArrayList<>();
+        staffArrayList = getStaffList();
         switch(mode) {
             case 1:  {
                 // Ascending sort of usrName
@@ -231,36 +234,23 @@ public class StaffAdapter {
         ArrayList<Staff> foundStaffs = new ArrayList<>();
         switch(mode) {
             case 1: {
-                // Tìm tên Nhân viên ở chế độ tuyệt đối
-                for(Staff staff : staffArrayList)
+                // Tìm người dùng ở chế độ tuyệt đối
+                for(Staff staff : staffArrayList){
+                    System.out.println(staff);
                     if(staff.getStaffName().equals(keyword))
                         foundStaffs.add(staff);
-            } break;
-            case 2: {
-                // Tìm tên Nhân viên ở chế độ tương đối
-                for(Staff staff : staffArrayList)
-                    if(staff.getStaffName().contains(keyword))
-                        foundStaffs.add(staff);
-            } break;
-        }
+                    System.out.println(staff+" được chọn");
+                }
 
-        return foundStaffs;
-    }
-    public static ArrayList<Staff> findUsrName(int mode, String keyword) {
-        ArrayList<Staff> foundStaffs = new ArrayList<>();
-        switch(mode) {
-            case 1: {
-                // Tìm tài khoản ở chế độ tuyệt đối
-                for(Staff staff : staffArrayList)
-                    if(staff.getUsrName().equals(keyword))
-                        foundStaffs.add(staff);
-            } break;
+            }
+                break;
             case 2: {
-                // Tìm tài khoản ở chế độ tương đối
+                // Tìm người dùng ở chế độ tương đối
                 for(Staff staff : staffArrayList)
-                    if(staff.getUsrName().contains(keyword))
+                    if(staff.getStaffName().startsWith(keyword))
                         foundStaffs.add(staff);
-            } break;
+            }
+                break;
         }
 
         return foundStaffs;
