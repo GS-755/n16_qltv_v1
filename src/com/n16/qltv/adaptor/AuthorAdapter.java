@@ -108,9 +108,14 @@ public class AuthorAdapter {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                authorArrayList.add(new Author(rs.getString(2), rs.getString(3), rs.getString(4)));
+                Author author = new Author();
+                author.setAuthorId(rs.getInt(1));
+                author.setAuthorName(rs.getString(2));
+                author.setAuthorAddress(rs.getString(3));
+                author.setAuthorNote(rs.getString(4));
+
+                authorArrayList.add(author);
             }
-            ps.close();
 
             return authorArrayList;
         } catch (Exception ex) {

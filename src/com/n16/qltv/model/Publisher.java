@@ -20,6 +20,7 @@ public class Publisher {
     public String getPublisherEmail() { return this.publisherEmail; }
     public String getPublisherAddress() { return this.publisherAddress; }
     public String getPublisherRepresen() { return publisherRepresen; }
+    public void setPublisherId(int publisherId) { this.publisherId = publisherId; }
     public void setPublisherName(String publisherName) { this.publisherName = publisherName; }
     public void setPublisherEmail(String publisherEmail) { this.publisherEmail = publisherEmail; }
     public void setPublisherAddress(String publisherAddress) { this.publisherAddress = publisherAddress; }

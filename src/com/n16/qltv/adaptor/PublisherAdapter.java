@@ -25,11 +25,15 @@ public class PublisherAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                puliArrayList.add(new Publisher(rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),rs.getString(5)));
+                Publisher publisher = new Publisher();
+                publisher.setPublisherId(rs.getInt(1));
+                publisher.setPublisherName(rs.getString(2));
+                publisher.setPublisherEmail(rs.getString(3));
+                publisher.setPublisherAddress(rs.getString(4));
+                publisher.setPublisherRepresen(rs.getString(5));
+
+                puliArrayList.add(publisher);
             }
-            ps.close();
 
             return puliArrayList;
         } catch(Exception ex) {

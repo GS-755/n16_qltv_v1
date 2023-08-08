@@ -177,7 +177,11 @@ public class CategoryAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                cateArrayList.add(new Category(rs.getString(2).trim()));
+                Category category = new Category();
+                category.setCateId(rs.getInt(1));
+                category.setNameCate(rs.getString(2));
+
+                cateArrayList.add(category);
             }
             ps.close();
 

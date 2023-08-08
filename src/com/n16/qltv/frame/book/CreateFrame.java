@@ -45,6 +45,13 @@ public class CreateFrame extends JFrame {
                     book.setCategory(categories.get(0));
                     book.setAuthor(authors.get(0));
                     book.setPublisher(publishers.get(0));
+                    book.getCategory().setCateId(CategoryAdapter.
+                            getCateId(book.getCategory().getNameCate()));
+                    book.getAuthor().setAuthorId(AuthorAdapter.
+                            getAuthorId(book.getAuthor().getAuthorName()));
+                    book.getPublisher().setPublisherId(PublisherAdapter.
+                            findPublisherId(book.getPublisher().getPublisherName(),
+                                    book.getPublisher().getPublisherAddress()));
                     if(txtPublisherYear.getText().isEmpty()
                             || txtPublisherYear.getText().isBlank()) {
                         Validation.createValidation("Năm xuất bản KHÔNG để trống");
