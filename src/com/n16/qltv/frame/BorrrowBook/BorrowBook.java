@@ -34,7 +34,7 @@ public class BorrowBook extends  JFrame{
         // bnt_suport.setVisible(false);
 
         // lấy danh sách Puli
-//        BorrowBookArrayList = PublisherAdapter.getPuliList();
+        //BorrowBookArrayList = PublisherAdapter.getPuliList();
 
 // todo: setting JFrame
 
