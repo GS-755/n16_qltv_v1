@@ -23,7 +23,7 @@
           <grid row="1" column="2" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Thêm Khách hàng"/>
+          <text value="THÊM ĐỘC GIẢ"/>
         </properties>
       </component>
       <component id="f837f" class="javax.swing.JTextField" binding="txtNameCus">
