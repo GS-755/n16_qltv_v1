@@ -62,7 +62,6 @@ public class CreateFrame extends JFrame {
                  }
                  else{
                      Validation.createValidation("Mật khẩu không mạnh");
-
                  }
                 } catch (NoSuchAlgorithmException ex) {
                     throw new RuntimeException(ex);

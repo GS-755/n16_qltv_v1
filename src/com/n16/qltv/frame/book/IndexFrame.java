@@ -23,68 +23,59 @@ public class IndexFrame extends JFrame {
     private JComboBox comboBox_Cate;
     private ArrayList<Book> BookArrayList;
 
+    public IndexFrame() {
+        BookArrayList = BookAdapter.getBookList();
+        // setup
+        setTitle("Book page");    setContentPane(JPanel_Book);
+        BookAdapter.DataToTable(Book_Table);
+        BookAdapter.updateTable(Book_Table);
+        setResizable(false);
+        setBounds(50, 50, 1024, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setVisible(true);
+        //ẩn trợ giúp tìm kiếm
+        // support_sreach.setVisible(false);
+        // bnt_suport.setVisible(false);
 
-
-
-
-
-
-
-
-public IndexFrame() {
-    BookArrayList = BookAdapter.getBookList();
-    // setup
-    setTitle("Book page");    setContentPane(JPanel_Book);
-    BookAdapter.DataToTable(Book_Table);
-    BookAdapter.updateTable(Book_Table);
-    setResizable(false);
-    setBounds(50, 50, 1024, 600);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setVisible(true);
-    //ẩn trợ giúp tìm kiếm
-    // support_sreach.setVisible(false);
-    // bnt_suport.setVisible(false);
-    // setup
-
-
-    bnt_Add.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            CreateFrame book = new CreateFrame();
-        }
-    });
-    bnt_Delete.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Validation.clearValidation();
-            if(Book_Table.getSelectedRow() >= 0)
-            {
+        // setup
+        bnt_Add.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CreateFrame book = new CreateFrame();
+            }
+        });
+        bnt_Delete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Validation.clearValidation();
+                if(Book_Table.getSelectedRow() >= 0) {
+                    String idpuli = BookAdapter.model.getValueAt(
+                            Book_Table.getSelectedRow(), 1).toString();
+                    BookAdapter.deleteBook(idpuli);
+                    BookAdapter.updateTable(Book_Table);
+                }
+                else {
+                    Validation.createValidation("Hãy chọn 1 một Nhà Xuất Bản");
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                }
+            }
+        });
+        bnt_Edit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 String idpuli = BookAdapter.model.getValueAt(
                         Book_Table.getSelectedRow(), 1).toString();
-                BookAdapter.deleteBook(idpuli);
+                EditFrame editFrame = new EditFrame(idpuli);
                 BookAdapter.updateTable(Book_Table);
-
             }
-            else
-            {
-                Validation.createValidation("hãy chọn 1 một Nhà Xuất Bản");
-                JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+        });
+        bnt_Update.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BookAdapter.updateTable(Book_Table);
             }
-        }
-    });
-    bnt_Edit.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            EditFrame editFrame = new EditFrame();
-        }
-    });
-    bnt_Update.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            BookAdapter.updateTable(Book_Table);
-        }
-    });
-}
+        });
+    }
     public void setCbComponents() {
         for(String s : CategoryAdapter.getCateName()) {
             comboBox_Cate.addItem(s);

@@ -1,6 +1,8 @@
 package com.n16.qltv.frame.admin;
 
 import com.n16.qltv.frame.book.CreateFrame;
+import com.n16.qltv.frame.borrowbook.BorrowBook;
+import com.n16.qltv.frame.category.CategoryForm;
 import com.n16.qltv.frame.publisher.PublisherFrom;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.Session;
@@ -28,29 +30,41 @@ public class IndexFrame extends JFrame {
         JMenu menu1 = new JMenu("Quản lý");
         menuBar.add(menu1);
         menu1.add("Khách hàng");
-        menu1.add("Thẻ thư viện");
-        menu1.addSeparator();
-
+        menu1.getItem(0).addActionListener(e -> {
+            com.n16.qltv.frame.customer.IndexFrame
+                    indexFrame = new com.n16.qltv.frame.customer.IndexFrame();
+        });
         menu1.add("Nhân viên");
-        menu1.getItem(3).addActionListener(e -> {
-            com.n16.qltv.frame.staff.IndexFrame indexFrame = new com.n16.qltv.frame.staff.IndexFrame();
+        menu1.getItem(1).addActionListener(e -> {
+            com.n16.qltv.frame.staff.IndexFrame
+                    indexFrame = new com.n16.qltv.frame.staff.IndexFrame();
         });
         menu1.addSeparator();
-
         menu1.add("Nhà xuất bản");
-        menu1.getItem(5).addActionListener(e -> {
-            com.n16.qltv.frame.publisher.PublisherFrom publisherFrom = new com.n16.qltv.frame.publisher.PublisherFrom();
+        menu1.getItem(3).addActionListener(e -> {
+            com.n16.qltv.frame.publisher.PublisherFrom
+                    publisherFrom = new com.n16.qltv.frame.publisher.PublisherFrom();
         });
         menu1.add("Tác giả");
-        menu1.getItem(6).addActionListener(e -> {
-            com.n16.qltv.frame.author.IndexFrame indexFrame = new com.n16.qltv.frame.author.IndexFrame();
-        });
-        menu1.add("Sách");
-        menu1.getItem(7).addActionListener(e -> {
-            com.n16.qltv.frame.book.IndexFrame indexFrame = new com.n16.qltv.frame.book.IndexFrame();
+        menu1.getItem(4).addActionListener(e -> {
+            com.n16.qltv.frame.author.IndexFrame
+                    indexFrame = new com.n16.qltv.frame.author.IndexFrame();
         });
         menu1.add("Thể loại");
-
+        menu1.getItem(5).addActionListener(e -> {
+            com.n16.qltv.frame.category.CategoryForm
+                    categoryForm = new CategoryForm();
+        });
+        menu1.addSeparator();
+        menu1.add("Sách");
+        menu1.getItem(7).addActionListener(e -> {
+            com.n16.qltv.frame.book.IndexFrame
+                    indexFrame = new com.n16.qltv.frame.book.IndexFrame();
+        });
+        menu1.add("Mượn trả sách");
+        menu1.getItem(8).addActionListener(e -> {
+            BorrowBook borrowBook = new BorrowBook();
+        });
         JMenu menu2 = new JMenu("Tài khoản");
         menuBar.add(menu2);
         menu2.add("Đăng xuất");

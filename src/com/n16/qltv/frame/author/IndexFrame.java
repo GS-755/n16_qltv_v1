@@ -28,7 +28,7 @@ public class IndexFrame extends JFrame{
         setTitle("Danh sách Tác giả");
         setVisible(true);
         setResizable(false);
-        setBounds(50, 50, 1024, 768);
+        setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         authorArrayList = AuthorAdapter.getAuthorList();
 

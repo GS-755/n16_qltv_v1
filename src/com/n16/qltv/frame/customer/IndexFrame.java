@@ -37,8 +37,8 @@ public class IndexFrame extends JFrame{
         setTitle("Danh sách khách hàng");
         setVisible(true);
         setResizable(false);
-        setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(50, 50, 1024, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         customers = CustomerAdapter.getCustoList();
         model = new DefaultTableModel();
         addTableStyle();

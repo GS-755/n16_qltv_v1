@@ -8,7 +8,7 @@ public class BorrowBook {
     private String borrowId;
     private Date borrowDate;
     private Staff staff;
-    //private LibraryCard libraryCard;
+    private Customer customer;
 
     public BorrowBook() { this.borrowDate = new Date(); }
     public BorrowBook(String borrowId, Date borrowDate, Staff staff) {
@@ -20,6 +20,13 @@ public class BorrowBook {
     public String getBorrowId() { return this.borrowId; }
     public Staff getStaff() { return this.staff; }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public void setBorrowId(String borrowId) {
         this.borrowId = borrowId;
