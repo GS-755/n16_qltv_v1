@@ -217,6 +217,7 @@ public class CategoryAdapter {
     }
     // tìm kiếm theo tên
     public static ArrayList<Category> findCateName(String keyword) throws SQLException {
+        model = new DefaultTableModel();
         ArrayList<Category> foundCate = new ArrayList<>();
         for (Category cate : cateArrayList) {
                 if(cate.getNameCate().contains(keyword))
@@ -253,7 +254,17 @@ public class CategoryAdapter {
         }
         ps.close();
     }
+    public static int getCateId(String nameCate) throws SQLException {
+        if(checkExistCategory(nameCate)) {
+            ArrayList<Category> foundCategory = findCateName(nameCate);
+
+            return foundCategory.get(0).getCateId();
+        }
+
+        return -1;
+    }
     public static String[] getCateName() {
+        cateArrayList = getCateList();
         String[] categories = new String[getCateCount()];
         try {
             ArrayList<Category> categoryArrayList = getCateList();

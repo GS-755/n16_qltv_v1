@@ -2,7 +2,6 @@ package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.model.Staff;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class IndexFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
 
         model = new DefaultTableModel();
@@ -48,7 +47,7 @@ public class IndexFrame extends JFrame {
             }
         });
         btnExit.addActionListener(e -> {
-            System.exit(3);
+            dispose();
         });
         btnAdd.addActionListener(e -> {
             CreateFrame cf = new CreateFrame();

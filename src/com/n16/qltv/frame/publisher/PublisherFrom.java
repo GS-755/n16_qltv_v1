@@ -1,4 +1,4 @@
-package com.n16.qltv.frame.Publisher;
+package com.n16.qltv.frame.publisher;
 
 import com.n16.qltv.adaptor.PublisherAdapter;
 import com.n16.qltv.adaptor.Validation;

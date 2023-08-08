@@ -1,11 +1,11 @@
 package com.n16.qltv.adaptor;
 
+import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.model.Author;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validation {
@@ -75,50 +75,37 @@ public class Validation {
             createValidation("Số điện thoại KHÔNG hợp lệ");
         }
     }
+    public static void bookValidation(Book book) {
+        if(book.getBookName().isEmpty()
+                || book.getBookName().isBlank()) {
+            createValidation("Tên sách KHÔNG để trống.");
+        }
+        else if(!isString(book.getBookName())) {
+            createValidation("Tên sách KHÔNG hợp lệ");
+        }
+    }
     // Chỗ này của em :)))
     public static void publisherValidation(Publisher puli) {
-/*        if(PublisherAdapter.checkExistCategory(puli.getPublisherName(),puli.getPublisherAddress()))
-        {
-            createValidation("NXB này đã tồn tại");
-        }*/
-        if(puli.getPublisherName().isEmpty())
-        {
+        if(puli.getPublisherName().isEmpty()) {
             createValidation("Hãy Điền Tên NXB");
         }
-        else if(isString(puli.getPublisherName()))
-        {
+        else if(!isString(puli.getPublisherName())) {
             createValidation("Tên NXB không được có ký tự đặc biệt");
         }
-
-        if(puli.getPublisherAddress().isEmpty())
-        {
+        if(puli.getPublisherAddress().isEmpty()) {
             createValidation("địa chỉ NXB không được để trống");
         }
-
-        if(puli.getPublisherEmail().isEmpty())
-        {
+        if(puli.getPublisherEmail().isEmpty()) {
             createValidation("email không được để trống");
         }
-        else if(isValidEmail(puli.getPublisherEmail().trim()))
-        {
-            System.out.println(puli.getPublisherEmail().trim());
-            createValidation("email không hợp lệ");
-        }
-        if(puli.getPublisherRepresen().isEmpty())
-        {
+//        else if(!isValidEmail(puli.getPublisherEmail())) {
+//            createValidation("email không hợp lệ");
+//        }
+        if(puli.getPublisherRepresen().isEmpty()) {
             createValidation("hãy nhập tên người đại diện");
         }
-
-
-
-
-
-
-
-
-
-
-
+        else if(!isString(puli.getPublisherName()))
+            createValidation("Tên người đại diện không hợp lệ");
     }
     public static String getStrValidation() {
         int errCount = 0;
