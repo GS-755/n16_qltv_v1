@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class BorrowBook extends  JFrame{
+public class BorrowBook extends JFrame{
     private JPanel BorrowBook_JPanel;
     private JTable BB_table;
     private JButton duyệtButton;

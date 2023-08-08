@@ -12,9 +12,8 @@ import com.n16.qltv.model.Publisher;
 public class Main {
     public static void main(String[] args) {
         //LoginFrame indexFrame = new LoginFrame();
-        //CreateFrame createFrame = new CreateFrame();
-        //
-        BorrowBook borrowBook = new BorrowBook();
+       // CreateFrame createFrame = new CreateFrame();
+      BorrowBook borrowBook = new BorrowBook();
 
 
     }

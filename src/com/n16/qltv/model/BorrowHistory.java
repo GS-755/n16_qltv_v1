@@ -9,24 +9,6 @@ public class BorrowHistory extends BorrowBook {
     private String note;
 
     public BorrowHistory() { }
-    public BorrowHistory(Staff staff, LibraryCard libraryCard, ArrayList<Book> books) {
-        super(staff, libraryCard, books);
-    }
-    public BorrowHistory(Staff staff, LibraryCard libraryCard, ArrayList<Book> books,
-                         char state, Date borrowDate, Date returnDate) {
-        super(staff, libraryCard, books);
-        this.state = state;
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
-    }
-    public BorrowHistory(Staff staff, LibraryCard libraryCard, ArrayList<Book> books,
-                         char state, Date borrowDate, Date returnDate, String note) {
-        super(staff, libraryCard, books);
-        this.state = state;
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
-        this.note = note;
-    }
 
     public char getState() { return this.state; }
     public Date getBorrowDate() { return this.borrowDate; }
