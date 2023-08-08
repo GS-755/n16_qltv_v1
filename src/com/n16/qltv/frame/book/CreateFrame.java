@@ -35,6 +35,5 @@ public class CreateFrame extends JFrame {
         for(String s : CategoryAdapter.getCateName()) {
             cbCategory.addItem(s);
         }
-
     }
 }
