@@ -1,9 +1,6 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.model.Book;
-import com.n16.qltv.model.Publisher;
-import com.n16.qltv.model.Staff;
-import com.n16.qltv.model.Author;
+import com.n16.qltv.model.*;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -83,6 +80,9 @@ public class Validation {
         else if(!isString(book.getBookName())) {
             createValidation("Tên sách KHÔNG hợp lệ");
         }
+    }
+    public static void customerValidation(Customer customer) {
+
     }
     // Chỗ này của em :)))
     public static void publisherValidation(Publisher puli) {
