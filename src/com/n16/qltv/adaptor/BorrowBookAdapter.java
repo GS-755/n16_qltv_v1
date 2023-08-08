@@ -6,21 +6,26 @@ import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
 import com.n16.qltv.vendor.RandomID;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
 
+
 public class BorrowBookAdapter {
+    static DefaultTableModel model;
 
     private static ArrayList<BorrowBook> borrowBookArrayList = new ArrayList<>();
     //public static DefaultTableModel model;// khai báo data table
 
     // lấy danh sách pulis
-    public static ArrayList<BorrowBook> getBorrowBookList() {
+    /*public static ArrayList<BorrowBook> getBorrowBookList() {
         try {
             String query = "SELECT * FROM muontra";
             Connection conn = MySQL.getConnection();
@@ -44,7 +49,59 @@ public class BorrowBookAdapter {
         }
     }
 
-
+*/
+    public static void DataToTable(JTable BB_table) throws SQLException {
+        try{
+            model = new DefaultTableModel();
+            model.addColumn("MaMuonTra");
+            model.addColumn("NgayMuon");
+            model.addColumn("SoThe");
+            model.addColumn("MaNV");
+            String query = "SELECT * FROM muontra ";  // ? là dữ liệu nhập vào !
+            Connection conn = MySQL.getConnection();
+            // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("MaMuonTra");
+                Date NgayMuon = rs.getDate("NgayMuon");
+                //Date date = new Date(NgayMuon);
+                int SoThe = rs.getInt("SoThe");
+                int MaNV = rs.getInt("MaNV");
+                model.addRow(new Object[]{id, NgayMuon,SoThe,MaNV});
+            }
+            rs.close();
+            preparedStatement.close();
+            conn.close();
+            BB_table.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void updateTable(JTable BB_table) {
+        DefaultTableModel model = (DefaultTableModel)
+        BB_table.getModel();
+        model.setRowCount(0); // xóa dữ liệu trong bảng
+        try {
+            String query = "SELECT * FROM muontra";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("MaMuonTra");
+                Date NgayMuon = rs.getDate("NgayMuon");
+                //Date date = new Date(NgayMuon);
+                int SoThe = rs.getInt("SoThe");
+                int MaNV = rs.getInt("MaNV");
+                model.addRow(new Object[]{id, NgayMuon,SoThe,MaNV});
+            }
+            rs.close();
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

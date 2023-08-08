@@ -253,6 +253,9 @@ public class CategoryAdapter {
         }
         ps.close();
     }
+
+
+
     public static String[] getCateName() {
         String[] categories = new String[getCateCount()];
         try {

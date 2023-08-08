@@ -115,8 +115,6 @@ public class PublisherFrom extends JFrame {
 
             }
         });
-
-
             bnt_DeletePuli.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -183,12 +181,6 @@ public class PublisherFrom extends JFrame {
                 tf_PulisherAddress.setText(diachi);
                 tf_PulisherRepresen.setText(rep);
                 //
-
-
-
-
-
-
             }
         });
 
