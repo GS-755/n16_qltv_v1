@@ -34,8 +34,7 @@ public class IndexFrame extends JFrame {
 public IndexFrame() {
     BookArrayList = BookAdapter.getBookList();
     // setup
-    setTitle("Book page");
-    setContentPane(JPanel_Book);
+    setTitle("Book page");    setContentPane(JPanel_Book);
     BookAdapter.DataToTable(Book_Table);
     BookAdapter.updateTable(Book_Table);
     setResizable(false);
@@ -76,7 +75,7 @@ public IndexFrame() {
     bnt_Edit.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            EditFrame editFrame = new EditFrame();
         }
     });
     bnt_Update.addActionListener(new ActionListener() {

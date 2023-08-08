@@ -3,7 +3,6 @@ package com.n16.qltv.frame.BorrrowBook;
 import com.n16.qltv.adaptor.BorrowBookAdapter;
 import com.n16.qltv.adaptor.PublisherAdapter;
 import com.n16.qltv.adaptor.Validation;
-import com.n16.qltv.model.LibraryCard;
 import com.n16.qltv.model.Publisher;
 
 import javax.swing.*;
@@ -70,7 +69,7 @@ public class BorrowBook extends JFrame{
                     com.n16.qltv.model.BorrowBook borrowBook = new com.n16.qltv.model.BorrowBook();
                     borrowBook.setBorrowId(id);
                     borrowBook.setBorrowDate(java.sql.Date.valueOf(NgayMuon));
-                    borrowBook.setLibraryCard(new LibraryCard());
+
                   //  publisher.setPublisherEmail(tf_EmailPulisher.getText().toString().trim());
                    // publisher.setPublisherAddress(tf_PulisherAddress.getText().toString().trim());
                     //publisher.setPublisherRepresen(tf_PulisherRepresen.getText().toString().trim());
