@@ -246,7 +246,7 @@ public class PublisherAdapter {
                 support_sreach.setText("Có Phải bạn đang tìm: " + name +" - tại: "+ address);
                 String text_Light = support_sreach.getText().toString().trim();
                 System.out.println(support_sreach.getText().toString().trim());
-                String[] arrayText =  text_Light.split("");
+                //String[] arrayText =  text_Light.split("");
                 for (int i = 0; i < text_Light.length() ; i++)
                 {
                        /* if(keyword == support_sreach.getText().trim())
