@@ -1,9 +1,14 @@
 package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.adaptor.StaffAdapter;
+import com.n16.qltv.frame.BorrrowBook.BorrowBook;
 import com.n16.qltv.model.Staff;
+import com.n16.qltv.vendor.Session;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
@@ -18,19 +23,30 @@ public class IndexFrame extends JFrame {
     private ButtonGroup radioSearchModeGroup;
     private JRadioButton approxModeRadio, absoluteModeRadio;
     private JLabel searchModeLabel;
+    private JButton bnt_BorrowBook_Form;
+    private JButton bnt_AddCustomer;
+    private JButton bnt_manageBooks;
+    private JLabel tf_NameStaff;
+    private JButton bnt_Logout;
     private DefaultTableModel model;
     private ArrayList<Staff> staffArrayList;
     private final int DELAY_TIME = 1800;
 
+
     public IndexFrame() {
+
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
+
+        // info Staff //
+        tf_NameStaff.setText(Session.get("staff").toString());
+
 
         model = new DefaultTableModel();
         addTableStyle(model);
@@ -47,7 +63,7 @@ public class IndexFrame extends JFrame {
             }
         });
         btnExit.addActionListener(e -> {
-            dispose();
+            System.exit(3);
         });
         btnAdd.addActionListener(e -> {
             CreateFrame cf = new CreateFrame();
@@ -86,7 +102,48 @@ public class IndexFrame extends JFrame {
                     .findStaffName(mode, keyword);
             addTableData(model, staffArrayList);
         });
+
+
+// todo  ****************************************** chức năng ******************************************  //
+
+
+
+
+        bnt_BorrowBook_Form.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(Session.get("staff") == null )
+                {
+                    dispose();
+                    LoginFrame loginFrame = new LoginFrame();
+                }
+                else
+                {
+                     BorrowBook borrowBook = new BorrowBook();
+                    //CreateFrame createFrame = new CreateFrame();
+                }
+            }
+        });
+        bnt_Logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tf_NameStaff.setText("");
+                Session.remove("staff");
+                dispose();
+                LoginFrame loginFrame = new LoginFrame();
+
+            }
+        });
     }
+
+
+
+
+
+
+
+
+// todo  ****************************************** chức năng ******************************************  //
     public void addTableStyle(DefaultTableModel model) {
         model.addColumn("Tên Nhân viên");
         model.addColumn("Giới tính");
