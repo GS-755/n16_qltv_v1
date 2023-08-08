@@ -61,6 +61,7 @@ public class IndexFrame extends JFrame {
                         tableStaff.getSelectedRow(), 5).toString());
             }
         });
+
         btnUpdate.addActionListener(e -> {
             refreshTableData();
         });
@@ -132,4 +133,6 @@ public class IndexFrame extends JFrame {
             approxModeRadio.setSelected(true);
         });
     }
+
+
 }

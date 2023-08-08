@@ -118,8 +118,7 @@ public class StaffAdapter {
         } catch(Exception ex) {
             ex.printStackTrace();
         }
-    }
-    public static ArrayList<Staff> getStaffList() {
+    }  public static ArrayList<Staff> getStaffList() {
         try {
             staffArrayList = new ArrayList<>();
             String query = "SELECT * FROM nhanvien";
