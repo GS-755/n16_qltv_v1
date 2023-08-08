@@ -14,31 +14,27 @@ public class CustomerAdapter {
     private static ArrayList<Customer> custoArrayList;
 
     public static boolean checkExistCustomer(String usrName) {
-        boolean check = false;
         try{
             String query = "SELECT * " +
                     "FROM docgia " +
-                    "WHERE tendangnhap = ?";
+                    "WHERE TenDangNhap = ?";
             Connection conn = MySQL.getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);String ursName;
-            ps.setString(1, usrName);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, usrName.trim());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Customer customer = new Customer();
-                if(rs.getString(5).equals(usrName.trim())) {
-                    check = true;
-                    break;
+                if(rs.getString(5)
+                        .equals(usrName.trim())) {
+
+                    return true;
                 }
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
-
-            return check;
         }
 
-        return check;
+        return false;
     }
     public static void addCustomer(Customer customer) {
         try {
@@ -68,30 +64,32 @@ public class CustomerAdapter {
     }
     public static void editCustomer(Customer customer) {
         try {
-            if(checkExistCustomer(customer.getUsrName())) {
+            if(checkExistCustomer(customer.getUsrName().trim())) {
                 String query = "UPDATE docgia "
                         + "SET TenDocGia = ?, "
                         + "DiaChi = ?, "
                         + "SoDT = ?, "
                         + "MatKhau = ?, "
-                        + "GioiTinh = ?, "
-                        + "WHERE TenDangNhap = ? ";
+                        + "GioiTinh = ? "
+                        + "WHERE TenDangNhap = ?";
                 Connection conn = MySQL.getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, customer.getNameCus());
                 ps.setString(2, customer.getAddressCus());
                 ps.setString(3, customer.getPhoneCus());
-                ps.setString(4, SHA256.toSHA256(SHA256.getSHA256(customer.getPassword())));
+                ps.setString(4, customer.getPassword());
                 ps.setString(5, String.format("%s", customer.getGender()));
-                ps.setString(6, customer.getUsrName());
+                ps.setString(6, customer.getUsrName().trim());
 
                 ps.executeUpdate();
             }
             else {
-                JOptionPane.showMessageDialog(null, "Lỗi tham số : Vui lòng kiểm tra lại.");
+                JOptionPane.showMessageDialog(
+                        null, "Lỗi tham số. Vui lòng kiểm tra lại.");
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra. Vui lòng kiểm tra lại.");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(
+                    null, "Có lỗi xảy ra. Vui lòng kiểm tra lại.");
             ex.printStackTrace();
         }
     }

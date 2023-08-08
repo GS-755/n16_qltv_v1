@@ -30,13 +30,12 @@ public class AdminAdapter {
             while(rs.next()) {
                 if(rs.getString(1).equals(usrName)
                         && rs.getString(2).equals(authTmp)) {
-                    Session.put("admin", SHA256.
-                            toSHA256(SHA256.getSHA256(usrName)));
+                    Session.put("admin", usrName);
 
                     return true;
                 }
             }
-        } catch(SQLException | NoSuchAlgorithmException ex) {
+        } catch(SQLException ex) {
             throw new RuntimeException(ex);
         }
 

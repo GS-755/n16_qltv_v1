@@ -20,8 +20,7 @@ public class EditFrame extends JFrame {
     private JButton bnt_Edit;
     private JPanel JPanel_EditBook;
 
-    public EditFrame() {
-
+    public EditFrame(String bookId) {
     // setup
     setContentPane(JPanel_EditBook);
     setTitle("Thêm sách");
@@ -31,7 +30,6 @@ public class EditFrame extends JFrame {
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setCbComponents();
     // setup
-
 
     bnt_Edit.addActionListener(new ActionListener() {
         @Override
@@ -69,10 +67,9 @@ public class EditFrame extends JFrame {
                     if(Validation.getErrCount() > 0) {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     } else {
-                        BookAdapter.addBook(book);
-                        JOptionPane.showMessageDialog(null, "Thêm sách thành công!");
+                        BookAdapter.editBook(book);
+                        JOptionPane.showMessageDialog(null, "Chỉnh sửa sách thành công!");
                     }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

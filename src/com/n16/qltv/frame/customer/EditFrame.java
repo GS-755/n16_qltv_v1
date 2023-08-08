@@ -36,26 +36,28 @@ public class EditFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         setComponents(usrName);
+        setGenderComponents();
+
         updateButton.addActionListener(e->{
             Validation.clearValidation();
-            char gender='m';
+            char gender = 'm';
             if(!(maleRadio.isSelected()))
-                gender='f';
-            if(CustomerAdapter.checkExistCustomer(usrName.trim())){
+                gender = 'f';
+            if(CustomerAdapter.checkExistCustomer(usrName.trim())) {
                 Customer cus = new Customer();
-                if(txtPassword.getText().isBlank()&&txtRePassword.getText().isEmpty()){
+                if(txtPassword.getText().isBlank()
+                        || txtRePassword.getText().isEmpty()){
                     cus.setNameCus(txtCusName.getText());
                     cus.setGender(gender);
-                    cus.setNameCus(txtAddress.getText());
+                    cus.setAddressCus(txtAddress.getText());
                     cus.setPhoneCus(txtPhone.getText());
                     cus.setUsrName(usrName.trim());
-                    cus.setPassword(CustomerAdapter.getPassword(usrName.trim()));
+                    cus.setPassword(CustomerAdapter.
+                            getPassword(usrName.trim()));
                     Validation.customerValidation(cus);
-                    if(Validation.getErrCount()>0){
-                        JOptionPane.showMessageDialog(null,Validation.getStrValidation());
-
+                    if(Validation.getErrCount() > 0){
+                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else{
                         CustomerAdapter.editCustomer(cus);
@@ -64,24 +66,26 @@ public class EditFrame extends JFrame{
                 }
                 else {
                     try{
-                        if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
+                        if(!(txtPassword.getText()
+                                .equals(txtRePassword.getText()))) {
                             Validation.createValidation("Mật khẩu KHÔNG trùng khớp");
                         }
                         else{
                             cus.setNameCus(txtCusName.getText()) ;
                             cus.setGender(gender);
-                            cus.setPhoneCus((txtPhone.getText()));
+                            cus.setPhoneCus(txtPhone.getText());
                             cus.setAddressCus(txtAddress.getText());
                             cus.setUsrName(txtUsrname.getText());
                             cus.setPassword(txtPassword.getText());
-                            if(Validation.isStrongPassword((cus.getPassword()))){
-                                String authTmp = SHA256.toSHA256(SHA256.getSHA256(cus.getPassword()));
+                            if(Validation.isStrongPassword(cus.getPassword())) {
+                                String authTmp = SHA256.toSHA256(SHA256.
+                                        getSHA256(cus.getPassword()));
                                 cus.setPassword(authTmp);
+                            } else{
+                                Validation.createValidation("Mật khẩu không mạnh"
+                                        +"\n(Phải có ký tự hoa, thường, đặc biệt và số");
                             }
-                            else{
-                                Validation.createValidation("Mật khẩu khôgn mạnh"+"\n(Phải có ký tự hoa, thường, đặc biệt và số");
 
-                            }
                             Validation.customerValidation(cus);
                             if(Validation.getErrCount() > 0) {
                                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
@@ -92,7 +96,7 @@ public class EditFrame extends JFrame{
                                         null, "Cập nhật thông tin thành công.");
                             }
                         }
-                    }catch(NoSuchAlgorithmException ex ){
+                    } catch(NoSuchAlgorithmException ex ){
                         throw new RuntimeException(ex);
                     }
                 }
@@ -103,18 +107,21 @@ public class EditFrame extends JFrame{
         });
     }
     public void setComponents(String usrName) {
+        char gender = CustomerAdapter.getCustoGender(usrName);
         txtCusName.setText(CustomerAdapter.getCustoName(usrName));
         txtAddress.setText(CustomerAdapter.getCustoAddress(usrName));
         txtPhone.setText(CustomerAdapter.getCustoPhone(usrName));
         txtUsrname.setText(usrName);
         txtUsrname.setEditable(false);
-
+        if(gender == 'm')
+            maleRadio.setSelected(true);
+        else
+            femaleRadio.setSelected(true);
     }
     public void setGenderComponents() {
         genderRadioGroup = new ButtonGroup();
         genderRadioGroup.add(maleRadio);
         genderRadioGroup.add(femaleRadio);
-
         maleRadio.addActionListener(e -> {
             genderRadioGroup.clearSelection();
             maleRadio.setSelected(true);

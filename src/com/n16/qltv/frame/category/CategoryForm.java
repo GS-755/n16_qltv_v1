@@ -35,7 +35,7 @@ public class CategoryForm extends JFrame{
         CategoryAdapter.updateTable(CATEGORYSTable);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // setting JFrame
 
         // lấy danh sách cate

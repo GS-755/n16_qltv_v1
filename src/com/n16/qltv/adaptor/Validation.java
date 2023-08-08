@@ -82,7 +82,25 @@ public class Validation {
         }
     }
     public static void customerValidation(Customer customer) {
-
+        if(customer.getNameCus().isEmpty()
+                || customer.getNameCus().isBlank()) {
+            createValidation("Tên khách hàng KHÔNG để trống");
+        }
+        else if(!isString(customer.getNameCus())) {
+            createValidation("Tên khách hàng KHÔNG hợp lệ");
+        }
+        if(customer.getUsrName().isEmpty()
+                || customer.getUsrName().isBlank()) {
+            createValidation("Tài khoản KHÔNG để trống");
+        }
+        else if(customer.getUsrName().length() < 4
+                || customer.getUsrName().length() > 20) {
+            createValidation("Tài khoản PHẢI từ 4 -> 20 ký tự");
+        }
+        if(customer.getPassword().isEmpty()
+                || customer.getPassword().isBlank()) {
+            createValidation("Mật khẩu KHÔNG để trống");
+        }
     }
     // Chỗ này của em :)))
     public static void publisherValidation(Publisher puli) {

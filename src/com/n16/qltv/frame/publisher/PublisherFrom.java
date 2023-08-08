@@ -38,7 +38,7 @@ public class PublisherFrom extends JFrame {
         PublisherAdapter.updateTable(Puli_Table);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //ẩn trợ giúp tìm kiếm
         support_sreach.setVisible(false);

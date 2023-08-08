@@ -1,16 +1,13 @@
-package com.n16.qltv.frame.BorrrowBook;
+package com.n16.qltv.frame.borrowbook;
 
 import com.n16.qltv.adaptor.BorrowBookAdapter;
-import com.n16.qltv.adaptor.PublisherAdapter;
 import com.n16.qltv.adaptor.Validation;
-import com.n16.qltv.model.Publisher;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class BorrowBook extends JFrame{
     private JPanel BorrowBook_JPanel;
@@ -31,7 +28,7 @@ public class BorrowBook extends JFrame{
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         try {
             BorrowBookAdapter.DataToTable(BBook_Table);

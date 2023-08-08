@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.adaptor.StaffAdapter;
-import com.n16.qltv.frame.BorrrowBook.BorrowBook;
+import com.n16.qltv.frame.borrowbook.BorrowBook;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.Session;
 
@@ -37,13 +37,24 @@ public class IndexFrame extends JFrame {
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
-        setVisible(true);
         setResizable(false);
-        setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(50, 50, 1024, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
         // info Staff //
-        tf_NameStaff.setText(Session.get("staff").toString());
+        if(Session.get("admin") != null) {
+            setVisible(true);
+            tf_NameStaff.setText(Session.get("admin").toString());
+        }
+        else if(Session.get("staff") != null) {
+            setVisible(true);
+            tf_NameStaff.setText(Session.get("staff").toString());
+        }
+        else {
+            dispose();
+            com.n16.qltv.frame.admin.LoginFrame loginFrame = new com.n16.qltv.frame.admin.LoginFrame();
+        }
+
         model = new DefaultTableModel();
         addTableStyle(model);
         addTableData(model, staffArrayList);
