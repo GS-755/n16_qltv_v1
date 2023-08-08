@@ -48,19 +48,11 @@ public class PublisherFrom extends JFrame {
 
         // lấy danh sách Puli
         PulisherArrayList = PublisherAdapter.getPuliList();
-
-
             bnt_CreatePuli.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Validation.clearValidation();
-                    if(Puli_Table.getSelectedRow() < 0) {
-                        Validation.createValidation("hãy chọn 1 một Nhà Xuất Bản");
-                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
-                    }
-                    else
-                    {
+
                         Publisher publisher = new Publisher();
                         publisher.setPublisherName(tf_NamePulisher.getText().toString().trim());
                         publisher.setPublisherEmail(tf_NamePulisher.getText().toString().trim());
@@ -81,7 +73,7 @@ public class PublisherFrom extends JFrame {
                                 PublisherAdapter.DataToTable(Puli_Table);
                             }
                         }
-                    }
+
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }

@@ -246,12 +246,15 @@ public class PublisherAdapter {
                 support_sreach.setText("Có Phải bạn đang tìm: " + name +" - tại: "+ address);
                 String text_Light = support_sreach.getText().toString().trim();
                 System.out.println(support_sreach.getText().toString().trim());
-                for (int i = 0; i < text_Light.length() ; i++) {
+                String[] arrayText =  text_Light.split("");
+                for (int i = 0; i < text_Light.length() ; i++)
+                {
                        /* if(keyword == support_sreach.getText().trim())
                         {*/
                             //text_Light.setSelectionForeground(Color.WHITE);
                             Color color=new Color(255,0,0);
                             support_sreach.setForeground(color);
+
                       /* }*/
                 }
                 GetIDPulis_UpLoadDataTable(pulis.getPublisherName(),pulis.getPublisherAddress());
@@ -304,6 +307,6 @@ public class PublisherAdapter {
         Puli_Table.setModel(model);
         support_sreach.setVisible(false);
         bnt_suport.setVisible(false);
-        //ps.close();
+        ps.close();
     }
 }

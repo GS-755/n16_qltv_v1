@@ -69,8 +69,9 @@ public class Validation {
         {
             createValidation("email không được để trống");
         }
-        else if(!isValidEmail(puli.getPublisherEmail()))
+        else if(isValidEmail(puli.getPublisherEmail().trim()))
         {
+            System.out.println(puli.getPublisherEmail().trim());
             createValidation("email không hợp lệ");
         }
         if(puli.getPublisherRepresen().isEmpty())
