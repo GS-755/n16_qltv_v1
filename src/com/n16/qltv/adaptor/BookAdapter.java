@@ -1,17 +1,18 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.model.Book;
-import com.n16.qltv.model.Staff;
+import com.n16.qltv.model.*;
 import com.n16.qltv.vendor.MySQL;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BookAdapter {
-
+    public static DefaultTableModel model;// khai báo data table
     private static ArrayList<Book> bookArrayList;
 
     public static boolean checkExistBook(String TenSach) {
@@ -105,7 +106,7 @@ public class BookAdapter {
             ex.printStackTrace();
         }
     }
-    public static ArrayList<Staff> getBookList() {
+    public static ArrayList<Book> getBookList() {
         try {
             bookArrayList = new ArrayList<>();
             String query = "SELECT * FROM sach";
@@ -113,16 +114,38 @@ public class BookAdapter {
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
-//            while (rs.next()) {
-//                bookArrayList.add(new Book(rs.getString()))
-//            }
+            while(rs.next()) {
+                ArrayList<Author> authors = AuthorAdapter.
+                        findAuthorName(1, rs.getString(6));
+                ArrayList<Category> categories = CategoryAdapter.
+                        findCateName(rs.getString(7));
+                ArrayList<Publisher> publishers = PublisherAdapter.
+                        findPublisher(rs.getString(5));
+
+                Book book = new Book();
+                book.setBookName(rs.getString(2));
+                book.setCategory(categories.get(0));
+                book.setAuthor(authors.get(0));
+                book.setPublisher(publishers.get(0));
+                book.getCategory().setCateId(CategoryAdapter.
+                        getCateId(book.getCategory().getNameCate()));
+                book.getAuthor().setAuthorId(AuthorAdapter.
+                        getAuthorId(book.getAuthor().getAuthorName()));
+                book.getPublisher().setPublisherId(PublisherAdapter.
+                        findPublisherId(book.getPublisher().getPublisherName(),
+                                book.getPublisher().getPublisherAddress()));
+
+                bookArrayList.add(book);
+            }
+            rs.close();
             ps.close();
+            return bookArrayList;
+
         } catch (Exception ex) {
             ex.printStackTrace();
 
             return null;
         }
-        return null;
     }
 
     public static String getBookYear(String TenSach) {
@@ -163,6 +186,69 @@ public class BookAdapter {
         }
 
         return foundBooks;
+    }
+
+
+    // hàm của gà: nhi ơi nè dùng đi :))
+    public static void DataToTable(JTable Book_Table){
+        try{
+            model = new DefaultTableModel();
+            model.addColumn("MaSach");
+            model.addColumn("TenSach");
+            model.addColumn("NamXuatBan");
+            model.addColumn("BiaSach");
+            model.addColumn("MaNXB");
+            model.addColumn("MaTacGia");
+            model.addColumn("MaTheLoai");
+            String query = "SELECT * FROM sach ";// ? là dữ liệu nhập vào !
+            Connection conn = MySQL.getConnection();
+            // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("MaSach");
+                String name = rs.getString("TenSach");
+                String year = rs.getString("NamXuatBan");
+                String cover = rs.getString("BiaSach");
+                String  id_NXB = rs.getString("MaNXB");
+                String  id_Author = rs.getString("MaTacGia");
+                String  id_Cate = rs.getString("MaTheLoai");
+                model.addRow(new Object[]{id, name,year,cover,id_NXB,id_Author,id_Cate});
+            }
+            rs.close();
+            preparedStatement.close();
+            conn.close();
+            Book_Table.setModel(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void updateTable(JTable Book_Table) {
+        DefaultTableModel model = (DefaultTableModel) Book_Table.getModel();
+        model.setRowCount(0); // xóa dữ liệu trong bảng
+        try {
+            String query = "SELECT * FROM sach";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("MaSach");
+                String name = rs.getString("TenSach");
+                String year = rs.getString("NamXuatBan");
+                String cover = rs.getString("BiaSach");
+                String  id_NXB = rs.getString("MaNXB");
+                String  id_Author = rs.getString("MaTacGia");
+                String  id_Cate = rs.getString("MaTheLoai");
+                model.addRow(new Object[]{id, name,year,cover,id_NXB,id_Author,id_Cate});
+            }
+            rs.close();
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
