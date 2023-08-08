@@ -1,4 +1,5 @@
 package com.n16.qltv.adaptor;
+import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.MySQL;
 import javax.swing.*;
@@ -10,11 +11,22 @@ import java.util.ArrayList;
 public class PublisherAdapter {
     public static Publisher publisher;
     private static Component PublisherFrom;
-    private static ArrayList<Publisher> puliArrayList;
+    private static ArrayList<Publisher> puliArrayList = new ArrayList<>();
 
     public static DefaultTableModel model;// khai báo data table
     private static String name;
     private static String address;
+
+    public static ArrayList<Publisher> findPublisher(int id) {
+        puliArrayList = getPuliList();
+        ArrayList<Publisher> foundPublisher = new ArrayList<>();
+        for (Publisher publisher : puliArrayList)
+            if (publisher.getPublisherId() == id) {
+                foundPublisher.add(publisher);
+            }
+
+        return foundPublisher;
+    }
     // lấy danh sách pulis
     public static ArrayList<Publisher> getPuliList() {
         try {
@@ -236,6 +248,17 @@ public class PublisherAdapter {
 
         return foundPublisher;
     }
+    public static ArrayList<Publisher> findPublisher(String name,String address) {
+        puliArrayList = getPuliList();
+        ArrayList<Publisher> foundPublisher = new ArrayList<>();
+        for(Publisher publisher : puliArrayList)
+            if(publisher.getPublisherName().equals(name)
+                    && !publisher.getPublisherAddress().equals(address)) {
+                foundPublisher.add(publisher);
+            }
+
+        return foundPublisher;
+    }
     public static ArrayList<Publisher> findPuliName(String keyword,JTable Puli_Table,JLabel support_sreach)
             throws SQLException {
 
@@ -335,6 +358,7 @@ public class PublisherAdapter {
 
             return foundPublisher.get(0).getPublisherId();
         }
+
 
         return -1;
     }

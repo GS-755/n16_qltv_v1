@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class AuthorAdapter {
-    private static ArrayList<Author> authorArrayList;
+    private static ArrayList<Author> authorArrayList = new ArrayList<>();
 
     public static boolean checkExist(String authorName) {
         try {
@@ -210,6 +210,15 @@ public class AuthorAdapter {
         }
 
         return -1;
+    }
+    public static ArrayList<Author> findAuthor(int id) {
+        authorArrayList = getAuthorList();
+        ArrayList<Author> foundAuthor = new ArrayList<>();
+        for(Author author : authorArrayList)
+            if(author.getAuthorId() == id)
+                foundAuthor.add(author);
+
+        return foundAuthor;
     }
     public static String[] getStrAuthorName() {
         authorArrayList = getAuthorList();

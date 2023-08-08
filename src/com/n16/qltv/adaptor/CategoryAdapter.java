@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class CategoryAdapter {
     public static Category category;
     private static Component CategoryForm;
-    private static ArrayList<Category> cateArrayList;
+    private static ArrayList<Category> cateArrayList = new ArrayList<>();
     public static DefaultTableModel model;
 
     // thêm category
@@ -219,10 +219,20 @@ public class CategoryAdapter {
             ex.printStackTrace();
         }
     }
+    public static ArrayList<Category> findCate(int id) {
+        cateArrayList = getCateList();
+        ArrayList<Category> foundCate = new ArrayList<>();
+        for(Category category : cateArrayList)
+            if(category.getCateId() == id)
+                foundCate.add(category);
+
+        return foundCate;
+    }
     // tìm kiếm theo tên
     public static ArrayList<Category> findCateName(String keyword) throws SQLException {
         model = new DefaultTableModel();
         ArrayList<Category> foundCate = new ArrayList<>();
+        cateArrayList = getCateList();
         for (Category cate : cateArrayList) {
                 if(cate.getNameCate().contains(keyword))
                 {

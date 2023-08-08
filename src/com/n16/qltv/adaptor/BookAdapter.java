@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class BookAdapter {
     public static DefaultTableModel model;// khai báo data table
-    private static ArrayList<Book> bookArrayList;
+    private static ArrayList<Book> bookArrayList = new ArrayList<>();
 
     public static boolean checkExistBook(String TenSach) {
         boolean check = false;
@@ -116,29 +116,50 @@ public class BookAdapter {
 
             while(rs.next()) {
                 ArrayList<Author> authors = AuthorAdapter.
-                        findAuthorName(1, rs.getString(6));
+                        findAuthor(rs.getInt(6));
                 ArrayList<Category> categories = CategoryAdapter.
-                        findCateName(rs.getString(7));
+                        findCate(rs.getInt(7));
                 ArrayList<Publisher> publishers = PublisherAdapter.
-                        findPublisher(rs.getString(5));
+                        findPublisher(rs.getInt(5));
+
+                //
 
                 Book book = new Book();
                 book.setBookName(rs.getString(2));
+                System.out.println(rs.getString(2));
                 book.setCategory(categories.get(0));
+
+                //
+                System.out.println(categories.get(0));
+                //
                 book.setAuthor(authors.get(0));
+                System.out.println(authors.get(0));
+
                 book.setPublisher(publishers.get(0));
+                System.out.println(publishers.get(0));
+
                 book.getCategory().setCateId(CategoryAdapter.
                         getCateId(book.getCategory().getNameCate()));
+                System.out.println(CategoryAdapter.
+                        getCateId(book.getCategory().getNameCate()));
+
                 book.getAuthor().setAuthorId(AuthorAdapter.
                         getAuthorId(book.getAuthor().getAuthorName()));
+                System.out.println(AuthorAdapter.
+                        getAuthorId(book.getAuthor().getAuthorName()));
+
                 book.getPublisher().setPublisherId(PublisherAdapter.
                         findPublisherId(book.getPublisher().getPublisherName(),
                                 book.getPublisher().getPublisherAddress()));
+                System.out.println(PublisherAdapter.
+                        findPublisherId(book.getPublisher().getPublisherName(),
+                                book.getPublisher().getPublisherAddress()));
 
+                System.out.println(book);
                 bookArrayList.add(book);
+
             }
-            rs.close();
-            ps.close();
+
             return bookArrayList;
 
         } catch (Exception ex) {

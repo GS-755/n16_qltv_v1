@@ -1,10 +1,7 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.adaptor.BookAdapter;
-import com.n16.qltv.adaptor.CategoryAdapter;
-import com.n16.qltv.adaptor.PublisherAdapter;
+import com.n16.qltv.adaptor.*;
 import com.n16.qltv.model.Book;
-import com.n16.qltv.model.Publisher;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -13,18 +10,17 @@ import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
     private JTable Book_Table;
-    private JButton bnt_DeleteBook;
+    private JButton bnt_Update;
     private JButton bnt_Edit;
     private JButton bnt_Delete;
     private JButton bnt_Add;
     private JTextField tf_NameBook;
     private JTextField tf_NAMXB;
-    private JTextField tf_BiaSach;
-    private JTextField tf_idNXB;
-    private JTextField tf_idAuthor;
-    private JTextField tf_idCate;
     private JLabel Jlable_NameStaff;
     private JPanel JPanel_Book;
+    private JComboBox comboBox_NXB;
+    private JComboBox comboBox_Author;
+    private JComboBox comboBox_Cate;
     private ArrayList<Book> BookArrayList;
 
 
@@ -55,13 +51,26 @@ public IndexFrame() {
     bnt_Add.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            CreateFrame book = new CreateFrame();
         }
     });
     bnt_Delete.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            Validation.clearValidation();
+            if(Book_Table.getSelectedRow() >= 0)
+            {
+                String idpuli = BookAdapter.model.getValueAt(
+                        Book_Table.getSelectedRow(), 1).toString();
+                BookAdapter.deleteBook(idpuli);
+                BookAdapter.updateTable(Book_Table);
 
+            }
+            else
+            {
+                Validation.createValidation("hãy chọn 1 một Nhà Xuất Bản");
+                JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+            }
         }
     });
     bnt_Edit.addActionListener(new ActionListener() {
@@ -70,11 +79,21 @@ public IndexFrame() {
 
         }
     });
-    bnt_DeleteBook.addActionListener(new ActionListener() {
+    bnt_Update.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            BookAdapter.updateTable(Book_Table);
         }
     });
 }
+    public void setCbComponents() {
+        for(String s : CategoryAdapter.getCateName()) {
+            comboBox_Cate.addItem(s);
+        }
+        for(String s : AuthorAdapter.getStrAuthorName()) {
+            comboBox_Author.addItem(s);
+        }
+        for(String s : PublisherAdapter.getStrPublisher())
+            comboBox_NXB.addItem(s);
+    }
 }

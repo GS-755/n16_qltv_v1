@@ -12,7 +12,7 @@ import com.n16.qltv.vendor.Session;
 import javax.swing.*;
 
 public class StaffAdapter {
-    private static ArrayList<Staff> staffArrayList;
+    private static ArrayList<Staff> staffArrayList = new ArrayList<>();
 
     public static boolean checkExistStaff(String usrName) {
         boolean check = false;
