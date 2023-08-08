@@ -28,6 +28,11 @@ public class Staff {
     public String getUsrName() { return this.usrName; }
     public String getPassword() { return this.password; }
     public char getGender() { return this.gender; }
+    public String getStrGender() {
+        if(this.gender == 'f')
+            return "Nữ";
+        return "Nam";
+    }
     public void setGender(char gender) { this.gender = gender; }
     public void setStaffName(String staffName) { this.staffName = staffName; }
     public void setStaffPhone(String staffPhone) { this.staffPhone = staffPhone; }

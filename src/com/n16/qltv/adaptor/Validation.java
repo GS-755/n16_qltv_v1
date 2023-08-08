@@ -14,13 +14,42 @@ public class Validation {
     public static void setErr(ArrayList<String> newErr) { err = newErr; }
 
     public static void createValidation(String newErr) { err.add(newErr); }
+    public static void authorValidation(Author author) {
+        if(author.getAuthorName().isEmpty()
+                || author.getAuthorName().isBlank()) {
+            createValidation("Tên tác giả KHÔNG được để trống");
+        }
+        else if(!isString(author.getAuthorName())) {
+            createValidation("Tên tác giả KHÔNG hợp lệ");
+        }
+        else if(author.getAuthorName().length() < 4
+                || author.getAuthorName().length() > 20) {
+            createValidation("Tên tác giả phải từ 4 -> 20 ký tự");
+        }
+        if(author.getAuthorAddress().isEmpty()
+                || author.getAuthorAddress().isBlank()) {
+            createValidation("Website KHÔNG được để trống");
+        }
+        else if(!isValidWebsite(author.getAuthorAddress())) {
+            createValidation("Website KHÔNG hợp lệ");
+        }
+    }
+    public static void loginValidation(String usrName, String password) {
+        if(usrName.isEmpty()
+                || usrName.isBlank()) {
+            createValidation("Tên đăng nhập KHÔNG để trống");
+        }
+        if(password.isEmpty()
+                || password.isBlank())
+            createValidation("Mật khẩu KHÔNG để trống");
+    }
     public static void staffValidation(Staff staff) {
         // Kiểm tra tên Nhân viên
         if(staff.getStaffName().isEmpty()
                 || staff.getStaffName().isBlank()) {
             createValidation("Tên nhân viên KHÔNG để trống");
         }
-        else if(isString(staff.getStaffName())) {
+        else if(!isString(staff.getStaffName())) {
             createValidation("Tên nhân viên KHÔNG hợp lệ.");
         }
         // Kiểm tra tài khoản Nhân viên

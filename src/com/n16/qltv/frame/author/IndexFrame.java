@@ -1,119 +1,107 @@
-package com.n16.qltv.frame.staff;
+package com.n16.qltv.frame.author;
 
-import com.n16.qltv.adaptor.StaffAdapter;
-import com.n16.qltv.model.Staff;
+import com.n16.qltv.adaptor.AuthorAdapter;
+import com.n16.qltv.model.Author;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-public class IndexFrame extends JFrame {
-    private JTable tableStaff;
+public class IndexFrame extends JFrame{
+    private JTable tableAuthor;
     private JButton btnUpdate;
     private JButton btnAdd, btnEdit, btnDelete, btnExit;
     private JLabel indexTitle, sortTitle, searchLabel;
-    public JPanel indexFrame;
+    private JPanel indexFrame;
     private JButton btnAscUsrName, btnDescUsrName;
-    private JTextField txtSearch;
+    private JTextField tfSearch;
     private JButton btnSearch;
     private ButtonGroup radioSearchModeGroup;
     private JRadioButton approxModeRadio, absoluteModeRadio;
     private JLabel searchModeLabel;
     private DefaultTableModel model;
-    private ArrayList<Staff> staffArrayList;
-    private final int DELAY_TIME = 1800;
-
+    private ArrayList<Author> authorArrayList;
     public IndexFrame() {
         setSearchModeComponents();
         setContentPane(indexFrame);
-        setTitle("Danh sách nhân viên");
+        setTitle("Danh sách Tác giả");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        staffArrayList = StaffAdapter.getStaffList();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        authorArrayList = AuthorAdapter.getAuthorList();
 
         model = new DefaultTableModel();
         addTableStyle(model);
-        addTableData(model, staffArrayList);
+        addTableData(model, authorArrayList);
 
         btnDelete.addActionListener(e -> {
-            String usrName = model.getValueAt(tableStaff.getSelectedRow(), 5).toString();
-            DeleteFrame df = new DeleteFrame(usrName.trim());
-            try {
-                if(!df.isVisible())
-                    refreshTableData();
-            } catch(Exception ex) {
-                ex.printStackTrace();
-            }
+            AuthorAdapter.deleteAuthor(
+                    model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
+            deleteTableData();
+
+            authorArrayList = AuthorAdapter.getAuthorList();
+            //addTableStyle(model);
+            addTableData(model, authorArrayList);
         });
         btnExit.addActionListener(e -> {
             System.exit(3);
         });
         btnAdd.addActionListener(e -> {
-            CreateFrame cf = new CreateFrame();
+            CreateFrame createFrame = new CreateFrame();
         });
         btnEdit.addActionListener(e -> {
-            if(tableStaff.getSelectedRow() < 0)
+            if(tableAuthor.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
             else {
-                EditFrame ef = new EditFrame(model.getValueAt(
-                        tableStaff.getSelectedRow(), 5).toString());
+                String authorName = model.getValueAt(
+                        tableAuthor.getSelectedRow(), 0).toString().trim();
+                EditFrame ef = new EditFrame(authorName);
             }
         });
-
         btnUpdate.addActionListener(e -> {
-            refreshTableData();
+            deleteTableData();
+            authorArrayList = AuthorAdapter.getAuthorList();
+            //addTableStyle(model);
+            addTableData(model, authorArrayList);
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = StaffAdapter.sortUsrName(1);
+            authorArrayList = AuthorAdapter.sortUsrName(1);
             //addTableStyle(model);
-            addTableData(model, staffArrayList);
+            addTableData(model, authorArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = StaffAdapter.sortUsrName(2);
+            authorArrayList = AuthorAdapter.sortUsrName(2);
             //addTableStyle(model);
-            addTableData(model, staffArrayList);
+            addTableData(model, authorArrayList);
         });
         btnSearch.addActionListener( e -> {
             // Kiểm tra chế độ tìm kiếm
-            int mode = 1; String keyword = txtSearch.getText().trim();
+            int mode = 1; String keyword = tfSearch.getText().trim();
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            staffArrayList = StaffAdapter
-                    .findStaffName(mode, keyword);
-            addTableData(model, staffArrayList);
+            authorArrayList = AuthorAdapter
+                    .findAuthorName(mode, keyword);
+            addTableData(model, authorArrayList);
         });
     }
     public void addTableStyle(DefaultTableModel model) {
-        model.addColumn("Tên Nhân viên");
-        model.addColumn("Giới tính");
-        model.addColumn("Số ĐT");
-        model.addColumn("Địa chỉ");
-        model.addColumn("Ngày sinh");
-        model.addColumn("Tên đăng nhập");
+        model.addColumn("Tên tác giả");
+        model.addColumn("Địa chỉ website");
+        model.addColumn("Ghi chú");
     }
-    public void addTableData(DefaultTableModel model, ArrayList<Staff> staffs) {
-        for(Staff staff : staffs)
+    public void addTableData(DefaultTableModel model, ArrayList<Author> authors) {
+        for(Author author : authors)
             model.addRow(new Object[] {
-                    staff.getStaffName(),
-                    staff.getStrGender(),
-                    staff.getStaffPhone(),
-                    staff.getStaffAddress(),
-                    staff.getStaffDob(),
-                    staff.getUsrName()
+                    author.getAuthorName(),
+                    author.getAuthorAddress(),
+                    author.getAuthorNote()
             });
 
-        tableStaff.setModel(model);
-    }
-    public void refreshTableData() {
-        deleteTableData();
-        staffArrayList = StaffAdapter.getStaffList();
-        //addTableStyle(model);
-        addTableData(model, staffArrayList);
+        tableAuthor.setModel(model);
     }
     public void deleteTableData() {
         model.getDataVector().removeAllElements();
@@ -133,6 +121,4 @@ public class IndexFrame extends JFrame {
             approxModeRadio.setSelected(true);
         });
     }
-
-
 }

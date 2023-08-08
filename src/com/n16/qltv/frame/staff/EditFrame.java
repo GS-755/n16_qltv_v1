@@ -38,21 +38,20 @@ public class EditFrame extends JFrame {
             if (!(radioMale.isSelected()))
                 gender = 'f';
 
-            if(StaffAdapter.checkExistStaff(txtUsrName.getText())) {
+            if(StaffAdapter.checkExistStaff(usrName.trim())) {
                 Staff staff = new Staff();
                 if(txtPassword.getText().isEmpty()
-                        || txtRePassword.getText().isEmpty()) {
+                        && txtRePassword.getText().isEmpty()) {
                     staff.setStaffName(txtName.getText());
                     staff.setGender(gender);
                     staff.setStaffDob("2000-1-1");
                     staff.setStaffAddress(txtAddress.getText());
                     staff.setStaffPhone(txtPhone.getText());
                     staff.setUsrName(usrName.trim());
-                    String authTmp = StaffAdapter.getPassword(usrName.trim());
-                    staff.setPassword(authTmp);
+                    staff.setPassword(StaffAdapter.getPassword(usrName.trim()));
 
                     Validation.staffValidation(staff);
-                    if(Validation.getErrCount() != 0) {
+                    if(Validation.getErrCount() > 0) {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else {
@@ -64,7 +63,8 @@ public class EditFrame extends JFrame {
                     try {
                         if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
                             Validation.createValidation("Mật khẩu KHÔNG trùng khớp");
-                        } else {
+                        }
+                        else {
                             staff.setStaffName(txtName.getText());
                             staff.setGender(gender);
                             staff.setStaffPhone(txtPhone.getText());
@@ -79,11 +79,12 @@ public class EditFrame extends JFrame {
                             }
                             else {
                                 Validation.createValidation(
-                                        "Mật khẩu KHÔNG MẠNH \n (Phải có ký tự hoa, thường, đặc biệt và số)");
+                                        "Mật khẩu KHÔNG MẠNH " +
+                                                "\n (Phải có ký tự hoa, thường, đặc biệt và số)");
                             }
 
                             Validation.staffValidation(staff);
-                            if(Validation.getErrCount() != 0) {
+                            if(Validation.getErrCount() > 0) {
                                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                             }
                             else {

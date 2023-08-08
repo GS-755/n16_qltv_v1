@@ -188,6 +188,7 @@ public class CategoryAdapter {
             return null;
         }
     }
+    public static int getCateCount() { return cateArrayList.size(); }
     // lấy tên cate
     public static String getCateName(String CateName) {
         String cateName = "";
@@ -252,5 +253,21 @@ public class CategoryAdapter {
         }
         ps.close();
     }
+    public static String[] getCateName() {
+        String[] categories = new String[getCateCount()];
+        try {
+            ArrayList<Category> categoryArrayList = getCateList();
+            int count = 0;
+            for(Category cate : categoryArrayList) {
+                categories[count] = cate.getNameCate();
+                count++;
+            }
 
+            return categories;
+        } catch(NullPointerException ex) {
+            ex.printStackTrace();
+
+            return null;
+        }
+    }
 }
