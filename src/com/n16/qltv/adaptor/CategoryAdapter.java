@@ -183,9 +183,14 @@ public class CategoryAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                cateArrayList.add(new Category(rs.getString(2).trim()));
+                int idCate = rs.getInt(1);
+                String nameCate = rs.getString(2);
+                Category category = new Category();
+                category.setCateId(idCate);
+                category.setNameCate(nameCate);
+
+                cateArrayList.add(category);
             }
-            ps.close();
 
             return cateArrayList;
         } catch(Exception ex) {
@@ -203,8 +208,7 @@ public class CategoryAdapter {
 
         return cateName.trim();
     }
-
-
+    public static int getCateCount() { return cateArrayList.size(); }
     public static void deleteCategory(Category category) {
         try {
 
@@ -326,5 +330,21 @@ public class CategoryAdapter {
         }
         ps.close();
     }
+    public static String[] getCateName() {
+        String[] categories = new String[getCateCount()];
+        try {
+            ArrayList<Category> categoryArrayList = getCateList();
+            int count = 0;
+            for(Category cate : categoryArrayList) {
+                categories[count] = cate.getNameCate();
+                count++;
+            }
 
+            return categories;
+        } catch(NullPointerException ex) {
+            ex.printStackTrace();
+
+            return null;
+        }
+    }
 }
