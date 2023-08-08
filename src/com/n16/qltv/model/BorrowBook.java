@@ -3,7 +3,7 @@ package com.n16.qltv.model;
 import java.util.ArrayList;
 
 public class BorrowBook {
-    private int borrowId;
+    private String borrowId;
     private Staff staff;
     private LibraryCard libraryCard;
     protected ArrayList<Book> books;
@@ -15,7 +15,7 @@ public class BorrowBook {
         this.books = books;
     }
 
-    public int getBorrowId() { return this.borrowId; }
+    public String getBorrowId() { return this.borrowId; }
     public Staff getStaff() { return this.staff; }
     public LibraryCard getLibraryCard() { return this.libraryCard; }
     public ArrayList<Book> getBooks() { return this.books; }
