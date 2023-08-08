@@ -110,6 +110,7 @@ public class CategoryForm extends JFrame{
                 model.setRowCount(0);
                 try {
                     cateArrayList = CategoryAdapter.findCateName(keyword);
+
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -117,6 +118,7 @@ public class CategoryForm extends JFrame{
             }
         });
         setVisible(true);
+
     }
     public void deleteTableData() {
         model.getDataVector().removeAllElements();

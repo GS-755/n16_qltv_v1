@@ -1,5 +1,6 @@
 package com.n16.qltv.adaptor;
 
+import com.n16.qltv.model.Publisher;
 import com.n16.qltv.model.Staff;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Validation {
 
     public static void createValidation(String newErr) { err.add(newErr); }
     public static void staffValidation(Staff staff) {
+        // Kiểm tra tên Nhân viên
         if(staff.getStaffName().isEmpty()
                 || staff.getStaffName().isBlank()) {
             createValidation("Tên nhân viên KHÔNG để trống");
@@ -21,6 +23,7 @@ public class Validation {
         else if(isString(staff.getStaffName())) {
             createValidation("Tên nhân viên KHÔNG hợp lệ.");
         }
+        // Kiểm tra tài khoản Nhân viên
         if(staff.getUsrName().isEmpty()
                 || staff.getUsrName().isBlank()) {
             createValidation("Tên người dùng KHÔNG được để trống");
@@ -29,6 +32,7 @@ public class Validation {
                 || staff.getUsrName().length() > 20) {
             createValidation("Tên người dùng phải từ 4 -> 20 ký tự");
         }
+        // Kiểm tra mật khẩu Nhân viên
         if(staff.getPassword().isEmpty()
                 || staff.getPassword().isBlank()) {
             createValidation("Mật khẩu KHÔNG được để trống");
@@ -36,9 +40,54 @@ public class Validation {
         else if(staff.getPassword().length() < 8) {
             createValidation("Mật khẩu phải từ 8 ký tự trở lên");
         }
+        // Kiểm tra số điện thoại Nhân viên
         if(!isDigit(staff.getStaffPhone())) {
             createValidation("Số điện thoại KHÔNG hợp lệ");
         }
+    }
+    // Chỗ này của em :)))
+    public static void publisherValidation(Publisher puli) {
+/*        if(PublisherAdapter.checkExistCategory(puli.getPublisherName(),puli.getPublisherAddress()))
+        {
+            createValidation("NXB này đã tồn tại");
+        }*/
+        if(puli.getPublisherName().isEmpty())
+        {
+            createValidation("Hãy Điền Tên NXB");
+        }
+        else if(isString(puli.getPublisherName()))
+        {
+            createValidation("Tên NXB không được có ký tự đặc biệt");
+        }
+
+        if(puli.getPublisherAddress().isEmpty())
+        {
+            createValidation("địa chỉ NXB không được để trống");
+        }
+
+        if(puli.getPublisherEmail().isEmpty())
+        {
+            createValidation("email không được để trống");
+        }
+        else if(!isValidEmail(puli.getPublisherEmail()))
+        {
+            createValidation("email không hợp lệ");
+        }
+        if(puli.getPublisherRepresen().isEmpty())
+        {
+            createValidation("hãy nhập tên người đại diện");
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
     public static String getStrValidation() {
         int errCount = 0;
@@ -53,13 +102,9 @@ public class Validation {
     public static void clearValidation() { err.clear(); }
     public static int getErrCount() { return err.size(); }
     public static boolean isValidEmail(String email) {
-        String ePatern = "^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+0((\\[0-9]{1,3}\\.]"
-                + "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)"
-                + "+[a-zA-Z]{2,}))$";
-        Pattern p = Pattern.compile(ePatern);
-        Matcher m = p.matcher(email);
-
-        return m.matches();
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(email).matches();
     }
     public static boolean isString (String name) {
         String ePatten = "^[||p{L} '-]+$";
@@ -88,6 +133,7 @@ public class Validation {
 
         return true;
     }
+
     public static boolean isDigit(String mobileNo) {
         return mobileNo.chars()
                 .allMatch(Character::isDigit);

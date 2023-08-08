@@ -9,6 +9,13 @@ import com.n16.qltv.model.Publisher;
 
 public class Main {
     public static void main(String[] args) {
-        IndexFrame indexFrame = new IndexFrame();
+        //IndexFrame indexFrame = new IndexFrame();
+        PublisherFrom p = new PublisherFrom();
+        //CategoryForm cate = new CategoryForm();
+
+
+
+        /*              hú hồn chim én                  */
+        //oi vl :)
     }
 }
