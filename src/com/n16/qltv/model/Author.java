@@ -20,6 +20,7 @@ public class Author {
     public String getAuthorName() { return this.authorName; }
     public String getAuthorAddress() { return this.authorAddress; }
     public String getAuthorNote() { return this.authorNote; }
+    public void setAuthorId(int authorId) { this.authorId = authorId; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }
     public void setAuthorAddress(String authorAddress) { this.authorAddress = authorAddress; }
     public void setAuthorNote(String authorNote) { this.authorNote = authorNote; }

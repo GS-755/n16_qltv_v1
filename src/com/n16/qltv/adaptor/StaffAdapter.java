@@ -246,7 +246,7 @@ public class StaffAdapter {
             case 2: {
                 // Tìm người dùng ở chế độ tương đối
                 for(Staff staff : staffArrayList)
-                    if(staff.getStaffName().startsWith(keyword))
+                    if(staff.getStaffName().contains(keyword))
                         foundStaffs.add(staff);
             }
                 break;

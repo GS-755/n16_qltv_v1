@@ -1,18 +1,12 @@
 package com.n16.qltv.adaptor;
-import com.n16.qltv.frame.Publisher.PublisherFrom;
-import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.MySQL;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
+
 public class PublisherAdapter {
     public static Publisher publisher;
     private static Component PublisherFrom;
@@ -31,11 +25,15 @@ public class PublisherAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                puliArrayList.add(new Publisher(rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),rs.getString(5)));
+                Publisher publisher = new Publisher();
+                publisher.setPublisherId(rs.getInt(1));
+                publisher.setPublisherName(rs.getString(2));
+                publisher.setPublisherEmail(rs.getString(3));
+                publisher.setPublisherAddress(rs.getString(4));
+                publisher.setPublisherRepresen(rs.getString(5));
+
+                puliArrayList.add(publisher);
             }
-            ps.close();
 
             return puliArrayList;
         } catch(Exception ex) {
@@ -228,6 +226,16 @@ public class PublisherAdapter {
             ex.printStackTrace();
         }
     }
+    public static ArrayList<Publisher> findPublisher(String keyword) {
+        puliArrayList = getPuliList();
+        ArrayList<Publisher> foundPublisher = new ArrayList<>();
+        for(Publisher publisher : puliArrayList)
+            if(publisher.getPublisherName().equals(keyword)) {
+                foundPublisher.add(publisher);
+            }
+
+        return foundPublisher;
+    }
     public static ArrayList<Publisher> findPuliName(String keyword,JTable Puli_Table,JLabel support_sreach)
             throws SQLException {
 
@@ -308,5 +316,26 @@ public class PublisherAdapter {
         support_sreach.setVisible(false);
         bnt_suport.setVisible(false);
         ps.close();
+    }
+    public static int getPublisherCount() { return puliArrayList.size(); }
+    public static String[] getStrPublisher() {
+        puliArrayList = getPuliList();
+        String[] publishers = new String[getPublisherCount()];
+        int count = 0;
+        for(Publisher publisher : puliArrayList) {
+            publishers[count] = publisher.getPublisherName();
+            count++;
+        }
+
+        return publishers;
+    }
+    public static int findPublisherId(String publisherName, String publisherAddress) {
+        if(checkExistCategory(publisherName, publisherAddress)) {
+            ArrayList<Publisher> foundPublisher = findPublisher(publisherName);
+
+            return foundPublisher.get(0).getPublisherId();
+        }
+
+        return -1;
     }
 }

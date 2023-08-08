@@ -177,7 +177,11 @@ public class CategoryAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                cateArrayList.add(new Category(rs.getString(2).trim()));
+                Category category = new Category();
+                category.setCateId(rs.getInt(1));
+                category.setNameCate(rs.getString(2));
+
+                cateArrayList.add(category);
             }
             ps.close();
 
@@ -217,6 +221,7 @@ public class CategoryAdapter {
     }
     // tìm kiếm theo tên
     public static ArrayList<Category> findCateName(String keyword) throws SQLException {
+        model = new DefaultTableModel();
         ArrayList<Category> foundCate = new ArrayList<>();
         for (Category cate : cateArrayList) {
                 if(cate.getNameCate().contains(keyword))
@@ -253,10 +258,17 @@ public class CategoryAdapter {
         }
         ps.close();
     }
+    public static int getCateId(String nameCate) throws SQLException {
+        if(checkExistCategory(nameCate)) {
+            ArrayList<Category> foundCategory = findCateName(nameCate);
 
+            return foundCategory.get(0).getCateId();
+        }
 
-
+        return -1;
+    }
     public static String[] getCateName() {
+        cateArrayList = getCateList();
         String[] categories = new String[getCateCount()];
         try {
             ArrayList<Category> categoryArrayList = getCateList();

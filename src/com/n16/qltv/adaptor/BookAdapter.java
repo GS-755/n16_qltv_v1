@@ -43,29 +43,28 @@ public class BookAdapter {
 
     public static void addBook(Book book) {
         try{
-            //Lấy kết nối tới cơ sở dữ liệu
+            // Lấy kết nối tới cơ sở dữ liệu
             Connection conn = MySQL.getConnection();
-
             // Chuỗi truy vấn SQL để chèn dữ liệu vào bảng Sach
-
-            String query = "INSERT INTO Sach("
-                    + " TenSach,"
-                    + " NamXuatBan,"
-                    + " BiaSach) VALUES("
-                    + "?, ?, ?)";
-
-            var st = conn.prepareStatement(query);
+            // String query = "INSERT INTO sach(TenSach, NamXuatBan, BiaSach, MaNXB, MaTacGia, MaTheLoai) " +
+            //        "VALUES(?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO sach(TenSach, NamXuatBan, BiaSach, MaNXB, MaTacGia, MaTheLoai) " +
+                    "VALUES(?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
 
             // Thiết lập giá trị tham số cho các cột trong truy vấn
             st.setString(1, book.getBookName());
             st.setInt(2, book.getBookYear());
-            st.setString(3, book.getCover());
+            st.setString(3, "");
+            st.setInt(4, book.getPublisher().getPublisherId());
+            st.setInt(5, book.getAuthor().getAuthorId());
+            st.setInt(6, book.getCategory().getCateId());
 
             st.executeUpdate();
-            st.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :(((\nVui lòng kiểm tra lại.");
+            JOptionPane.showMessageDialog(null,
+                    "Có lỗi xảy ra :(((\nVui lòng kiểm tra lại.");
         }
     }
     public static void editBook(Book book) {

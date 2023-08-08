@@ -91,6 +91,7 @@ public class EditFrame extends JFrame {
                                 StaffAdapter.editStaff(staff);
                                 JOptionPane.showMessageDialog(
                                         null, "Cập nhật thông tin thành công.");
+                                dispose();
                             }
                         }
                     } catch (NoSuchAlgorithmException ex) {
