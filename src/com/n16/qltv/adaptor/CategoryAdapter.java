@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class CategoryAdapter {
     public static Category category;
     private static Component CategoryForm;
-    private static ArrayList<Category> cateArrayList;
+    private static ArrayList<Category> cateArrayList = new ArrayList<>();
     public static DefaultTableModel model;
 
     // thêm category
@@ -177,7 +177,11 @@ public class CategoryAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                cateArrayList.add(new Category(rs.getString(2).trim()));
+                Category category = new Category();
+                category.setCateId(rs.getInt(1));
+                category.setNameCate(rs.getString(2));
+
+                cateArrayList.add(category);
             }
             ps.close();
 
@@ -215,9 +219,20 @@ public class CategoryAdapter {
             ex.printStackTrace();
         }
     }
+    public static ArrayList<Category> findCate(int id) {
+        cateArrayList = getCateList();
+        ArrayList<Category> foundCate = new ArrayList<>();
+        for(Category category : cateArrayList)
+            if(category.getCateId() == id)
+                foundCate.add(category);
+
+        return foundCate;
+    }
     // tìm kiếm theo tên
     public static ArrayList<Category> findCateName(String keyword) throws SQLException {
+        model = new DefaultTableModel();
         ArrayList<Category> foundCate = new ArrayList<>();
+        cateArrayList = getCateList();
         for (Category cate : cateArrayList) {
                 if(cate.getNameCate().contains(keyword))
                 {
@@ -253,7 +268,17 @@ public class CategoryAdapter {
         }
         ps.close();
     }
+    public static int getCateId(String nameCate) throws SQLException {
+        if(checkExistCategory(nameCate)) {
+            ArrayList<Category> foundCategory = findCateName(nameCate);
+
+            return foundCategory.get(0).getCateId();
+        }
+
+        return -1;
+    }
     public static String[] getCateName() {
+        cateArrayList = getCateList();
         String[] categories = new String[getCateCount()];
         try {
             ArrayList<Category> categoryArrayList = getCateList();

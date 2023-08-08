@@ -1,5 +1,8 @@
 package com.n16.qltv.frame.admin;
 
+import com.n16.qltv.frame.book.CreateFrame;
+import com.n16.qltv.frame.publisher.PublisherFrom;
+import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.Session;
 import javax.swing.*;
 
@@ -35,8 +38,17 @@ public class IndexFrame extends JFrame {
         menu1.addSeparator();
 
         menu1.add("Nhà xuất bản");
+        menu1.getItem(5).addActionListener(e -> {
+            com.n16.qltv.frame.publisher.PublisherFrom publisherFrom = new com.n16.qltv.frame.publisher.PublisherFrom();
+        });
         menu1.add("Tác giả");
+        menu1.getItem(6).addActionListener(e -> {
+            com.n16.qltv.frame.author.IndexFrame indexFrame = new com.n16.qltv.frame.author.IndexFrame();
+        });
         menu1.add("Sách");
+        menu1.getItem(7).addActionListener(e -> {
+            com.n16.qltv.frame.book.IndexFrame indexFrame = new com.n16.qltv.frame.book.IndexFrame();
+        });
         menu1.add("Thể loại");
 
         JMenu menu2 = new JMenu("Tài khoản");

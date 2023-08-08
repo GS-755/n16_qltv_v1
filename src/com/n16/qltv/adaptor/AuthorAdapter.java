@@ -6,10 +6,9 @@ import com.n16.qltv.vendor.MySQL;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class AuthorAdapter {
-    private static ArrayList<Author> authorArrayList;
+    private static ArrayList<Author> authorArrayList = new ArrayList<>();
 
     public static boolean checkExist(String authorName) {
         try {
@@ -98,7 +97,7 @@ public class AuthorAdapter {
             ex.printStackTrace();
         }
     }
-
+    public static int getAuthorCount() { return authorArrayList.size(); }
     public static ArrayList<Author> getAuthorList() {
         try {
             authorArrayList = new ArrayList<>();
@@ -108,9 +107,14 @@ public class AuthorAdapter {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                authorArrayList.add(new Author(rs.getString(2), rs.getString(3), rs.getString(4)));
+                Author author = new Author();
+                author.setAuthorId(rs.getInt(1));
+                author.setAuthorName(rs.getString(2));
+                author.setAuthorAddress(rs.getString(3));
+                author.setAuthorNote(rs.getString(4));
+
+                authorArrayList.add(author);
             }
-            ps.close();
 
             return authorArrayList;
         } catch (Exception ex) {
@@ -135,7 +139,6 @@ public class AuthorAdapter {
 
         return authorNote;
     }
-
     public static String getAuthorAddress(String usrName) {
         String authorAddress = "";
         for (Author author : authorArrayList)
@@ -165,6 +168,7 @@ public class AuthorAdapter {
         return sortedAuthors;
     }
     public static ArrayList<Author> findAuthorName(int mode, String keyword) {
+        authorArrayList = getAuthorList();
         ArrayList<Author> foundAuthors = new ArrayList<>();
         switch(mode) {
             case 1: {
@@ -197,5 +201,34 @@ public class AuthorAdapter {
         }
 
         return web;
+    }
+    public static int getAuthorId(String authorName) {
+        if(checkExist(authorName)) {
+            ArrayList<Author> foundAuthor = findAuthorName(1, authorName);
+
+            return foundAuthor.get(0).getAuthorId();
+        }
+
+        return -1;
+    }
+    public static ArrayList<Author> findAuthor(int id) {
+        authorArrayList = getAuthorList();
+        ArrayList<Author> foundAuthor = new ArrayList<>();
+        for(Author author : authorArrayList)
+            if(author.getAuthorId() == id)
+                foundAuthor.add(author);
+
+        return foundAuthor;
+    }
+    public static String[] getStrAuthorName() {
+        authorArrayList = getAuthorList();
+        String[] authorNames = new String[getAuthorCount()];
+        int count = 0;
+        for(Author author : authorArrayList) {
+            authorNames[count] = author.getAuthorName();
+            count++;
+        }
+
+        return authorNames;
     }
 }

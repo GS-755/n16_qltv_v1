@@ -21,6 +21,7 @@ public class IndexFrame extends JFrame{
     private JLabel searchModeLabel;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
+
     public IndexFrame() {
         setSearchModeComponents();
         setContentPane(indexFrame);
@@ -28,7 +29,7 @@ public class IndexFrame extends JFrame{
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         authorArrayList = AuthorAdapter.getAuthorList();
 
         model = new DefaultTableModel();
@@ -45,7 +46,7 @@ public class IndexFrame extends JFrame{
             addTableData(model, authorArrayList);
         });
         btnExit.addActionListener(e -> {
-            System.exit(3);
+            dispose();
         });
         btnAdd.addActionListener(e -> {
             CreateFrame createFrame = new CreateFrame();
