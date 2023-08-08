@@ -4,8 +4,6 @@ import com.n16.qltv.adaptor.BorrowBookAdapter;
 import com.n16.qltv.adaptor.Validation;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -20,7 +18,7 @@ public class BorrowBook extends JFrame{
     private ArrayList<BorrowBook> BorrowBookArrayList;
 
     public BorrowBook() {
-// todo: setting JFrame
+        // todo: setting JFrame
         setContentPane(BorrowBook_JPanel);
         setTitle("Pulisher page");
         //PublisherAdapter.DataToTable(BB_table);
@@ -35,59 +33,27 @@ public class BorrowBook extends JFrame{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        BorrowBookAdapter.updateTable(BBook_Table);
 
-        //ẩn trợ giúp tìm kiếm
-        // support_sreach.setVisible(false);
-        // bnt_suport.setVisible(false);
-
-        // lấy danh sách Puli
-        //BorrowBookArrayList = PublisherAdapter.getPuliList();
-
-// todo: setting JFrame
-
-        bnt_Accept.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-                Validation.clearValidation();
+        // TODO: setting JFrame
+        bnt_Accept.addActionListener(e -> {
+            Validation.clearValidation();
+            try {
                 if(BBook_Table.getSelectedRow() < 0) {
-                    Validation.createValidation("hãy chọn 1 một Nhà Xuất Bản");
+                    Validation.createValidation("Hãy chọn 1 đơn mượn trả");
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
-                else
-                    /* if(Puli_Table.getSelectedRow() <= 0)*/
-                {
-                    String id = BorrowBookAdapter.model.getValueAt(BBook_Table.getSelectedRow(), 0).toString();
-                    String NgayMuon = BorrowBookAdapter.model.getValueAt(BBook_Table.getSelectedRow(), 1).toString();
-                    String SoThe = BorrowBookAdapter.model.getValueAt(BBook_Table.getSelectedRow(), 2).toString();
-                    int MaNV = Integer.parseInt(BorrowBookAdapter.model.getValueAt(BBook_Table.getSelectedRow(), 3).toString());
-                    com.n16.qltv.model.BorrowBook borrowBook = new com.n16.qltv.model.BorrowBook();
-                    borrowBook.setBorrowId(id);
-                    borrowBook.setBorrowDate(java.sql.Date.valueOf(NgayMuon));
-
-                  //  publisher.setPublisherEmail(tf_EmailPulisher.getText().toString().trim());
-                   // publisher.setPublisherAddress(tf_PulisherAddress.getText().toString().trim());
-                    //publisher.setPublisherRepresen(tf_PulisherRepresen.getText().toString().trim());
-                    //
-                    Validation.clearValidation();
-                    //Validation.publisherValidation(publisher);
-                    if(Validation.getErrCount() != 0) {
-                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                else {
+                    if(Validation.getErrCount() > 0) {
+                        JOptionPane.showMessageDialog(
+                                null, Validation.getStrValidation());
                     }
                     else {
-                        //
-                      //  PublisherAdapter.editPublisher(publisher,id);
-                        //
-                     //   PublisherAdapter.updateTable(Puli_Table);
+                        JOptionPane.showMessageDialog(null, "Duyệt thành công");
+                        BorrowBookAdapter.updateTable(BBook_Table);
                     }
-
-
                 }
-
-
-
+            } catch(Exception ex) {
+                ex.printStackTrace();
             }
         });
 
