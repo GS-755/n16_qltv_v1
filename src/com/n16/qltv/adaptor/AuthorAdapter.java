@@ -6,7 +6,6 @@ import com.n16.qltv.vendor.MySQL;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class AuthorAdapter {
     private static ArrayList<Author> authorArrayList;
