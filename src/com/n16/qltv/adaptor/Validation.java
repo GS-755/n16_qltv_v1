@@ -2,6 +2,7 @@ package com.n16.qltv.adaptor;
 
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.model.Staff;
+import com.n16.qltv.model.Author;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -134,14 +135,19 @@ public class Validation {
     public static boolean isValidEmail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
+
         return pattern.matcher(email).matches();
     }
     public static boolean isString (String name) {
-        String ePatten = "^[||p{L} '-]+$";
-        Pattern p = Pattern.compile(ePatten);
-        Matcher m = p.matcher(name);
+        if (name.matches(".*\\d.*")) {
+            return false;
+        }
+        // Kiểm tra xem chuỗi có chứa ký tự đặc biệt không
+        if (name.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            return false;
+        }
 
-        return m.matches();
+        return true;
     }
     public static boolean isStrongPassword(String password) {
         // Kiểm tra chứa chữ số
@@ -163,7 +169,13 @@ public class Validation {
 
         return true;
     }
+    public static boolean isValidWebsite(String input) {
+        // Kiểm tra chuỗi theo mẫu regex
+        String regex = "^[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(regex);
 
+        return pattern.matcher(input).matches();
+    }
     public static boolean isDigit(String mobileNo) {
         return mobileNo.chars()
                 .allMatch(Character::isDigit);
