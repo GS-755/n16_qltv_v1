@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.n16.qltv.frame.borrowbook.BorrowBook">
-  <grid id="27dc6" binding="BorrowBook_JPanel" layout-manager="GridLayoutManager" row-count="9" column-count="20" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="BorrowBook_JPanel" layout-manager="GridLayoutManager" row-count="10" column-count="20" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="668" height="400"/>
+      <xy x="20" y="20" width="931" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -14,22 +14,6 @@
         </constraints>
         <properties>
           <text value="Đăng Ký Mượn Sách"/>
-        </properties>
-      </component>
-      <component id="be52a" class="javax.swing.JLabel" binding="tf_infoBorrow">
-        <constraints>
-          <grid row="8" column="3" row-span="1" col-span="17" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Đơn Mượn Trả"/>
-        </properties>
-      </component>
-      <component id="c1cf5" class="javax.swing.JButton" binding="bnt_Accept">
-        <constraints>
-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Duyệt"/>
         </properties>
       </component>
       <component id="bee48" class="javax.swing.JLabel">
@@ -68,7 +52,7 @@
       </vspacer>
       <hspacer id="79350">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
       <vspacer id="5dbaf">
@@ -78,7 +62,7 @@
       </vspacer>
       <hspacer id="4cf85">
         <constraints>
-          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="5" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
       <hspacer id="2a650">
@@ -94,6 +78,59 @@
           <text value="Mã Nhân Viên"/>
         </properties>
       </component>
+      <component id="eb16b" class="javax.swing.JButton" binding="thêmButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Thêm"/>
+        </properties>
+      </component>
+      <component id="2f228" class="javax.swing.JButton" binding="xoáButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Xoá"/>
+        </properties>
+      </component>
+      <component id="be165" class="javax.swing.JButton" binding="sửaButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Sửa"/>
+        </properties>
+      </component>
+      <component id="c1cf5" class="javax.swing.JButton" binding="bnt_Accept">
+        <constraints>
+          <grid row="8" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Duyệt yêu cầu"/>
+        </properties>
+      </component>
+      <component id="be52a" class="javax.swing.JLabel" binding="tf_infoBorrow">
+        <constraints>
+          <grid row="8" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Đơn Mượn Trả"/>
+        </properties>
+      </component>
+      <component id="8868c" class="javax.swing.JButton" binding="cậpNhậtButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="18" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Cập nhật"/>
+        </properties>
+      </component>
+      <vspacer id="536a1">
+        <constraints>
+          <grid row="9" column="19" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
     </children>
   </grid>
 </form>

@@ -15,6 +15,10 @@ public class BorrowBook extends JFrame{
     private JLabel tf_infoBorrow;
     private JButton bnt_Accept;
     private JTable BBook_Table;
+    private JButton thêmButton;
+    private JButton xoáButton;
+    private JButton sửaButton;
+    private JButton cậpNhậtButton;
     private ArrayList<BorrowBook> BorrowBookArrayList;
 
     public BorrowBook() {
