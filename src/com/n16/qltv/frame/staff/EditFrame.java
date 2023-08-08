@@ -40,7 +40,7 @@ public class EditFrame extends JFrame {
 
             if(StaffAdapter.checkExistStaff(usrName.trim())) {
                 Staff staff = new Staff();
-                if(txtPassword.getText().isEmpty()
+                if(txtPassword.getText().isBlank()
                         && txtRePassword.getText().isEmpty()) {
                     staff.setStaffName(txtName.getText());
                     staff.setGender(gender);

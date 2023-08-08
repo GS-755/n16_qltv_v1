@@ -2,6 +2,7 @@ package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.vendor.SHA256;
+import com.n16.qltv.vendor.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,8 @@ public class LoginFrame extends JFrame {
                 if(StaffAdapter.checkExistStaff(usrName)) {
                     boolean loginStatus = StaffAdapter.loginAccount(usrName, password);
                     if(loginStatus) {
+                        dispose();
+                        Session.put("staff", usrName);
                         IndexFrame indexFrame = new IndexFrame();
                     } else {
                         JOptionPane.showMessageDialog(null,

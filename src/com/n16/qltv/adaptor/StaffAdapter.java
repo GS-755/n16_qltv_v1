@@ -59,7 +59,7 @@ public class StaffAdapter {
             st.setString(3, staff.getStaffPhone());
             st.setString(4, staff.getStaffAddress());
             st.setString(5, staff.getUsrName());
-            st.setString(6, SHA256.toSHA256(SHA256.getSHA256(staff.getPassword())));
+            st.setString(6, staff.getPassword());
             st.setString(7, String.format("%s", staff.getGender()));
 
             st.executeUpdate();
@@ -87,7 +87,7 @@ public class StaffAdapter {
                 ps.setString(2, staff.getStaffDob());
                 ps.setString(3, staff.getStaffPhone());
                 ps.setString(4, staff.getStaffAddress());
-                ps.setString(5, SHA256.toSHA256(SHA256.getSHA256(staff.getPassword())));
+                ps.setString(5, staff.getPassword());
                 ps.setString(6, String.format("%s", staff.getGender()));
                 ps.setString(7, staff.getUsrName());
 

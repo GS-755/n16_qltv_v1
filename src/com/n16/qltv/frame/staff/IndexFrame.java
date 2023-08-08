@@ -30,7 +30,7 @@ public class IndexFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
 
         model = new DefaultTableModel();

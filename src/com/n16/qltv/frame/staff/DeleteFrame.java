@@ -39,7 +39,7 @@ public class DeleteFrame extends JFrame {
     }
     public void setComponents(String usrName) {
         ArrayList<Staff> foundStaff = StaffAdapter
-                .findUsrName(1, usrName);
+                .findStaffName(1, usrName);
         labelStaffName.setText(foundStaff.get(0).getStaffName());
         labelGender.setText(foundStaff.get(0).getStrGender());
         labelDob.setText(foundStaff.get(0).getStaffDob());
