@@ -1,16 +1,19 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.adaptor.BookAdapter;
+import com.n16.qltv.adaptor.CategoryAdapter;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class CreateFrame extends JFrame {
     private JPanel createFrame;
     private JLabel mainTitle;
     private JTextField txtBookName, txtPublisherYear;
-    private JComboBox cbAuthor, cbCategory, cbPublisher;
+    private JComboBox cbAuthor;
+    private JComboBox<String> cbCategory;
+    private JComboBox cbPublisher;
     private JButton btnCreate;
     private JLabel labelPublisher, labelCategory, labelAuthor;
     private JLabel labelYear, labelName;
@@ -22,13 +25,15 @@ public class CreateFrame extends JFrame {
         setResizable(true);
         setBounds(60, 60, 480, 320);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setComponents();
+        setCbComponents();
 
         btnCreate.addActionListener(e -> {
 
         });
     }
-    public void setComponents() {
-
+    public void setCbComponents() {
+        for(String s : CategoryAdapter.getCateName()) {
+            cbCategory.addItem(s);
+        }
     }
 }

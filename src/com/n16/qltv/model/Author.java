@@ -23,4 +23,14 @@ public class Author {
     public void setAuthorName(String authorName) { this.authorName = authorName; }
     public void setAuthorAddress(String authorAddress) { this.authorAddress = authorAddress; }
     public void setAuthorNote(String authorNote) { this.authorNote = authorNote; }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "authorId=" + authorId +
+                ", authorName='" + authorName + '\'' +
+                ", authorAddress='" + authorAddress + '\'' +
+                ", authorNote='" + authorNote + '\'' +
+                '}';
+    }
 }
