@@ -19,7 +19,7 @@ import java.util.Random;
 
 
 public class BorrowBookAdapter {
-    static DefaultTableModel model;
+    public static DefaultTableModel model;// khai báo data table
 
     private static ArrayList<BorrowBook> borrowBookArrayList = new ArrayList<>();
     //public static DefaultTableModel model;// khai báo data table
@@ -63,10 +63,9 @@ public class BorrowBookAdapter {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("MaMuonTra");
-                Date NgayMuon = rs.getDate("NgayMuon");
-                //Date date = new Date(NgayMuon);
-                int SoThe = rs.getInt("SoThe");
+                String id = rs.getString("MaMuonTra");
+                String NgayMuon = rs.getString("NgayMuon");
+                String SoThe = rs.getString("SoThe");
                 int MaNV = rs.getInt("MaNV");
                 model.addRow(new Object[]{id, NgayMuon,SoThe,MaNV});
             }
@@ -88,11 +87,11 @@ public class BorrowBookAdapter {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("MaMuonTra");
-                Date NgayMuon = rs.getDate("NgayMuon");
+                String id = rs.getString(1);
+                String NgayMuon = rs.getString(2);
                 //Date date = new Date(NgayMuon);
-                int SoThe = rs.getInt("SoThe");
-                int MaNV = rs.getInt("MaNV");
+                String SoThe = rs.getString(3);
+                int MaNV = rs.getInt(4);
                 model.addRow(new Object[]{id, NgayMuon,SoThe,MaNV});
             }
             rs.close();
