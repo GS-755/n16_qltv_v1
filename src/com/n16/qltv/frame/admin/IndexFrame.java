@@ -47,7 +47,7 @@ public class IndexFrame extends JFrame {
         });
         menu1.add("Sách");
         menu1.getItem(7).addActionListener(e -> {
-            com.n16.qltv.frame.book.CreateFrame createFrame = new com.n16.qltv.frame.book.CreateFrame();
+            com.n16.qltv.frame.book.IndexFrame indexFrame = new com.n16.qltv.frame.book.IndexFrame();
         });
         menu1.add("Thể loại");
 
