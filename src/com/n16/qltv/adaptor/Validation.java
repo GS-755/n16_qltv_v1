@@ -1,5 +1,6 @@
 package com.n16.qltv.adaptor;
 
+import com.n16.qltv.model.Customer;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.model.Author;
@@ -73,6 +74,40 @@ public class Validation {
         // Kiểm tra số điện thoại Nhân viên
         if(!isDigit(staff.getStaffPhone())) {
             createValidation("Số điện thoại KHÔNG hợp lệ");
+        }
+    }
+    public static void customerValidation(Customer customer) {
+        // Kiểm tra tên khách hàng
+        if(customer.getNameCus().isEmpty()
+                || customer.getNameCus().isBlank()) {
+            createValidation("Tên KHÔNG  để trống");
+        }
+        else if(!isString(customer.getNameCus())) {
+            createValidation("Tên  KHÔNG hợp lệ.");
+        }
+        // Kiểm tra tài khoản khách hàng
+        if(customer.getUsrName().isEmpty()
+                || customer.getUsrName().isBlank()) {
+            createValidation("Tên người dùng KHÔNG được để trống");
+        }
+        else if(customer.getUsrName().length() < 4
+                || customer.getUsrName().length() > 20) {
+            createValidation("Tên người dùng phải từ 4 -> 20 ký tự");
+        }
+        // Kiểm tra mật khẩu khách hàng
+        if(customer.getPassword().isEmpty()
+                || customer.getPassword().isBlank()) {
+            createValidation("Mật khẩu KHÔNG được để trống");
+        }
+        else if(customer.getPassword().length() < 8) {
+            createValidation("Mật khẩu phải từ 8 ký tự trở lên");
+        }
+        // Kiểm tra số điện thoại khách hàng
+        if(!isDigit(customer.getPhoneCus())) {
+            createValidation("Số điện thoại KHÔNG hợp lệ");
+        }
+        if(customer.getAddressCus().isEmpty()||customer.getAddressCus().isBlank()){
+            createValidation("Địa chỉ không được để ");
         }
     }
     // Chỗ này của em :)))

@@ -1,5 +1,6 @@
 package com.n16.qltv.adaptor;
 
+import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.vendor.MySQL;
 import com.n16.qltv.vendor.SHA256;
@@ -42,11 +43,11 @@ public class CustomerAdapter {
     public static void addCustomer(Customer customer) {
         try {
             Connection conn = MySQL.getConnection();
-            String query = "INSERT INTO DocGia ("
-                   + " TenDocGia,"
-                    + " DiaChi,"
-                    + " SoDT,"
-                    + " TenDangNhap,"
+            String query = "INSERT INTO DocGia("
+                    + "TenDocGia, "
+                    + "DiaChi, "
+                    + " SoDT, "
+                    + " TenDangNhap, "
                     + " MatKhau, "
                     + " GioiTinh) VALUES("
                     + "?, ?, ?, ?, ?, ?)";
@@ -56,9 +57,11 @@ public class CustomerAdapter {
             st.setString(2, customer.getAddressCus());
             st.setString(3, customer.getPhoneCus());
             st.setString(4, customer.getUsrName());
-            st.setString(5, SHA256.toSHA256(SHA256.getSHA256(customer.getPassword())));
+            st.setString(5, customer.getPassword());
             st.setString(6, String.format("%s", customer.getGender()));
-        } catch (SQLException | NoSuchAlgorithmException ex) {
+
+            st.executeUpdate();
+        } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Vui  lòng kiểm tra đường truyền");
         }
@@ -83,7 +86,6 @@ public class CustomerAdapter {
                 ps.setString(6, customer.getUsrName());
 
                 ps.executeUpdate();
-                ps.close();
             }
             else {
                 JOptionPane.showMessageDialog(null, "Lỗi tham số : Vui lòng kiểm tra lại.");
@@ -211,8 +213,8 @@ public class CustomerAdapter {
     }
 
     public static ArrayList<Customer> sortUsrName(int mode) {
-        ArrayList<Customer> sortedCustomers = new ArrayList<>();
         custoArrayList = getCustoList();
+        ArrayList<Customer> sortedCustomers = custoArrayList;
         switch (mode) {
             case 1:  {
                 // Ascending sort of usrName
@@ -242,7 +244,6 @@ public class CustomerAdapter {
                         foundStaffs.add(customer);
                     System.out.println(customer+" được chọn");
                 }
-
             }
             break;
             case 2: {

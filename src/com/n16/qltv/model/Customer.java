@@ -27,9 +27,16 @@ public class Customer {
     public String getPhoneCus() { return this.phoneCus; }
     public String getAddressCus() { return this.addressCus; }
     public Date getDobCus() { return this.dobCus; }
+    public String getStrGender() {
+        if(this.gender == 'f')
+            return "Nữ";
+
+        return "Nam";
+    }
     public String getUsrName() { return this.usrName; }
     public String getPassword() { return this.password; }
     public char getGender() { return this.gender; }
+    public void setIdcus(int idcus) { this.idcus = idcus; }
     public void setGender(char gender) { this.gender = gender; }
     public void setNameCus(String nameCus) { this.nameCus = nameCus; }
     public void setPhoneCus(String phoneCus) { this.phoneCus = phoneCus; }

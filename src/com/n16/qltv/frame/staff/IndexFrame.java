@@ -34,7 +34,6 @@ public class IndexFrame extends JFrame {
 
 
     public IndexFrame() {
-
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
@@ -43,11 +42,8 @@ public class IndexFrame extends JFrame {
         setBounds(50, 50, 1024, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         staffArrayList = StaffAdapter.getStaffList();
-
         // info Staff //
         tf_NameStaff.setText(Session.get("staff").toString());
-
-
         model = new DefaultTableModel();
         addTableStyle(model);
         addTableData(model, staffArrayList);
