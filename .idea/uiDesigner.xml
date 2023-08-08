@@ -122,7 +122,4 @@
     </group>
     <group name="Tà đạo" />
   </component>
-  <component name="uidesigner-configuration">
-    <option name="DEFAULT_LAYOUT_MANAGER" value="BorderLayout" />
-  </component>
 </project>
