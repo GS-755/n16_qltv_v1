@@ -4,6 +4,8 @@ import com.n16.qltv.adaptor.BorrowBookAdapter;
 import com.n16.qltv.adaptor.Validation;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ public class BorrowBook extends JFrame{
     private JLabel tf_infoBorrow;
     private JButton bnt_Accept;
     private JTable BBook_Table;
-    private JButton thêmButton;
+    private JButton bnt_BorrowBook;
     private JButton xoáButton;
     private JButton sửaButton;
     private JButton cậpNhậtButton;
@@ -62,5 +64,11 @@ public class BorrowBook extends JFrame{
         });
 
         setVisible(true);
+        bnt_BorrowBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    CreateBorrowBook createBorrowBook = new CreateBorrowBook();
+            }
+        });
     }
 }

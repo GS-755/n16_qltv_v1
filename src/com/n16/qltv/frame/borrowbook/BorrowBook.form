@@ -78,14 +78,6 @@
           <text value="Mã Nhân Viên"/>
         </properties>
       </component>
-      <component id="eb16b" class="javax.swing.JButton" binding="thêmButton" default-binding="true">
-        <constraints>
-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Thêm"/>
-        </properties>
-      </component>
       <component id="2f228" class="javax.swing.JButton" binding="xoáButton" default-binding="true">
         <constraints>
           <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -112,7 +104,7 @@
       </component>
       <component id="be52a" class="javax.swing.JLabel" binding="tf_infoBorrow">
         <constraints>
-          <grid row="8" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="7" row-span="1" col-span="11" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Đơn Mượn Trả"/>
@@ -131,6 +123,14 @@
           <grid row="9" column="19" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
+      <component id="eb16b" class="javax.swing.JButton" binding="bnt_BorrowBook">
+        <constraints>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Mượn Sách"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

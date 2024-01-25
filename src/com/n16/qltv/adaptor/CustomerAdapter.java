@@ -183,6 +183,7 @@ public class CustomerAdapter {
         return custoName;
     }
 
+
     public static String getCustoAddress(String usrName) {
         String custoAddress = "";
         for(Customer customer : custoArrayList)
@@ -255,4 +256,6 @@ public class CustomerAdapter {
 
         return foundStaffs;
     }
+
+
 }

@@ -1,7 +1,8 @@
 package com.n16.qltv.frame.BorrowHistory;
 
 import com.n16.qltv.adaptor.BorrowHistoryAdapter;
-import com.n16.qltv.adaptor.PublisherAdapter;
+import com.n16.qltv.frame.staff.LoginFrame;
+import com.n16.qltv.vendor.Session;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,8 +13,10 @@ public class BorrowHistory extends JFrame {
     private JButton bnt_Logout;
     private JLabel JLable_Name_user;
     private JPanel JPanel_History;
+    private JButton bnt_BorrowBook;
 
     public BorrowHistory() {
+
 
     // setup
     setContentPane(JPanel_History);
@@ -23,7 +26,9 @@ public class BorrowHistory extends JFrame {
     setBounds(60, 60, 480, 320);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     BorrowHistoryAdapter.DataToTable(BHistory_Table);
-        BorrowHistoryAdapter.updateTable(BHistory_Table);
+    BorrowHistoryAdapter.updateTable(BHistory_Table);
+    setVisible(true);
+        JLable_Name_user.setText("Xin Chào! "+Session.get("admin").toString());
 
     // setup
 
@@ -32,8 +37,17 @@ public class BorrowHistory extends JFrame {
     bnt_Logout.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            JLable_Name_user.setText("");
+            Session.remove("staff");
+            dispose();
+            LoginFrame loginFrame = new LoginFrame();
         }
     });
-}
+        bnt_BorrowBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
 }

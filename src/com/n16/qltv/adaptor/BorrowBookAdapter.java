@@ -1,6 +1,8 @@
 package com.n16.qltv.adaptor;
 
+import com.n16.qltv.frame.borrowbook.CreateBorrowBook;
 import com.n16.qltv.model.BorrowBook;
+import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
 
 import javax.swing.*;

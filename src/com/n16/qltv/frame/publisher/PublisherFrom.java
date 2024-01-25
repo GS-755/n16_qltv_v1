@@ -167,6 +167,7 @@ public class PublisherFrom extends JFrame {
                 super.mouseClicked(e);
                 int id = Integer.parseInt(PublisherAdapter.model.getValueAt(
                         Puli_Table.getSelectedRow(), 0).toString());
+
                 String name = PublisherAdapter.model
                         .getValueAt(Puli_Table.getSelectedRow(), 1).toString();
                     String email = PublisherAdapter.model
