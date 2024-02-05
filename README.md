@@ -1,11 +1,11 @@
 <img align="left" src="https://user-images.githubusercontent.com/65187002/144930161-2f783401-8d27-4fdf-a2f7-cc0ba32f1f1f.gif" width="21%" style="display:inline;">
 <img align="right" src="https://user-images.githubusercontent.com/65187002/144930161-2f783401-8d27-4fdf-a2f7-cc0ba32f1f1f.gif" width="21%" style="display:inline;">
 
-<h1 align="center">Xin Chào! Thầy và các bạn 👋, chúng mình là nhóm 11</h1>
+<h1 align="center">Xin Chào Thầy Đinh Minh Hoà - Giảng viên bộ môn Design Patterns và các bạn 👋, chúng mình là Nhóm 11</h1>
 <p align="center">
     <img src="https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/f024fe1c-b546-441c-aaac-6cb07dfcfbe2" alt="logo" width="21%">
 </p>
-<h3 align="center">Đây là project của chúng mình xây dựng nhằm mục đích làm đề tài chính cho môn học MTTPM </h3>
+<h3 align="center">Đây là project của chúng mình xây dựng nhằm mục đích làm đề tài chính cho môn học MTKPM </h3>
 <img src="https://i.imgur.com/dBaSKWF.gif" height="20" width="100%">
 <details open="" align="left">
   <summary>
@@ -41,20 +41,20 @@
       <h4 align="center">PHẦN MỀM QUẢN LÝ THƯ VIỆN</h4>
 <div align="center">
 <p align="center">Project là một phần mền quản lý thư viện được chúng mình xây dựng ở môn học lập trình Java 
-  <img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="40" height="40" /> tại trường đại học HUFLIT ! 
+  <img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="40" height="40" /> 
   hiện tại project đã hoàn thành và đáp ứng đầy đủ các tiêu chí của môn học lập trình Java.
 </p>
   <p>
-  Ở thời điểm hiện tại chúng mình sẽ tiếp tục phát triển project bằng cách áp dụng các mẫu thiết kế trong design pattern !
+  Ở thời điểm hiện tại chúng mình sẽ tiếp tục phát triển project bằng cách áp dụng các Design Patterns trong môn học này!
   </p>
     <p>
-  việc sử dụng design pattern là một chiến lược quan trọng giúp cải thiện sự tổ chức, 
-  linh hoạt và bảo trì 🛠️ của mã nguồn ngoài ra giúp cho mã nguồn có khả năng tái sử dụng.
+  Việc sử dụng Design Patterns là một chiến lược quan trọng giúp cải thiện tính  
+  linh hoạt và bảo trì tốt 🛠️ của mã nguồn, ngoài ra còn giúp cho mã nguồn có khả năng tái sử dụng lại cao.
   </p>
 </details>
     <details open="" align="left">
   <summary>
-    📔  một số hình ảnh của phần mền:
+    📔  một số hình ảnh của phần mềm:
   </summary>
 </p>
         <p align="center">
@@ -78,24 +78,24 @@
     📔  Cách cài đặt phần mềm:
   </summary>
 <br>
-  B1: Bạn hãy clone project về máy ! đảm bảo rằng bạn đã có git trước đó hoặc bạn có thể tải file zip của project và giải nén nó.
+  B1: Bạn hãy clone project về máy (đảm bảo rằng bạn đã có git trước đó hoặc bạn có thể tải file zip của project và giải nén nó.)
 <br><br>
-  B2: hãy tải xampp về máy nếu bạn gặp khó khăn với việc tải về hãy xem video hướng dẫn này hi vọng nó có ích cho bạn!
+  B2: Hãy tải XAMPP về máy (nếu bạn gặp khó khăn với việc tải về hãy xem video hướng dẫn này hi vọng nó có ích cho bạn!)
 <br><br>
     
   [![Watch the video](https://i.stack.imgur.com/Vp2cE.png)](https://youtu.be/0Zay4yjYxJc?si=KQeZBQTwjQXAs1p7)
   
 <br><br>
-  B3: hãy start xampp của bạn và chọn phần admin của MySQL:
+  B3: Hãy khởi động XAMPP của bạn và chọn phần admin của MySQL:
   <br><br>
   
   ![image](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/35d52312-387c-46ee-82ff-7f47c1d9c562)
   <br><br>
-  còn đây là giao diện của phpmyadmin:
+  Còn đây là giao diện của phpmyadmin:
   <br><br>
 ![image](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/6329d820-3a35-4542-b3d2-4435a200bdfd)
   <br><br>
-    B4: bạn hãy chuyển sang phần SQL và hãy copy đoạn Script sau:
+    B4: Bạn hãy chuyển sang phần SQL và hãy copy đoạn Script sau:
 
 ### SQL
 
@@ -179,16 +179,16 @@ CREATE TABLE CTMuonTra(
 );
 ```
 <br>
-B5: bạn hãy dán đoạn Script này vào phần SQL của phpmyadmin và nhấn chọn `Run` để thực thi đoạn Script trên.
+B5: Bạn hãy dán đoạn Script này vào phần SQL của phpmyadmin và nhấn chọn `Run` để thực thi đoạn Script trên.
 <br><br>
-B6: đây là bước cuối của phần hướng dẫn này ! bạn chỉ cần cài đặc các IDE như: IntelliJ, NextBean, ... và chọn đường dẫn bạn đã clone project về và chạy nó !
-chúc bạn thành công ! - GaCon -
+B6 (Đây là bước cuối của phần hướng dẫn này): bạn chỉ cần cài đặc các IDE như: IntelliJ IDEA, Apache NetBeans, ... và chọn đường dẫn bạn đã clone project về và chạy nó!
+Chúc bạn thành công ! - GaCon -
 </details>
     <details open="" align="left">
   <summary>
-    📔  Các tính năng của phền mền:
+    📔  Các tính năng của phền mềm:
   </summary>
-        <h4>sẻ cập nhật trong thời gian sớm nhất !</h4>
+        <h4>Sẽ được cập nhật trong thời gian sớm nhất!</h4>
     </details>
 
 
