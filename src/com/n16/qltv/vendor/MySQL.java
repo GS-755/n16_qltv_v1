@@ -1,14 +1,16 @@
 package com.n16.qltv.vendor;
 
+import com.n16.qltv.AppProperties;
+
 import java.sql.*;
 
 public class MySQL {
-    private static final String HOST_NAME = "localhost";
-    private static final String USER_NAME = "root";
-    private static final String PASSWORD = "";
-    private static final String DB_NAME = "n16_qltv";
-    private static final String dbUrl = String.format("jdbc:mysql://%s:3306/%s", HOST_NAME, DB_NAME);
-
+    private static final String USER_NAME = AppProperties.
+            getInstance().getUSER_NAME();
+    private static final String PASSWORD = AppProperties.
+            getInstance().getPASSWORD();
+    private static final String dbUrl = AppProperties.
+            getInstance().getConnectionString();
 
     public static Connection getConnection() {
         Connection conn = null;
