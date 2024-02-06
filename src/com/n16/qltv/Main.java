@@ -1,21 +1,18 @@
 package com.n16.qltv;
 
-
-import com.n16.qltv.frame.borrowbook.BorrowBook;
-import com.n16.qltv.frame.category.CategoryForm;
-import com.n16.qltv.frame.staff.LoginFrame;
-import com.n16.qltv.frame.staff.IndexFrame;
-import com.n16.qltv.frame.BorrowHistory.BorrowHistory;
-import com.n16.qltv.model.Customer;
+import com.n16.qltv.frame.admin.LoginFrame;
+import com.n16.qltv.frame.config.ConfigFrame;
+import com.n16.qltv.vendor.Session;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void checkPropertiesFile() {
 
-        //LoginFrame loginFrame = new LoginFrame();
-        IndexFrame d = new IndexFrame();
-         //BorrowBook borrowBook = new BorrowBook();
-        //BorrowHistory n = new BorrowHistory();
-        //CategoryForm ca = new CategoryForm();
-        //IndexFrame d = new IndexFrame();
+        if(!(boolean) Session.get("config-enabled")) {
+            ConfigFrame configFrame = new ConfigFrame();
+        }
+    }
+    public static void main(String[] args) {
+        checkPropertiesFile();
+        LoginFrame loginFrame = new LoginFrame();
     }
 }
