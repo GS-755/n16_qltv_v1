@@ -25,7 +25,7 @@ public class BorrowBookAdapter {
             model.addColumn("Mã nhân viên");
 
             String query = "SELECT * FROM muontra";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -50,7 +50,7 @@ public class BorrowBookAdapter {
         model.setRowCount(0);
         try {
             String query = "SELECT * FROM muontra";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -77,7 +77,7 @@ public class BorrowBookAdapter {
                     "MaDocGia = ?, " +
                     "MaNV = ? " +
                     "WHERE MaMuonTra = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setDate(1, java.sql.Date.
                     valueOf(borrowBook.getBorrowDate().toString()));

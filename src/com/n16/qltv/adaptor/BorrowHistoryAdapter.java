@@ -20,7 +20,7 @@ public class BorrowHistoryAdapter {
             model.addColumn("MaMuonTra");
             model.addColumn("MaSach");
             String query = "SELECT * FROM ctmuontra ";// ? là dữ liệu nhập vào !
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
@@ -47,7 +47,7 @@ public class BorrowHistoryAdapter {
         model.setRowCount(0); // xóa dữ liệu trong bảng
         try {
             String query = "SELECT * FROM ctmuontra";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {

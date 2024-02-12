@@ -18,7 +18,7 @@ public class CustomerAdapter {
             String query = "SELECT * " +
                     "FROM docgia " +
                     "WHERE TenDangNhap = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, usrName.trim());
             ResultSet rs = ps.executeQuery();
@@ -38,7 +38,7 @@ public class CustomerAdapter {
     }
     public static void addCustomer(Customer customer) {
         try {
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             String query = "INSERT INTO DocGia("
                     + "TenDocGia, "
                     + "DiaChi, "
@@ -72,7 +72,7 @@ public class CustomerAdapter {
                         + "MatKhau = ?, "
                         + "GioiTinh = ? "
                         + "WHERE TenDangNhap = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, customer.getNameCus());
                 ps.setString(2, customer.getAddressCus());
@@ -98,7 +98,7 @@ public class CustomerAdapter {
             if(checkExistCustomer(usrName)) {
                 String query = "DELETE FROM docgia " +
                         " WHERE TenDangNhap = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, usrName);
                 ps.executeUpdate();
@@ -114,7 +114,7 @@ public class CustomerAdapter {
         try {
             custoArrayList = new ArrayList<>();
             String query = "SELECT * FROM docgia";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -148,7 +148,7 @@ public class CustomerAdapter {
             String query = "SELECT * " +
                     "FROM docgia " +
                     " WHERE tendangnhap = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, ursName);
             ResultSet rs = ps.executeQuery();

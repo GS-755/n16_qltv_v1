@@ -2,17 +2,25 @@ package com.n16.qltv;
 
 import com.n16.qltv.frame.admin.LoginFrame;
 import com.n16.qltv.frame.config.ConfigFrame;
-import com.n16.qltv.vendor.Session;
+
+import javax.swing.*;
+import java.io.File;
 
 public class Main {
-    public static void checkPropertiesFile() {
+    public static boolean isValidConfig() {
+        File file = new File("app.properties");
 
-        if(!(boolean) Session.get("config-enabled")) {
-            ConfigFrame configFrame = new ConfigFrame();
-        }
+        return file.exists();
     }
     public static void main(String[] args) {
-        checkPropertiesFile();
-        LoginFrame loginFrame = new LoginFrame();
+        if(isValidConfig()) {
+            LoginFrame loginFrame = new LoginFrame();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Không tìm thấy tập tin app.properties!\n" +
+                    "Vui lòng điền các thông tin kết nối CSDL");
+
+            ConfigFrame configFrame = new ConfigFrame();
+        }
     }
 }

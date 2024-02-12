@@ -19,7 +19,7 @@ public class BookAdapter {
         boolean check = false;
         try {
             String query = "SELECT * FROM sach WHERE TenSach = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, TenSach);
             ResultSet rs = ps.executeQuery();
@@ -45,7 +45,7 @@ public class BookAdapter {
     public static void addBook(Book book) {
         try{
             // Lấy kết nối tới cơ sở dữ liệu
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             // Chuỗi truy vấn SQL để chèn dữ liệu vào bảng Sach
             // String query = "INSERT INTO sach(TenSach, NamXuatBan, BiaSach, MaNXB, MaTacGia, MaTheLoai) " +
             //        "VALUES(?, ?, ?, ?, ?, ?)";
@@ -74,7 +74,7 @@ public class BookAdapter {
                     "SET TenSach = ?, " +
                     "NamXuatBan = ?, " +
                     "WHERE BiaSach = ?, ";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, book.getBookName());
             ps.setInt(2, book.getBookYear());
@@ -92,7 +92,7 @@ public class BookAdapter {
             if(checkExistBook(TenSach)) {
                 String query = "DELETE FROM sach " +
                         " WHERE TenSach = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, TenSach);
                 ps.executeUpdate();
@@ -110,7 +110,7 @@ public class BookAdapter {
         try {
             bookArrayList = new ArrayList<>();
             String query = "SELECT * FROM sach";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -222,7 +222,7 @@ public class BookAdapter {
             model.addColumn("MaTacGia");
             model.addColumn("MaTheLoai");
             String query = "SELECT * FROM sach ";// ? là dữ liệu nhập vào !
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
@@ -251,7 +251,7 @@ public class BookAdapter {
         model.setRowCount(0); // xóa dữ liệu trong bảng
         try {
             String query = "SELECT * FROM sach";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {

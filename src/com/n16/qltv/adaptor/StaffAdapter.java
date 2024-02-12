@@ -18,7 +18,7 @@ public class StaffAdapter {
         boolean check = false;
         try {
             String query = "SELECT * FROM nhanvien WHERE tendangnhap = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, usrName);
             ResultSet rs = ps.executeQuery();
@@ -42,7 +42,7 @@ public class StaffAdapter {
     }
     public static void addStaff(Staff staff) {
         try {
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             String query = "INSERT INTO NhanVien ("
                     + " TenNV,"
                     + " NgaySinh,"
@@ -81,7 +81,7 @@ public class StaffAdapter {
                         "MatKhau = ?, " +
                         "GioiTinh = ? " +
                         "WHERE TenDangNhap = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, staff.getStaffName());
                 ps.setString(2, staff.getStaffDob());
@@ -107,7 +107,7 @@ public class StaffAdapter {
             if(checkExistStaff(usrName)) {
                 String query = "DELETE FROM nhanvien " +
                         " WHERE TenDangNhap = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, usrName);
                 ps.executeUpdate();
@@ -122,7 +122,7 @@ public class StaffAdapter {
         try {
             staffArrayList = new ArrayList<>();
             String query = "SELECT * FROM nhanvien";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -149,7 +149,7 @@ public class StaffAdapter {
             String query = "SELECT * " +
                     "FROM nhanvien " +
                     "WHERE tendangnhap = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, usrName);
             ResultSet rs = ps.executeQuery();

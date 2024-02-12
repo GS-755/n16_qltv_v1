@@ -53,7 +53,7 @@ public class CreateBorrowBook extends JFrame {
 
 
                     String query =  " INSERT INTO muontra (MaMuonTra, NgayMuon, MaDocGia, MaNV) VALUES (?,?,?,?) ";
-                    Connection conn = MySQL.getConnection();
+                    Connection conn = MySQL.getInstance().getConnection();
                     PreparedStatement preparedStatement = conn.prepareStatement(query);
                     preparedStatement.setString(1,idMT);
                     preparedStatement.setString(2,Ngay);

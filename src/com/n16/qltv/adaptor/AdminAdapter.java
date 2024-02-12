@@ -21,7 +21,7 @@ public class AdminAdapter {
                 "WHERE usrName = ? " +
                 "AND password = ?";
         try {
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, usrName);
             ps.setString(2, authTmp);
@@ -31,6 +31,9 @@ public class AdminAdapter {
                 if(rs.getString(1).equals(usrName)
                         && rs.getString(2).equals(authTmp)) {
                     Session.put("admin", usrName);
+                    rs.close();
+                    conn.close();
+                    MySQL.getInstance().closeConnection();
 
                     return true;
                 }

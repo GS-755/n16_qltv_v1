@@ -32,7 +32,7 @@ public class PublisherAdapter {
         try {
             puliArrayList = new ArrayList<>();
             String query = "SELECT * FROM nhaxb";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -64,7 +64,7 @@ public class PublisherAdapter {
             model.addColumn("Dịa Chỉ");
             model.addColumn("Tên người đại diện");
             String query = "SELECT * FROM nhaxb ";// ? là dữ liệu nhập vào !
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
@@ -90,7 +90,7 @@ public class PublisherAdapter {
         model.setRowCount(0); // xóa dữ liệu trong bảng
         try {
             String query = "SELECT * FROM nhaxb";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -141,7 +141,8 @@ public class PublisherAdapter {
         try{
             String query = "INSERT INTO nhaxb (TenNXB,Email,DiaChi,TenNgDaiDien) VALUES (?,?,?,?)";// ? là dữ liệu nhập vào !
             Publisher publi = new Publisher(Name, Email,  Address,  Rep);
-            Connection conn = MySQL.getConnection();
+
+            Connection conn = MySQL.getInstance().getConnection();
 
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -175,7 +176,7 @@ public class PublisherAdapter {
                     "FROM nhaxb " +
                     "WHERE TenNXB = ?"+
                     "AND DiaChi = ? ";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, name.trim());
             ps.setString(2, Address.trim());
@@ -208,7 +209,7 @@ public class PublisherAdapter {
                     ", DiaChi = ? " +
                     ", TenNgDaiDien = ? " +
                     "WHERE MaNXB = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, publisher.getPublisherName());
             ps.setString(2, publisher.getPublisherEmail());
@@ -227,7 +228,7 @@ public class PublisherAdapter {
 
             String query = "DELETE FROM nhaxb " +
                     " WHERE MaNXB = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, id);
 
@@ -297,7 +298,7 @@ public class PublisherAdapter {
         String query = "SELECT * FROM nhaxb " +
                 " WHERE TenNXB = ? "+
                 "AND DiaChi = ? ";
-        Connection conn = MySQL.getConnection();
+        Connection conn = MySQL.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, puliName);
         ps.setString(2, puliAddress);
@@ -317,7 +318,7 @@ public class PublisherAdapter {
         String query = "SELECT * FROM nhaxb " +
                 " WHERE TenNXB = ? "+
                 "AND DiaChi = ? ";
-        Connection conn = MySQL.getConnection();
+        Connection conn = MySQL.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, name);
         ps.setString(2, address);

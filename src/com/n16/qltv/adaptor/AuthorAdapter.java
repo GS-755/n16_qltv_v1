@@ -15,7 +15,7 @@ public class AuthorAdapter {
             String query = "SELECT * " +
                     "FROM tacgia " +
                     "WHERE TenTacGia = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, authorName);
             ResultSet rs = ps.executeQuery();
@@ -27,6 +27,9 @@ public class AuthorAdapter {
                     return true;
                 }
             }
+            rs.close();
+            conn.close();
+            MySQL.getInstance().closeConnection();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -35,7 +38,7 @@ public class AuthorAdapter {
     }
     public static void addAuthor(Author author) {
         try {
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             String query = "INSERT INTO tacgia("
                     + " TenTacGia, "
                     + " Website, "
@@ -47,6 +50,9 @@ public class AuthorAdapter {
             st.setString(3, author.getAuthorNote());
 
             st.executeUpdate();
+            st.close();
+            conn.close();
+            MySQL.getInstance().closeConnection();
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(
@@ -60,7 +66,7 @@ public class AuthorAdapter {
                         "SET Website = ?," +
                         "GhiChu = ? " +
                         "WHERE TenTacGia = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, author.getAuthorAddress());
                 ps.setString(3, author.getAuthorName());
@@ -70,8 +76,11 @@ public class AuthorAdapter {
                 } else {
                     ps.setString(2, author.getAuthorNote());
                 }
-
                 ps.executeUpdate();
+
+                ps.close();
+                conn.close();
+                MySQL.getInstance().closeConnection();
             } else {
                 JOptionPane.showMessageDialog(null, "Lỗi tham số :((( \n Vui lòng kiểm tra lại.");
             }
@@ -86,10 +95,14 @@ public class AuthorAdapter {
             if (checkExist(usrName)) {
                 String query = "DELETE FROM tacgia " +
                         " WHERE TenTacGia = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();;
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, usrName);
                 ps.executeUpdate();
+
+                ps.close();
+                conn.close();
+                MySQL.getInstance().closeConnection();
             } else {
                 System.out.println("Co loi xay ra :((");
             }
@@ -102,7 +115,7 @@ public class AuthorAdapter {
         try {
             authorArrayList = new ArrayList<>();
             String query = "SELECT * FROM tacgia";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -115,6 +128,9 @@ public class AuthorAdapter {
 
                 authorArrayList.add(author);
             }
+            rs.close();
+            conn.close();
+            MySQL.getInstance().closeConnection();
 
             return authorArrayList;
         } catch (Exception ex) {

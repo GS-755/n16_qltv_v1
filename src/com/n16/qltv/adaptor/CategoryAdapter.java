@@ -49,7 +49,7 @@ public class CategoryAdapter {
         try{
             String query = "INSERT INTO TheLoai (TenTheLoai) VALUES (?)";// ? là dữ liệu nhập vào !
             Category cate = new Category(NameCate);
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
 
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -78,7 +78,7 @@ public class CategoryAdapter {
             model.addColumn("Tên thể loại");
 
             String query = "SELECT * FROM TheLoai ";// ? là dữ liệu nhập vào !
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
 
             // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -104,7 +104,7 @@ public class CategoryAdapter {
 
         try {
             String query = "SELECT * FROM TheLoai";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -125,7 +125,7 @@ public class CategoryAdapter {
                 String query = "UPDATE TheLoai " +
                         "SET TenTheLoai = ? " +
                         "WHERE MaTheLoai = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.getInstance().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, category.getNameCate());
                 ps.setInt(2, category.getCateId());
@@ -144,7 +144,7 @@ public class CategoryAdapter {
             String query = "SELECT * " +
                     "FROM TheLoai " +
                     "WHERE TenTheLoai = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, nameCate.trim());
             ResultSet rs = ps.executeQuery();
@@ -172,7 +172,7 @@ public class CategoryAdapter {
         try {
             cateArrayList = new ArrayList<>();
             String query = "SELECT * FROM TheLoai";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
@@ -207,7 +207,7 @@ public class CategoryAdapter {
         try {
             String query = "DELETE FROM TheLoai " +
                     " WHERE MaTheLoai = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, category.getCateId());
 
@@ -257,7 +257,7 @@ public class CategoryAdapter {
     public static void GetIDCate_UpLoadDataTable( String cateName) throws SQLException {
         String query = "SELECT * FROM TheLoai " +
                 " WHERE TenTheLoai = ?";
-        Connection conn = MySQL.getConnection();
+        Connection conn = MySQL.getInstance().getConnection();
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, cateName);
         ResultSet resultSet = ps.executeQuery();
