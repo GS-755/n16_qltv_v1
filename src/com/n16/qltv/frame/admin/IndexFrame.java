@@ -69,7 +69,6 @@ public class IndexFrame extends JFrame {
         menuBar.add(menu2);
         menu2.add("Đăng xuất");
         menu2.getItem(0).addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "Đăng xuất thành công");
             Session.remove("admin");
             dispose();
             LoginFrame loginFrame = new LoginFrame();
