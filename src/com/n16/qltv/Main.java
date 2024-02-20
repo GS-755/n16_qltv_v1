@@ -1,21 +1,25 @@
 package com.n16.qltv;
 
+import com.n16.qltv.frame.admin.LoginFrame;
+import com.n16.qltv.frame.config.ConfigFrame;
 
-import com.n16.qltv.frame.borrowbook.BorrowBook;
-import com.n16.qltv.frame.category.CategoryForm;
-import com.n16.qltv.frame.staff.LoginFrame;
-import com.n16.qltv.frame.staff.IndexFrame;
-import com.n16.qltv.frame.BorrowHistory.BorrowHistory;
-import com.n16.qltv.model.Customer;
+import javax.swing.*;
+import java.io.File;
 
 public class Main {
-    public static void main(String[] args) {
+    public static boolean isConfigAvailable() {
+        File file = new File("app.properties");
 
-        //LoginFrame loginFrame = new LoginFrame();
-        IndexFrame d = new IndexFrame();
-         //BorrowBook borrowBook = new BorrowBook();
-        //BorrowHistory n = new BorrowHistory();
-        //CategoryForm ca = new CategoryForm();
-        //IndexFrame d = new IndexFrame();
+        return file.exists();
+    }
+    public static void main(String[] args) {
+        if(isConfigAvailable()) {
+            LoginFrame loginFrame = new LoginFrame();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Không tìm thấy file app.properties!\n" +
+                    "Vui lòng điền thông tin kết nối CSDL.");
+            ConfigFrame configFrame = new ConfigFrame();
+        }
     }
 }
