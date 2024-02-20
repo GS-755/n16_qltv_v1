@@ -28,3 +28,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 /app.properties
+/.idea/artifacts/N16_QLTV_v1_staff_jar.xml
+/src/META-INF/MANIFEST.MF
