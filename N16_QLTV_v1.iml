@@ -19,15 +19,6 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/com/n16/qltv/vendor/jars/jdatepicker-1.3.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/src/com/n16/qltv/vendor/jars/clib_native0.4_3-0.4.7.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -88,5 +79,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="LGoodDatePicker-11.2.1" level="project" />
   </component>
 </module>
