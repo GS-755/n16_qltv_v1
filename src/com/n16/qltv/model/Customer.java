@@ -1,6 +1,6 @@
 package com.n16.qltv.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Customer {
     private int idcus;

@@ -1,20 +1,19 @@
 package com.n16.qltv.frame.customer;
 
 import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
+
 public class IndexFrame extends JFrame{
     private JButton addButton;
     private JButton deleteButton;
     private JButton EditButton;
-    private JTextField textField1;
+    private JTextField txtKeyword;
     private JButton searchButton;
     private JButton updateButton;
     private JButton increButton;
@@ -29,20 +28,21 @@ public class IndexFrame extends JFrame{
     private JLabel searchLabel;
     private JLabel searchModeLabel;
     private JPanel IndexFrame;
-    private ArrayList<Customer> customers = new ArrayList<>();
+    private ArrayList<Customer> customers;
+
     private ButtonGroup radioSearchModeGroup;
     public IndexFrame() {
+        this.customers = CustomerAdapter.getCustoList();
         setSearchModeComponents();
         setContentPane(IndexFrame);
         setTitle("Danh sách khách hàng");
         setVisible(true);
         setResizable(false);
-        setBounds(50, 50, 1024, 600);
+        setBounds(50, 50, 1024, 768);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        customers = CustomerAdapter.getCustoList();
         model = new DefaultTableModel();
         addTableStyle();
-        addTableData(model,customers);
+        addTableData(model, this.customers);
         table1.setModel(model);
 
         updateButton.addActionListener(new ActionListener() {
@@ -65,6 +65,7 @@ public class IndexFrame extends JFrame{
                 else {
                     EditFrame ef = new EditFrame(model.getValueAt(
                             table1.getSelectedRow(), 5).toString());
+                    refreshTableData();
                 }
             }
         });
@@ -73,6 +74,18 @@ public class IndexFrame extends JFrame{
                     table1.getSelectedRow(), 5).toString();
             CustomerAdapter.deleteCustomer(id);
             refreshTableData();
+        });
+        searchButton.addActionListener(e -> {
+            String keyword = this.txtKeyword.getText().trim();
+            deleteTableData();
+            if(this.absoluteModeRadio.isSelected()) {
+                this.customers = CustomerAdapter.findCustoName(1, keyword);
+            }
+            else {
+                this.customers = CustomerAdapter.findCustoName(2, keyword);
+            }
+            addTableData(model, customers);
+            model.fireTableDataChanged();
         });
         escButton.addActionListener(new ActionListener() {
             @Override
@@ -84,18 +97,18 @@ public class IndexFrame extends JFrame{
         increButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteTableData();
                 customers = CustomerAdapter.sortUsrName(1);
-                addTableData(model, CustomerAdapter.sortUsrName(1));
+                deleteTableData();
+                addTableData(model, customers);
                 model.fireTableDataChanged();
             }
         });
         decreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteTableData();
                 customers = CustomerAdapter.sortUsrName(2);
-                addTableData(model, CustomerAdapter.sortUsrName(2));
+                deleteTableData();
+                addTableData(model, customers);
                 model.fireTableDataChanged();
             }
         });
@@ -109,8 +122,8 @@ public class IndexFrame extends JFrame{
         model.addColumn("Tên đăng nhập");
     }
     public void addTableData(DefaultTableModel model, ArrayList<Customer> customers) {
-        customers = CustomerAdapter.getCustoList();
-        for (Customer customer : customers)
+        this.customers = customers;
+        for (Customer customer : this.customers)
             model.addRow(new Object[]{
                     customer.getNameCus(),
                     customer.getStrGender(),
@@ -122,9 +135,8 @@ public class IndexFrame extends JFrame{
     }
     public void refreshTableData() {
         deleteTableData();
-        customers = CustomerAdapter.getCustoList();
-        //addTableStyle(model);
-        addTableData(model,customers);
+        this.customers = CustomerAdapter.getCustoList();
+        addTableData(model, this.customers);
     }
     public void deleteTableData() {
         model.getDataVector().removeAllElements();

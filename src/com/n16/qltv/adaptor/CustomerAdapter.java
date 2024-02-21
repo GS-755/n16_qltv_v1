@@ -13,6 +13,11 @@ import java.util.ArrayList;
 public class CustomerAdapter {
     private static ArrayList<Customer> custoArrayList;
 
+    // Getter of static ArrayList
+    public static ArrayList<Customer> getCustoArrayList() {
+        return custoArrayList;
+    }
+
     public static boolean checkExistCustomer(String usrName) {
         try{
             String query = "SELECT * " +
@@ -212,8 +217,7 @@ public class CustomerAdapter {
     }
 
     public static ArrayList<Customer> sortUsrName(int mode) {
-        custoArrayList = getCustoList();
-        ArrayList<Customer> sortedCustomers = custoArrayList;
+        ArrayList<Customer> sortedCustomers = getCustoList();
         switch (mode) {
             case 1:  {
                 // Ascending sort of usrName
@@ -248,7 +252,7 @@ public class CustomerAdapter {
             case 2: {
                 // Tìm người dùng ở chế độ tương đối
                 for(Customer customer : custoArrayList)
-                    if(customer.getNameCus().startsWith(keyword))
+                    if(customer.getNameCus().contains(keyword))
                         foundStaffs.add(customer);
             }
             break;

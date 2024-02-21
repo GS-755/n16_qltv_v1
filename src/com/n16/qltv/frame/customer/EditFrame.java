@@ -31,7 +31,7 @@ public class EditFrame extends JFrame{
 
     public EditFrame(String usrName){
         setContentPane(panel1);
-        setTitle("Chỉnh sửa Tác giả");
+        setTitle("Chỉnh sửa Độc giả");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 560, 400);
@@ -62,6 +62,8 @@ public class EditFrame extends JFrame{
                     else{
                         CustomerAdapter.editCustomer(cus);
                         JOptionPane.showMessageDialog(null,"Cập nhật thông tin thành công");
+
+                        dispose();
                     }
                 }
                 else {
@@ -94,6 +96,8 @@ public class EditFrame extends JFrame{
                                 CustomerAdapter.editCustomer(cus);
                                 JOptionPane.showMessageDialog(
                                         null, "Cập nhật thông tin thành công.");
+
+                                dispose();
                             }
                         }
                     } catch(NoSuchAlgorithmException ex ){
@@ -131,7 +135,5 @@ public class EditFrame extends JFrame{
             femaleRadio.setSelected(true);
         });
     }
-
-
 }
 
