@@ -1,13 +1,14 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.vendor.MySQL;
 import com.n16.qltv.vendor.SHA256;
 
 import javax.swing.*;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerAdapter {
@@ -29,7 +30,7 @@ public class CustomerAdapter {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                if(rs.getString(5)
+                if(rs.getString("TenDangNhap").trim()
                         .equals(usrName.trim())) {
 
                     return true;
@@ -41,52 +42,89 @@ public class CustomerAdapter {
 
         return false;
     }
+    public static Customer findCustomer(String usrName) {
+        try{
+            String query = "SELECT * " +
+                    "FROM docgia " +
+                    "WHERE TenDangNhap = ?";
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, usrName.trim());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if(rs.getString("TenDangNhap").trim()
+                        .equals(usrName.trim())) {
+                    Customer customer = new Customer();
+                    customer.setIdcus(rs.getInt("MaDocGia"));
+                    customer.setNameCus(rs.getString("TenDocGia"));
+                    customer.setDobCus(rs.getDate("NgaySinh"));
+                    customer.setAddressCus(rs.getString("DiaChi"));
+                    customer.setPhoneCus(rs.getString("SoDT"));
+                    customer.setUsrName(rs.getString("TenDangNhap"));
+                    customer.setPassword(rs.getString("MatKhau"));
+                    customer.setGender(rs.getString("GioiTinh").charAt(0));
+
+                    return customer;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new Customer();
+    }
     public static void addCustomer(Customer customer) {
         try {
             Connection conn = MySQL.getConnection();
             String query = "INSERT INTO DocGia("
                     + "TenDocGia, "
+                    + "NgaySinh, "
                     + "DiaChi, "
-                    + " SoDT, "
-                    + " TenDangNhap, "
-                    + " MatKhau, "
-                    + " GioiTinh) VALUES("
-                    + "?, ?, ?, ?, ?, ?)";
+                    + "SoDT, "
+                    + "TenDangNhap, "
+                    + "MatKhau, "
+                    + "GioiTinh) VALUES("
+                    + "?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, customer.getNameCus());
-            st.setString(2, customer.getAddressCus());
-            st.setString(3, customer.getPhoneCus());
-            st.setString(4, customer.getUsrName());
-            st.setString(5, customer.getPassword());
-            st.setString(6, String.format("%s", customer.getGender()));
+            st.setDate(2, customer.getDobCus());
+            st.setString(3, customer.getAddressCus());
+            st.setString(4, customer.getPhoneCus());
+            st.setString(5, customer.getUsrName());
+            st.setString(6, customer.getPassword());
+            st.setString(7, String.format("%s", customer.getGender()));
 
             st.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Vui  lòng kiểm tra đường truyền");
+            JOptionPane.showMessageDialog(null, "Vui lòng kiểm tra đường truyền");
         }
     }
     public static void editCustomer(Customer customer) {
         try {
             if(checkExistCustomer(customer.getUsrName().trim())) {
-                String query = "UPDATE docgia "
+                String query = "UPDATE DocGia "
                         + "SET TenDocGia = ?, "
+                        + "NgaySinh = ?, "
                         + "DiaChi = ?, "
                         + "SoDT = ?, "
                         + "MatKhau = ?, "
                         + "GioiTinh = ? "
-                        + "WHERE TenDangNhap = ?";
+                        + "WHERE TenDangNhap = ?;";
                 Connection conn = MySQL.getConnection();
-                PreparedStatement ps = conn.prepareStatement(query);
-                ps.setString(1, customer.getNameCus());
-                ps.setString(2, customer.getAddressCus());
-                ps.setString(3, customer.getPhoneCus());
-                ps.setString(4, customer.getPassword());
-                ps.setString(5, String.format("%s", customer.getGender()));
-                ps.setString(6, customer.getUsrName().trim());
+                PreparedStatement st = conn.prepareStatement(query);
+                st.setString(1, customer.getNameCus());
+                st.setDate(2, customer.getDobCus());
+                st.setString(3, customer.getAddressCus());
+                st.setString(4, customer.getPhoneCus());
+                st.setString(5, customer.getPassword());
+                st.setString(6, String.format("%s", customer.getGender()));
+                st.setString(7, customer.getUsrName());
 
-                ps.executeUpdate();
+                st.executeUpdate();
+                st.close();
             }
             else {
                 JOptionPane.showMessageDialog(
@@ -109,9 +147,12 @@ public class CustomerAdapter {
                 ps.executeUpdate();
             }
             else {
-                System.out.println("Có lỗi xảy ra :");
+                JOptionPane.showMessageDialog(
+                        null, "Lỗi tham số. Vui lòng kiểm tra lại.");
             }
         } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                    null, "Có lỗi xảy ra. Vui lòng kiểm tra lại.");
             ex.printStackTrace();
         }
     }
@@ -125,12 +166,14 @@ public class CustomerAdapter {
 
             while(rs.next()) {
                 Customer customer = new Customer();
-                customer.setNameCus(rs.getString(2));
-                customer.setAddressCus(rs.getString(3));
-                customer.setPhoneCus(rs.getString(4));
-                customer.setUsrName(rs.getString(5));
-                customer.setPassword(rs.getString(6));
-                customer.setGender(rs.getString(7).charAt(0));
+                customer.setIdcus(rs.getInt("MaDocGia"));
+                customer.setNameCus(rs.getString("TenDocGia"));
+                customer.setDobCus(rs.getDate("NgaySinh"));
+                customer.setAddressCus(rs.getString("DiaChi"));
+                customer.setPhoneCus(rs.getString("SoDT"));
+                customer.setUsrName(rs.getString("TenDangNhap"));
+                customer.setPassword(rs.getString("MatKhau"));
+                customer.setGender(rs.getString("GioiTinh").charAt(0));
 
                 custoArrayList.add(customer);
             }
@@ -171,42 +214,6 @@ public class CustomerAdapter {
 
         return ans;
     }
-    public static String getCustoPhone(String usrName) {
-        String custoPhone = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                custoPhone = customer.getPhoneCus();
-
-        return custoPhone;
-    }
-    public static String getCustoName(String usrName) {
-        String custoName = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                custoName = customer.getNameCus();
-
-        return custoName;
-    }
-
-
-    public static String getCustoAddress(String usrName) {
-        String custoAddress = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                custoAddress = customer.getAddressCus();
-
-        return custoAddress;
-    }
-
-    public static char getCustoGender(String usrName) {
-        char gender = 'm';
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                gender = customer.getGender();
-
-        return gender;
-    }
-
     public static String getPassword(String usrName) {
         String password = "";
         for(Customer customer : custoArrayList)
@@ -260,6 +267,4 @@ public class CustomerAdapter {
 
         return foundStaffs;
     }
-
-
 }

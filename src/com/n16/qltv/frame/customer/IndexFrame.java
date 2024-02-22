@@ -55,24 +55,29 @@ public class IndexFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 CreateFrame cf = new CreateFrame();
+                refreshTableData();
             }
         });
-        EditButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(table1.getSelectedRow() < 0)
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
-                else {
-                    EditFrame ef = new EditFrame(model.getValueAt(
-                            table1.getSelectedRow(), 5).toString());
-                    refreshTableData();
-                }
+        EditButton.addActionListener(e -> {
+            if(table1.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Vui lòng chọn đối tượng :((");
+            }
+            else if(!CustomerAdapter.checkExistCustomer(model.getValueAt(
+                    table1.getSelectedRow(), 5).toString().trim())) {
+                JOptionPane.showMessageDialog(null,
+                        "Lỗi đối tượng, vui lòng đợi bản cập nhật sau :)");
+            }
+            else {
+                EditFrame ef = new EditFrame(model.getValueAt(
+                        table1.getSelectedRow(), 5).toString());
+                refreshTableData();
             }
         });
         deleteButton.addActionListener(e -> {
-            String id = model.getValueAt(
-                    table1.getSelectedRow(), 5).toString();
-            CustomerAdapter.deleteCustomer(id);
+            String usrName = model.getValueAt(
+                    table1.getSelectedRow(), 5).toString().trim();
+            CustomerAdapter.deleteCustomer(usrName);
             refreshTableData();
         });
         searchButton.addActionListener(e -> {

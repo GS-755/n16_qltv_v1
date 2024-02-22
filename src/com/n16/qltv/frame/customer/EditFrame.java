@@ -1,5 +1,6 @@
 package com.n16.qltv.frame.customer;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.n16.qltv.adaptor.CustomerAdapter;
 import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Customer;
@@ -7,7 +8,7 @@ import com.n16.qltv.vendor.SHA256;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
-
+import java.sql.Date;
 
 public class EditFrame extends JFrame{
     private JPanel panel1;
@@ -28,6 +29,7 @@ public class EditFrame extends JFrame{
     private JLabel nameLabel;
     private JLabel usrLabel;
     private JLabel repasswordLabel,titleLabel;
+    private DatePicker selectDate;
 
     public EditFrame(String usrName){
         setContentPane(panel1);
@@ -49,6 +51,7 @@ public class EditFrame extends JFrame{
                 if(txtPassword.getText().isBlank()
                         || txtRePassword.getText().isEmpty()){
                     cus.setNameCus(txtCusName.getText());
+                    cus.setDobCus(Date.valueOf(this.selectDate.getDate()));
                     cus.setGender(gender);
                     cus.setAddressCus(txtAddress.getText());
                     cus.setPhoneCus(txtPhone.getText());
@@ -111,13 +114,15 @@ public class EditFrame extends JFrame{
         });
     }
     public void setComponents(String usrName) {
-        char gender = CustomerAdapter.getCustoGender(usrName);
-        txtCusName.setText(CustomerAdapter.getCustoName(usrName));
-        txtAddress.setText(CustomerAdapter.getCustoAddress(usrName));
-        txtPhone.setText(CustomerAdapter.getCustoPhone(usrName));
-        txtUsrname.setText(usrName);
+        Customer customer = CustomerAdapter.
+                findCustomer(usrName.trim());
+        txtCusName.setText(customer.getNameCus());
+        selectDate.setDate(customer.getDobCus().toLocalDate());
+        txtAddress.setText(customer.getAddressCus());
+        txtPhone.setText(customer.getPhoneCus());
+        txtUsrname.setText(usrName.trim());
         txtUsrname.setEditable(false);
-        if(gender == 'm')
+        if(customer.getGender() == 'm')
             maleRadio.setSelected(true);
         else
             femaleRadio.setSelected(true);

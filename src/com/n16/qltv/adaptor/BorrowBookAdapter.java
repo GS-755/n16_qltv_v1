@@ -81,7 +81,7 @@ public class BorrowBookAdapter {
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setDate(1, java.sql.Date.
                     valueOf(borrowBook.getBorrowDate().toString()));
-            ps.setInt(2, borrowBook.getCustomer().getIdcus());
+            ps.setInt(2, borrowBook.getCustomer().getIdCus());
             ps.setInt(3, borrowBook.getStaff().getStaffId());
             ps.setString(4, borrowBook.getBorrowId());
 

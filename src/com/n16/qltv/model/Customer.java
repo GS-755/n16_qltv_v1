@@ -10,19 +10,13 @@ public class Customer {
     private String usrName, password;
     private char gender;
 
-    public Customer() { }
-    public Customer(String nameCus, char gender, String phoneCus,
-                    String addressCus, Date dobCus, String usrName, String password) {
-        this.nameCus = nameCus;
-        this.gender = gender;
-        this.phoneCus = phoneCus;
-        this.addressCus = addressCus;
-        this.dobCus = dobCus;
-        this.usrName = usrName;
-        this.password = password;
+    public Customer() {
+        this.idcus = 1;
+        this.gender = 'm';
+        this.dobCus = Date.valueOf("2000-1-1");
     }
 
-    public int getIdcus() { return this.idcus; }
+    public int getIdCus() { return this.idcus; }
     public String getNameCus() { return this.nameCus; }
     public String getPhoneCus() { return this.phoneCus; }
     public String getAddressCus() { return this.addressCus; }

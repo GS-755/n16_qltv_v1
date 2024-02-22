@@ -1,5 +1,6 @@
 package com.n16.qltv.frame.customer;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.n16.qltv.adaptor.CustomerAdapter;
 import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Customer;
@@ -8,6 +9,7 @@ import scala.Predef;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 
 public class CreateFrame extends JFrame {
     ButtonGroup buttonGroup;
@@ -29,6 +31,7 @@ public class CreateFrame extends JFrame {
     private JPasswordField txtRePassword;
     private JLabel labelRePassword;
     private JPanel createFrame;
+    private DatePicker selectDate;
 
     public CreateFrame() {
         setContentPane(createFrame);
@@ -51,6 +54,7 @@ public class CreateFrame extends JFrame {
                 Customer customer = new Customer();
                 try{
                  customer.setNameCus(txtNameCus.getText());
+                 customer.setDobCus(Date.valueOf(this.selectDate.getDate()));
                  customer.setGender(gender);
                  customer.setPhoneCus(txtPhoneCus.getText());
                  customer.setAddressCus(txtAddressCus.getText());
@@ -72,14 +76,13 @@ public class CreateFrame extends JFrame {
                 else{
                     CustomerAdapter.addCustomer(customer);
                     JOptionPane.showMessageDialog(null,"Tạo khách hàng thành công");
+
                     dispose();
                 }
             }
             else {
-                JOptionPane.showMessageDialog(null,"Đã có tên tác giả trong hệ thống");
+                JOptionPane.showMessageDialog(null,"Đã có khách hàng trong hệ thống");
             }
-
-
         });
     }
     public void setComponents() {

@@ -139,6 +139,7 @@ CREATE TABLE NhanVien(
 CREATE TABLE DocGia(
   MaDocGia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   TenDocGia VARCHAR(50) NOT NULL,
+  NgaySinh DATE NOT NULL, 
   DiaChi VARCHAR(100),
   SoDT CHAR(15) NOT NULL,
   TenDangNhap CHAR(20) NOT NULL,
@@ -183,6 +184,7 @@ CREATE TABLE CTMuonTra(
   FOREIGN KEY(MaMuonTra) REFERENCES MuonTra(MaMuonTra),
   FOREIGN KEY(MaSach) REFERENCES Sach(MaSach)
 );
+
 ```
 <br>
 B5: Bạn hãy dán đoạn Script này vào phần SQL của phpmyadmin và nhấn chọn `Run` để thực thi đoạn Script trên.
