@@ -9,25 +9,24 @@ import javax.swing.*;
 public class EditFrame extends JFrame {
     private JPanel panel1;
     private JTextField tfName, tfAddress, tfNote;
-    private JButton btnAdd;
+    private JButton btnEdit;
     private JLabel nameLabel, addressLabel;
     private JLabel noteLabel, titleLabel;
 
-    public EditFrame(String auName) {
+    public EditFrame(int authorId) {
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setComponents(authorId);
 
-        setComponents(auName);
-
-        btnAdd.addActionListener(e -> {
+        btnEdit.addActionListener(e -> {
             Validation.clearValidation();
             if(AuthorAdapter.checkExist(tfName.getText())) {
                 Author author = new Author();
-                author.setAuthorName(auName);
+                author.setAuthorName(tfName.getText().trim());
                 String website = AuthorAdapter.
                         formatWebsite(tfAddress.getText()).trim();
                 if(website.isEmpty()) {
@@ -56,10 +55,18 @@ public class EditFrame extends JFrame {
 
         });
     }
-    public void setComponents(String usrName) {
-        tfName.setText(AuthorAdapter.getAuthorName(usrName));
-        tfName.setEditable(false);
-        tfAddress.setText(AuthorAdapter.getAuthorAddress(usrName));
-        tfNote.setText(AuthorAdapter.getAuthorNote(usrName));
+    public void setComponents(int authorId) {
+        Author author = AuthorAdapter.getAuthorItem(authorId);
+        if(authorId == author.getAuthorId()) {
+            tfName.setEditable(false);
+            tfName.setText(author.getAuthorName());
+            tfAddress.setText(author.getAuthorAddress());
+            tfNote.setText(author.getAuthorNote());
+        }
+        else {
+            JOptionPane.showMessageDialog(null,
+                    "Tác giả không tồn tại trong hệ thống!");
+            dispose();
+        }
     }
 }

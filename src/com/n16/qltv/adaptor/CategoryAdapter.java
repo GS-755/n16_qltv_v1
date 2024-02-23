@@ -1,7 +1,6 @@
 package com.n16.qltv.adaptor;
 
 import com.n16.qltv.model.Category;
-import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
 
 import javax.swing.*;
@@ -14,13 +13,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CategoryAdapter {
-    public static Category category;
+    // public static Category category;
     private static Component CategoryForm;
     private static ArrayList<Category> cateArrayList = new ArrayList<>();
-    public static DefaultTableModel model;
+
+    public CategoryAdapter() {
+        cateArrayList = new ArrayList<>();
+    }
+
+    // fix lỗi chưa tạo model thử !
+    public static DefaultTableModel model = new DefaultTableModel();
+
+    public static ArrayList<Category> findCateName(String keyword) throws SQLException {
+        model.setRowCount(0);
+        ArrayList<Category> foundCate = new ArrayList<>();
+        for (Category cates : cateArrayList) {
+            if(cates.getNameCate().contains(keyword))
+            {
+                foundCate.add(cates);
+                GetIDCate_UpLoadDataTable(cates.getNameCate());
+            }
+        }
+        return foundCate;
+    }
+
+    // tổng số lượng cate
+    public static int getCateCount() { return cateArrayList.size(); }
 
     // thêm category
     public static boolean CreateCategory(String tf_NameCate) throws SQLException {
+        // Khởi tạo đối tượng Category dạng Local
+        Category category = new Category();
         // lấy tên category
         String NameCate = tf_NameCate.trim();
         // kt tên = null
@@ -35,14 +58,18 @@ public class CategoryAdapter {
         else
             // Tên thể loại ko trùng trong database
             category = addCategoryToDatabase(NameCate);
-        if(category != null)
+        if(category != null){
+            cateArrayList.add(category);
+
             return true;
+        }
         else {
           //  System.out.println("không có thể loại mới được thêm vào ! ");
             return false;
         }
     }
-    // hàm thêm cate và xampp
+
+    // thêm cate vào db
     private static Category addCategoryToDatabase(String NameCate) throws SQLException {
         Category cateCheck = null;
 
@@ -70,6 +97,7 @@ public class CategoryAdapter {
         }
         return cateCheck;
     }
+
     // Load dữ liệu lên table (lấy dữ liệu)
     public static void DataToTable(JTable CATEGORYSTable){
         try{
@@ -97,6 +125,7 @@ public class CategoryAdapter {
             e.printStackTrace();
         }
     }
+
     // up dữ liệu trên table (xóa dữ liệu cũ -> lấy dữ liệu mới)
     public static void updateTable(JTable CATEGORYSTable) {
         DefaultTableModel model = (DefaultTableModel) CATEGORYSTable.getModel();
@@ -119,6 +148,7 @@ public class CategoryAdapter {
             e.printStackTrace();
         }
     }
+
     // chỉnh sửa
     public static void editCategory(Category category){
         try {
@@ -132,11 +162,13 @@ public class CategoryAdapter {
 
                 ps.executeUpdate();
                 ps.close();
+                conn.close();
         } catch(Exception ex) {
             JOptionPane.showMessageDialog(null, "Có lỗi xảy ra :((( Vui lòng kiểm tra lại.");
             ex.printStackTrace();
         }
     }
+
     // Kiểm tra tên
     public static boolean checkExistCategory(String nameCate) {
         boolean check = false;
@@ -150,8 +182,8 @@ public class CategoryAdapter {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
-                System.out.println(String.format(
-                        "%d | %s", rs.getInt(1), rs.getString(2)));
+//                System.out.println(String.format(
+//                        "%d | %s", rs.getInt(1), rs.getString(2)));
                 if(rs.getString(2).equals(nameCate.trim())) {
                     check = true;
                     break;
@@ -159,6 +191,9 @@ public class CategoryAdapter {
                 else
                     check = false;
             }
+            rs.close();
+            ps.close();
+            conn.close();
 
             return check;
         } catch(Exception ex) {
@@ -167,6 +202,7 @@ public class CategoryAdapter {
             return check;
         }
     }
+
     // Lấy list cate
     public static ArrayList<Category> getCateList() {
         try {
@@ -183,8 +219,10 @@ public class CategoryAdapter {
 
                 cateArrayList.add(category);
             }
+            rs.close();
             ps.close();
-
+            conn.close();
+          //  System.out.println("cate >>>" + cateArrayList);
             return cateArrayList;
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -192,7 +230,39 @@ public class CategoryAdapter {
             return null;
         }
     }
-    public static int getCateCount() { return cateArrayList.size(); }
+    // Lấy đối tượng Category
+    // Theo ID
+    public static Category getCategoryItem(int idCate) {
+        try {
+            cateArrayList = getCateList();
+            for(Category item : cateArrayList) {
+                if(item.getCateId() == idCate) {
+                    return item;
+                }
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new Category();
+    }
+    // Theo nameCate
+    public static Category getCategoryItem(String nameCate) {
+        try {
+            cateArrayList = getCateList();
+            for(Category item : cateArrayList) {
+                if(item.getNameCate() == nameCate.trim()) {
+                    return item;
+                }
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new Category();
+    }
     // lấy tên cate
     public static String getCateName(String CateName) {
         String cateName = "";
@@ -213,6 +283,7 @@ public class CategoryAdapter {
 
             ps.executeUpdate();
             ps.close();
+            conn.close();
         } catch(Exception ex) {
 
             JOptionPane.showMessageDialog(null, "Thể loại đã có sản phẩm");
@@ -225,24 +296,12 @@ public class CategoryAdapter {
         for(Category category : cateArrayList)
             if(category.getCateId() == id)
                 foundCate.add(category);
+        return foundCate;
+    }
 
-        return foundCate;
-    }
-    // tìm kiếm theo tên
-    public static ArrayList<Category> findCateName(String keyword) throws SQLException {
-        model = new DefaultTableModel();
-        ArrayList<Category> foundCate = new ArrayList<>();
-        cateArrayList = getCateList();
-        for (Category cate : cateArrayList) {
-                if(cate.getNameCate().contains(keyword))
-                {
-                    foundCate.add(cate);
-                    GetIDCate_UpLoadDataTable(cate.getNameCate());
-                }
-        }
-        return foundCate;
-    }
-/*    public static void upcatedate(JTable CATEGORYSTable,ArrayList<Category> cates)
+
+/*    // tìm kiếm theo tên
+    public static void upcatedate(JTable CATEGORYSTable,ArrayList<Category> cates)
     {
         for(Category category : cates)
         {
@@ -252,7 +311,9 @@ public class CategoryAdapter {
                 });
         }
         CATEGORYSTable.setModel(model);
-    }*/
+    }
+*/
+
     // lấy id và upload dữ liệu lên table
     public static void GetIDCate_UpLoadDataTable( String cateName) throws SQLException {
         String query = "SELECT * FROM TheLoai " +
@@ -267,7 +328,9 @@ public class CategoryAdapter {
             model.addRow(new Object[]{id, name});
         }
         ps.close();
+        conn.close();
     }
+
     public static int getCateId(String nameCate) throws SQLException {
         if(checkExistCategory(nameCate)) {
             ArrayList<Category> foundCategory = findCateName(nameCate);
@@ -277,6 +340,7 @@ public class CategoryAdapter {
 
         return -1;
     }
+
     public static String[] getCateName() {
         cateArrayList = getCateList();
         String[] categories = new String[getCateCount()];
@@ -294,5 +358,30 @@ public class CategoryAdapter {
 
             return null;
         }
+    }
+
+   // kiểm tra cate đã có sách sử dụng hay chưa >>> nếu có trả về số sách đã dùng cate
+    public static int isBookCategoryExist(int idCate) throws SQLException {
+        int CountBook = 0;
+        String query = "SELECT COUNT(*)" +
+                "FROM sach " +
+                "WHERE MaTheLoai = ?";
+
+        Connection conn = MySQL.getConnection();
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, idCate);
+
+        ResultSet rs = ps.executeQuery();
+        // kq bé hơn 0 >>> ko có book có cate này !
+        while(rs.next()) {
+            int rowCount = rs.getInt(1);
+            //số dòng nhỏ hơn = 0 >>> trả về 0 ngược lại trả về số dòng
+            CountBook = rowCount <= 0 ? CountBook : rowCount;
+            rs.close();
+            ps.close();
+            conn.close();
+            return CountBook;
+        }
+        return CountBook;
     }
 }

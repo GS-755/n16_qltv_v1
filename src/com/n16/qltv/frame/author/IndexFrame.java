@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class IndexFrame extends JFrame{
     private JTable tableAuthor;
-    private JButton btnUpdate;
-    private JButton btnAdd, btnEdit, btnDelete, btnExit;
+    private JButton btnAdd, btnEdit, btnDelete, btnExit, btnUpdate;
     private JLabel indexTitle, sortTitle, searchLabel;
     private JPanel indexFrame;
     private JButton btnAscUsrName, btnDescUsrName;
@@ -45,37 +44,39 @@ public class IndexFrame extends JFrame{
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnExit.addActionListener(e -> {
             dispose();
         });
+
         btnAdd.addActionListener(e -> {
             CreateFrame createFrame = new CreateFrame();
         });
+
         btnEdit.addActionListener(e -> {
             if(tableAuthor.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
             else {
-                String authorName = model.getValueAt(
-                        tableAuthor.getSelectedRow(), 0).toString().trim();
-                EditFrame ef = new EditFrame(authorName);
+                int authorId = Integer.parseInt(model.
+                        getValueAt(tableAuthor.getSelectedRow(), 0).toString());
+                EditFrame ef = new EditFrame(authorId);
             }
         });
+
         btnUpdate.addActionListener(e -> {
             deleteTableData();
             authorArrayList = AuthorAdapter.getAuthorList();
-            //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
             authorArrayList = AuthorAdapter.sortUsrName(1);
-            //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
             authorArrayList = AuthorAdapter.sortUsrName(2);
-            //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnSearch.addActionListener( e -> {
@@ -90,6 +91,7 @@ public class IndexFrame extends JFrame{
         });
     }
     public void addTableStyle(DefaultTableModel model) {
+        model.addColumn("Mã tác giả");
         model.addColumn("Tên tác giả");
         model.addColumn("Địa chỉ website");
         model.addColumn("Ghi chú");
@@ -97,6 +99,7 @@ public class IndexFrame extends JFrame{
     public void addTableData(DefaultTableModel model, ArrayList<Author> authors) {
         for(Author author : authors)
             model.addRow(new Object[] {
+                    author.getAuthorId(),
                     author.getAuthorName(),
                     author.getAuthorAddress(),
                     author.getAuthorNote()

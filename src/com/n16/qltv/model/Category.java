@@ -4,15 +4,17 @@ public class Category {
     private int cateId;
     private String nameCate;
 
-    public Category() { }
+    public Category() {
+        this.cateId = 1;
+    }
     public Category(String nameCate) {
+        this.cateId = 1;
         this.nameCate = nameCate;
     }
     public Category(int cateId, String nameCate) {
         this.cateId = cateId;
         this.nameCate = nameCate;
     }
-
 
     public int getCateId() { return this.cateId; }
     public String getNameCate() { return this.nameCate; }

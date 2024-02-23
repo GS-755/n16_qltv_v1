@@ -1,11 +1,15 @@
 package com.n16.qltv.adaptor;
-import com.n16.qltv.model.Author;
+
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.vendor.MySQL;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PublisherAdapter {
@@ -18,7 +22,9 @@ public class PublisherAdapter {
     private static String address;
 
     public static ArrayList<Publisher> findPublisher(int id) {
+        //System.out.println("puli id rs : " + id);
         puliArrayList = getPuliList();
+      //  System.out.println("puli list : " + puliArrayList);
         ArrayList<Publisher> foundPublisher = new ArrayList<>();
         for (Publisher publisher : puliArrayList)
             if (publisher.getPublisherId() == id) {
@@ -31,26 +37,38 @@ public class PublisherAdapter {
     public static ArrayList<Publisher> getPuliList() {
         try {
             puliArrayList = new ArrayList<>();
-            String query = "SELECT * FROM nhaxb";
+            String query = "SELECT * FROM nhaxb ";
+
             Connection conn = MySQL.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()) {
                 Publisher publisher = new Publisher();
-                publisher.setPublisherId(rs.getInt(1));
-                publisher.setPublisherName(rs.getString(2));
-                publisher.setPublisherEmail(rs.getString(3));
-                publisher.setPublisherAddress(rs.getString(4));
-                publisher.setPublisherRepresen(rs.getString(5));
 
+                publisher.setPublisherId(rs.getInt(1));
+              //  System.out.println("puli id >>>"+rs.getInt(1));
+
+                publisher.setPublisherName(rs.getString(2));
+              //  System.out.println("puli Name >>>"+rs.getString(2));
+
+                publisher.setPublisherEmail(rs.getString(3));
+              //  System.out.println("puli email >>>"+rs.getString(3));
+
+                publisher.setPublisherAddress(rs.getString(4));
+              //  System.out.println("puli address >>>"+rs.getString(4));
+              //     publisher.setPublisherRepresen(rs.getString(5));
+              //                System.out.println("puli Represen >>>"+rs.getString(5));
+              // System.out.println("puli string " + publisher.toString());
                 puliArrayList.add(publisher);
             }
-
+                //System.out.println("pulis >>> " + puliArrayList);
+            rs.close();
+            ps.close();
+            conn.close();
             return puliArrayList;
         } catch(Exception ex) {
             ex.printStackTrace();
-
             return null;
         }
     }
@@ -120,7 +138,7 @@ public class PublisherAdapter {
             return false;
         }
         // Thoả mọi đk
-        if(checkExistCategory(Name,Address))
+        if(checkExistNXB(Name))
             JOptionPane.showMessageDialog(null, " nhà xuất bản " +Name+ " đã tồn tại");
         else
             // Tên thể loại ko trùng trong database
@@ -164,27 +182,39 @@ public class PublisherAdapter {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         return puliCheck;
+    }
+    // Trả về đối tượng NXB dựa trên ID
+    public static Publisher getPublisherItem(int publisherId) {
+        try {
+            puliArrayList = getPuliList();
+            for(Publisher item : puliArrayList) {
+                if(item.getPublisherId() == publisherId) {
+                    return item;
+                }
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new Publisher();
     }
     // trùng tên trùng địa chỉ => 1 NSX
     // trùng tên khác địa chỉ duyệt
-    public static boolean checkExistCategory(String name, String Address) {
+    public static boolean checkExistNXB(String name) {
         boolean check = false;
         try {
             String query = "SELECT * " +
                     "FROM nhaxb " +
-                    "WHERE TenNXB = ?"+
-                    "AND DiaChi = ? ";
+                    "WHERE TenNXB = ?";
             Connection conn = MySQL.getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, name.trim());
-            ps.setString(2, Address.trim());
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-/*                System.out.println(String.format(
-                        "%d | %s", rs.getInt(1), rs.getString(2)));*/
-                if(rs.getString(2).equals(name.trim()) ||
-                        rs.getString(4).equals(Address.trim()))
+                if(rs.getString(2).equals(name.trim()))
                 {
                     check = true;
                     break;
@@ -192,7 +222,41 @@ public class PublisherAdapter {
                 else
                     check = false;
             }
+            rs.close();
+            ps.close();
+            conn.close();
+            return check;
 
+        } catch(Exception ex) {
+            ex.printStackTrace();
+
+            return check;
+        }
+    }
+
+    public static boolean checkIsPuli(int id ,String name) {
+        boolean check = false;
+        try {
+
+            // kt tên nxb với tên mới có trùng với nxb khác ko:
+            String query = "SELECT * " +
+                    "FROM nhaxb " +
+                    "WHERE TenNXB = ?";
+
+            Connection conn = MySQL.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+
+            ps.setString(1, name.trim());
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                // nếu có kq trả về thì tên này đã được sử dụng.
+                // trường hợp tên đã được sử dụng là của id sở hữu thì cho phép chỉnh sửa.
+                if(rs.getInt(1) == id)
+                return check = false;
+                else return check = true; // ngược lại tên đã đc đăng ký bởi 1 id khác!
+            }
             return check;
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -200,6 +264,9 @@ public class PublisherAdapter {
             return check;
         }
     }
+
+
+
     public static void editPublisher(Publisher publisher,int id){
         try {
             String query = "UPDATE nhaxb " +
@@ -248,17 +315,17 @@ public class PublisherAdapter {
 
         return foundPublisher;
     }
-    public static ArrayList<Publisher> findPublisher(String name,String address) {
-        puliArrayList = getPuliList();
-        ArrayList<Publisher> foundPublisher = new ArrayList<>();
-        for(Publisher publisher : puliArrayList)
-            if(publisher.getPublisherName().equals(name)
-                    && !publisher.getPublisherAddress().equals(address)) {
-                foundPublisher.add(publisher);
-            }
-
-        return foundPublisher;
-    }
+//    public static ArrayList<Publisher> findPublisher(String name,String address) {
+//        puliArrayList = getPuliList();
+//        ArrayList<Publisher> foundPublisher = new ArrayList<>();
+//        for(Publisher publisher : puliArrayList)
+//            if(publisher.getPublisherName().equals(name)){ //&& !publisher.getPublisherAddress().equals(address))
+//
+//                foundPublisher.add(publisher);
+//            }
+//
+//        return foundPublisher;
+//    }
     public static ArrayList<Publisher> findPuliName(String keyword,JTable Puli_Table,JLabel support_sreach)
             throws SQLException {
 
@@ -293,6 +360,7 @@ public class PublisherAdapter {
         }
         return foundPuli;
     }
+
     public static void GetIDPulis_UpLoadDataTable( String puliName,String puliAddress) throws SQLException {
         String query = "SELECT * FROM nhaxb " +
                 " WHERE TenNXB = ? "+
@@ -353,7 +421,7 @@ public class PublisherAdapter {
         return publishers;
     }
     public static int findPublisherId(String publisherName, String publisherAddress) {
-        if(checkExistCategory(publisherName, publisherAddress)) {
+        if(checkExistNXB(publisherName)) {
             ArrayList<Publisher> foundPublisher = findPublisher(publisherName);
 
             return foundPublisher.get(0).getPublisherId();

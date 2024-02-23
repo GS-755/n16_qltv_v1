@@ -25,5 +25,16 @@ public class Publisher {
     public void setPublisherEmail(String publisherEmail) { this.publisherEmail = publisherEmail; }
     public void setPublisherAddress(String publisherAddress) { this.publisherAddress = publisherAddress; }
     public void setPublisherRepresen(String publisherRepresen) { this.publisherRepresen = publisherRepresen;}
+
+    @Override
+    public String toString() {
+        return "Publisher{" +
+                "publisherId=" + publisherId +
+                ", publisherName='" + publisherName + '\'' +
+                ", publisherEmail='" + publisherEmail + '\'' +
+                ", publisherAddress='" + publisherAddress + '\'' +
+                ", publisherRepresen='" + publisherRepresen + '\'' +
+                '}';
+    }
 }
 

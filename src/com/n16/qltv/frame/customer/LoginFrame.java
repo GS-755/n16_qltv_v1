@@ -23,12 +23,13 @@ public class LoginFrame extends JFrame{
         setTitle("Đăng nhập khách hàng");
         setVisible(true);
         setResizable(false);
-        setBounds(60, 70, 480, 300);
+        setBounds(60, 70, 560, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         btnLogin.addActionListener(e->{
             try{
                 String usrName = txtUrsName.getText();
                 String password = txtPass.getText();
+
                 if(CustomerAdapter.checkExistCustomer(usrName)) {
                     boolean loginStatus = CustomerAdapter.loginAccount(usrName, password);
                     if(loginStatus) {
@@ -39,10 +40,11 @@ public class LoginFrame extends JFrame{
                         JOptionPane.showMessageDialog(null,
                                 "Thông tin đăng nhập KHÔNG chính xác");
                     }
-                } else if(txtPass.getText().isEmpty()
-                        || txtPass.getText().isBlank()) {
+                }
+                else if(txtPass.getText().isEmpty()|| txtPass.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Mật khẩu KHÔNG được để trắng!");
-                } else {
+                }
+                else {
                     JOptionPane.showMessageDialog(null, "KHÔNG có người dùng này trên máy chủ!");
                 }
             }

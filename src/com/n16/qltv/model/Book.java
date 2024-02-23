@@ -48,4 +48,19 @@ public class Book {
     public void setCategory(Category category) { this.category = category; }
     public void setCover(String cover) { this.cover = cover; }
     public void setQty(int qty) { this.qty = qty; }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId=" + bookId +
+                ", bookName='" + bookName + '\'' +
+                ", bookYear=" + bookYear +
+                ", publisher=" + publisher +
+                ", author=" + author +
+                ", category=" + category +
+                ", cover='" + cover + '\'' +
+                ", qty=" + qty +
+                '}';
+    }
+
 }

@@ -5,8 +5,11 @@ public class Author {
     private String authorName;
     private String authorAddress, authorNote;
 
-    public Author() { }
+    public Author() {
+        this.authorId = 1;
+    }
     public Author(String authorName, String authorAddress) {
+        this.authorId = 1;
         this.authorName = authorName;
         this.authorAddress = authorAddress;
     }

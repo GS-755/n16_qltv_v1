@@ -31,7 +31,6 @@ public class AdminAdapter {
                 if(rs.getString(1).equals(usrName)
                         && rs.getString(2).equals(authTmp)) {
                     Session.put("admin", usrName);
-
                     return true;
                 }
             }

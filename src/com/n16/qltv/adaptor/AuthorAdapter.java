@@ -8,7 +8,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class AuthorAdapter {
-    private static ArrayList<Author> authorArrayList = new ArrayList<>();
+    private static ArrayList<Author> authorArrayList;
+
+    public AuthorAdapter() {
+        authorArrayList = new ArrayList<>();
+    }
 
     public static boolean checkExist(String authorName) {
         try {
@@ -57,19 +61,19 @@ public class AuthorAdapter {
         try {
             if(checkExist(author.getAuthorName())) {
                 String query = "UPDATE tacgia " +
-                        "SET Website = ?," +
+                        "SET Website = ?, " +
                         "GhiChu = ? " +
                         "WHERE TenTacGia = ?";
                 Connection conn = MySQL.getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, author.getAuthorAddress());
-                ps.setString(3, author.getAuthorName());
                 if(author.getAuthorNote().isEmpty()
                         || author.getAuthorNote().isBlank()) {
                     ps.setString(2, "");
                 } else {
                     ps.setString(2, author.getAuthorNote());
                 }
+                ps.setString(3, author.getAuthorName());
 
                 ps.executeUpdate();
             } else {
@@ -123,29 +127,20 @@ public class AuthorAdapter {
             return null;
         }
     }
-    public static String getAuthorName(String usrName) {
-        String authorName = "";
-        for (Author author : authorArrayList)
-            if (author.getAuthorName().equals(usrName))
-                authorName = author.getAuthorName();
+    public static Author getAuthorItem(int idAuthor) {
+        try {
+            authorArrayList = getAuthorList();
+            for(Author item : authorArrayList) {
+                if(item.getAuthorId() == idAuthor) {
+                    return item;
+                }
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
 
-        return authorName;
-    }
-    public static String getAuthorNote(String usrName) {
-        String authorNote = "";
-        for (Author author : authorArrayList)
-            if (author.getAuthorName().equals(usrName))
-                authorNote= author.getAuthorNote();
-
-        return authorNote;
-    }
-    public static String getAuthorAddress(String usrName) {
-        String authorAddress = "";
-        for (Author author : authorArrayList)
-            if (author.getAuthorName().equals(usrName))
-                authorAddress = author.getAuthorAddress();
-
-        return authorAddress;
+        return new Author();
     }
 
     public static ArrayList<Author> sortUsrName(int mode) {

@@ -32,19 +32,24 @@ public class CreateFrame extends JFrame {
         btnCreate.addActionListener(e -> {
             Validation.clearValidation();
             try {
+                Book book = new Book();
+                book.setBookName(txtBookName.getText());
                 if(!BookAdapter.checkExistBook(txtBookName.getText())) {
                     ArrayList<Author> authors = AuthorAdapter.
                             findAuthorName(1, cbAuthor.getSelectedItem().toString());
+
                     ArrayList<Category> categories = CategoryAdapter.
                             findCateName(cbCategory.getSelectedItem().toString());
+
                     ArrayList<Publisher> publishers = PublisherAdapter.
                             findPublisher(cbPublisher.getSelectedItem().toString());
 
-                    Book book = new Book();
-                    book.setBookName(txtBookName.getText());
+
+
                     book.setCategory(categories.get(0));
                     book.setAuthor(authors.get(0));
                     book.setPublisher(publishers.get(0));
+
                     book.getCategory().setCateId(CategoryAdapter.
                             getCateId(book.getCategory().getNameCate()));
                     book.getAuthor().setAuthorId(AuthorAdapter.
@@ -52,6 +57,7 @@ public class CreateFrame extends JFrame {
                     book.getPublisher().setPublisherId(PublisherAdapter.
                             findPublisherId(book.getPublisher().getPublisherName(),
                                     book.getPublisher().getPublisherAddress()));
+
                     if(txtPublisherYear.getText().isEmpty()
                             || txtPublisherYear.getText().isBlank()) {
                         Validation.createValidation("Năm xuất bản KHÔNG để trống");
@@ -67,7 +73,11 @@ public class CreateFrame extends JFrame {
                         BookAdapter.addBook(book);
                         JOptionPane.showMessageDialog(null, "Thêm sách thành công!");
                     }
-                } else {
+
+                    dispose();
+                    setVisible(false);
+                }
+                else {
                     JOptionPane.showMessageDialog(null, "Đã có sách trong hệ thống");
                 }
             } catch (Exception ex) {

@@ -5,6 +5,7 @@ import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Publisher;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class PublisherFrom extends JFrame {
     private JLabel support_sreach;
     private JButton bnt_suport;
     private ArrayList<Publisher> PulisherArrayList;
+    private Component PublisherFrom;
 
 
     public PublisherFrom()  {
@@ -90,25 +92,37 @@ public class PublisherFrom extends JFrame {
                 else
                /* if(Puli_Table.getSelectedRow() <= 0)*/
                 {
+                    // cột được chọn:
                     int id = Integer.parseInt(PublisherAdapter.model.getValueAt(
                             Puli_Table.getSelectedRow(), 0).toString());
-                    Publisher publisher = new Publisher();
-                    publisher.setPublisherName(tf_NamePulisher.getText().toString().trim());
-                    publisher.setPublisherEmail(tf_EmailPulisher.getText().toString().trim());
-                    publisher.setPublisherAddress(tf_PulisherAddress.getText().toString().trim());
-                    publisher.setPublisherRepresen(tf_PulisherRepresen.getText().toString().trim());
-                    //
-                    Validation.clearValidation();
-                    Validation.publisherValidation(publisher);
-                    if(Validation.getErrCount() != 0) {
-                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+
+                    String namePuli = tf_NamePulisher.getText().toString().trim();
+                    if(PublisherAdapter.checkIsPuli(id,namePuli)){
+                        JOptionPane.showMessageDialog(PublisherFrom,"Nhà xuất bản "+namePuli+ " đã được đăng ký" );
                     }
                     else {
+                        Publisher publisher = new Publisher();
+                        publisher.setPublisherName( tf_NamePulisher.getText().toString().trim());
+                        publisher.setPublisherEmail(tf_EmailPulisher.getText().toString().trim());
+                        publisher.setPublisherAddress(tf_PulisherAddress.getText().toString().trim());
+                        publisher.setPublisherRepresen(tf_PulisherRepresen.getText().toString().trim());
                         //
-                        PublisherAdapter.editPublisher(publisher,id);
-                        //
-                        PublisherAdapter.updateTable(Puli_Table);
+                        Validation.clearValidation();
+                        Validation.publisherValidation(publisher);
+
+
+                        if(Validation.getErrCount() != 0) {
+                            JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                        }
+                        else {
+                            //
+                            PublisherAdapter.editPublisher(publisher,id);
+                            //
+                            PublisherAdapter.updateTable(Puli_Table);
+                        }
                     }
+
+
 
 
                 }
