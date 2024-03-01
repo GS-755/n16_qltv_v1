@@ -13,8 +13,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.n16.qltv.adaptor.CategoryAdapter.getCateId;
-
 public class EditFrame extends JFrame {
     private JTextField tf_NameBook;
     private JTextField tf_YearBook;
@@ -100,7 +98,7 @@ public class EditFrame extends JFrame {
         ArrayList<Category> categories = CategoryAdapter.
                 getCateList();
         ArrayList<Publisher> publishers = PublisherAdapter.
-                getPuliList();
+                getPubliList();
 
         for(Author author : authors) {
             cbAuthor.addItem(author.getAuthorName());

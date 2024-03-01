@@ -116,14 +116,15 @@ public class Validation {
         if(puli.getPublisherEmail().isEmpty()) {
             createValidation("email không được để trống");
         }
-//        else if(!isValidEmail(puli.getPublisherEmail())) {
-//            createValidation("email không hợp lệ");
-//        }
+        else if(!isGmail(puli.getPublisherEmail())){
+            createValidation("không đúng định dạng email");
+        }
         if(puli.getPublisherRepresen().isEmpty()) {
             createValidation("hãy nhập tên người đại diện");
         }
-        else if(!isString(puli.getPublisherName()))
+        else if(!isString(puli.getPublisherName())){
             createValidation("Tên người đại diện không hợp lệ");
+        }
     }
     public static String getStrValidation() {
         int errCount = 0;
@@ -153,6 +154,12 @@ public class Validation {
         }
 
         return true;
+    }
+    public static boolean isGmail(String email) {
+        if(!email.matches(".*@gmail\\.com$"))
+        return false;
+        else
+            return true;
     }
     public static boolean isStrongPassword(String password) {
         // Kiểm tra chứa chữ số

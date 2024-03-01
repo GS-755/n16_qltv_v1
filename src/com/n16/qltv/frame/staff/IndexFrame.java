@@ -30,7 +30,7 @@ public class IndexFrame extends JFrame {
     private JButton bnt_Logout;
     private DefaultTableModel model;
     private ArrayList<Staff> staffArrayList;
-    private final int DELAY_TIME = 1800;
+    private final int DELAY_TIME = 1800; // what the have ??
 
 
     public IndexFrame() {

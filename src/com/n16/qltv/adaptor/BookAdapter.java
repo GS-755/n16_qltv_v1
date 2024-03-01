@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.n16.qltv.vendor.MySQL.*;
+
 public class BookAdapter {
     public static DefaultTableModel model;// khai báo data table
     private static ArrayList<Book> bookArrayList;
@@ -284,14 +286,21 @@ public class BookAdapter {
                 String authorName = authors.get(0).getAuthorName().toString();
 
                 ArrayList<Category> categories = CategoryAdapter.findCate(id_Cate);
-                String cateName = authors.get(0).getAuthorName().toString();
+                String cateName = categories.get(0).getNameCate().toString();
                 model.addRow(new Object[]{id, name,year,cover,puliName,authorName,cateName});
             }
-            rs.close();
-            preparedStatement.close();
-            conn.close();
+            if(rs != null) rs.close();
+            if(preparedStatement != null)  preparedStatement.close();
+            if(conn != null) conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally{
+            try {
+               MySQL.getConnection().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     public static boolean IsBorrow(int idBook) {
