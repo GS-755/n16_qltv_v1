@@ -7,7 +7,7 @@
 </p>
 <h3 align="center">Đây là project của chúng mình xây dựng nhằm mục đích làm đề tài chính cho môn học MTKPM </h3>
 <img src="https://i.imgur.com/dBaSKWF.gif" height="20" width="100%">
-<details open="" align="left">
+<details lose="" align="left">
   <summary>
     📔 Giới Thiệu về Các Thành viên nhóm:
   </summary>
@@ -195,10 +195,38 @@ Chúc bạn thành công ! - GaCon -
   <summary>
     📔  Các tính năng của phền mềm:
   </summary>
-        <h4>Sẽ được cập nhật trong thời gian sớm nhất!</h4>
-        Chức năng đăng nhập:
-        <img src="https://scontent-hkg1-2.xx.fbcdn.net/v/t39.30808-6/430138553_122116710656214596_8326752822438652453_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=3635dc&_nc_ohc=pDS8bJah1TgAX8v-okE&_nc_ht=scontent-hkg1-2.xx&oh=00_AfBuH6crKmVP31YExHXbNKUSSRhzj6sw7kdG7OVMU4uo-g&oe=65E89E6B" alt="h4" width="50%">
-    </details>
+                ## Danh Sách Chức Năng
+
+1. [Đăng Nhập](DangNhap)
+2. [Quản Lý Độc Giả](DocGia)
+3. [Quản Lý Tác Gỉa](TacGia)
+4. [Quản Lý Thể Loại](TheLoai)
+5. [Quản Lý Tựa Sách](TuaSach)
+6. [Quản Lý Nhà Xuất Bản](NhaXuatBan)
+7. [Quản Lý Khách Hàng](KhachHang)
+8. [Quản Lý Nhân Viên](NhanVien)
+9. [Quản lý mượn trả](MuonTra) 
+
+## DangNhap
+<img src="https://scontent-hkg1-2.xx.fbcdn.net/v/t39.30808-6/430138553_122116710656214596_8326752822438652453_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=3635dc&_nc_ohc=pDS8bJah1TgAX8v-okE&_nc_ht=scontent-hkg1-2.xx&oh=00_AfBuH6crKmVP31YExHXbNKUSSRhzj6sw7kdG7OVMU4uo-g&oe=65E89E6B" alt="h4" align="center" width="70%">
+
+## DocGia
+
+## TacGia
+
+## TheLoai
+
+## TuaSach
+
+## NhaXuatBan
+
+## KhachHang
+
+## NhanVien
+
+## MuonTra
+
+</details>
 
 
 
