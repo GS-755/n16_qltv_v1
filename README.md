@@ -57,21 +57,22 @@
     📔  một số hình ảnh của phần mềm:
   </summary>
 </p>
-        <p align="center">
-    <img src="![Screenshot 2024-02-05 134609](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/6dcdde0a-169d-4184-b784-658b671ac5b0)" alt="h1" width="50%">
-</p>
-        <p align="center">
-    <img src="![Screenshot 2024-02-05 134633](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/fd79469f-f41e-4a26-bc25-c8b4001d8906)" alt="h2" width="21%">
-</p>
-        <p align="center">
-    <img src="![Screenshot 2024-02-05 134727](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/c6aeb0e5-bf2c-4e6c-ba41-7bc7e6df1bca)" alt="h3" width="21%">
-</p>
-        <p align="center">
-    <img src="![Screenshot 2024-02-05 134815](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/7b34f6fd-a1ed-4058-8d7d-4aa7814e62ce)" alt="h4" width="21%">
-</p>
-        <p align="center">
-    <img src="![Screenshot 2024-02-05 134845](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/b8ff8852-8e63-4668-b30d-1348e9a2ea21)" alt="h5" width="21%">
-</p>
+
+| Hình Ảnh  | Tiêu Đề |
+|  :---:  | ---------- |
+|     <img src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/430233675_122116641668214596_3598838957140476979_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=3635dc&_nc_ohc=GHMuHX0PvqEAX84tiFK&_nc_ht=scontent.fhan4-3.fna&oh=00_AfBEptZ2xx2ggSYiDv2L7E20PLePtBKkEXl7fiUnNonHIw&oe=65E7A776" alt="h1" width="50%">  | màn hình chức năng `đăng nhập`  |
+|     <img src="https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/430206665_122116642070214596_8671463369502106531_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=3635dc&_nc_ohc=E6Qrd5KkgHQAX8WgSwZ&_nc_ht=scontent.fhan3-3.fna&oh=00_AfAqtN47siJ1fhohNoudow9hxA58k55g3QV9vxtKEK-giA&oe=65E83CDC" alt="h2" width="50%">  | màn hình chức năng `quản lý`  |
+|     <img src="https://scontent.fhan3-2.fna.fbcdn.net/v/t39.30808-6/430148580_122116641950214596_8754250279269571025_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=3635dc&_nc_ohc=us-ivNuDBBAAX-G7U6R&_nc_ht=scontent.fhan3-2.fna&oh=00_AfAmEozquHG0FO_Gy0Tt-8Nccd_ir1fbDDMTZXIGTsuiJA&oe=65E6E110" alt="h3" width="50%">  | menu quản lý `chức năng`  |
+|     <img src="https://scontent.fhan3-5.fna.fbcdn.net/v/t39.30808-6/430222363_122116641992214596_4790288987562509067_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=3635dc&_nc_ohc=W6sDnzf3DjcAX933jku&_nc_ht=scontent.fhan3-5.fna&oh=00_AfBu2Pa7CbPfsZ3i8JIomEO0iLQcS__CEdr4LpchDoe-Ew&oe=65E7AE3E" alt="h4" width="50%">  | màn hình quản lý `độc giả`  |
+|     <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t39.30808-6/430987855_122116641944214596_8203988435025409380_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=4CGCsVQx2d4AX8UQ2Dm&_nc_ht=scontent.fhan4-2.fna&oh=00_AfDdj9JGaT3nqARsrdaRPOuMB8kXOCwJ85DiblAesTa3YA&oe=65E7B48F" alt="h4" width="50%">  | màn hình quản lý `thể loại`  |
+|     <img src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/430204585_122116641854214596_7894242260228873368_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=3635dc&_nc_ohc=mxc8NxNIErIAX9ha9ip&_nc_ht=scontent.fhan4-3.fna&oh=00_AfAcB3pluuZ5U3V3lHICJhHOMNn4y10BD75WGGFZHaPC7g&oe=65E7748D" alt="h1" width="50%">  | màn hình quản lý `tựa sách`  |
+|     <img src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/430149056_122116641830214596_2375558732692584821_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=3635dc&_nc_ohc=1q4aKGP1aoEAX_iRYs3&_nc_ht=scontent.fhan4-3.fna&oh=00_AfANoZ8gIlWUIwzwoiAhbFLbhY2Ihne7PZUZLtdmlpXVbA&oe=65E79E97" alt="h2" width="50%">  | màn nìnn quản lý `nhà xuất bản`  |
+|     <img src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/430182920_122116641800214596_3751017847613776111_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=3635dc&_nc_ohc=UEv91DiGR1EAX__vUxq&_nc_ht=scontent.fhan4-3.fna&oh=00_AfBKs3OaUgrorW6ZkCJhFeJaG7chkC_535C-RFLUeECbXA&oe=65E7FE14" alt="h3" width="50%">  | màn hình quản lý `nhân viên`  |
+|     <img src="https://scontent.fhan3-5.fna.fbcdn.net/v/t39.30808-6/430221893_122116641710214596_6274232781603387322_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=3635dc&_nc_ohc=b3CaFinPpMgAX-a6HJ_&_nc_ht=scontent.fhan3-5.fna&oh=00_AfDDWilwBZUL7YfeXc78a_MNmxDneijakqAK9LyyWYd8xA&oe=65E79AE2" alt="h4" width="50%">  | màn hình quản lý `mượn trả sách`  |
+|     <img src="https://scontent.fhan4-3.fna.fbcdn.net/v/t39.30808-6/430182132_122116641716214596_3763714526676692214_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=3635dc&_nc_ohc=VENYmjsfYcsAX8awqIi&_nc_ht=scontent.fhan4-3.fna&oh=00_AfA4mea-7LeyWJWLUUfJSRV_iblSDxSElJwNU7VNsVOYhQ&oe=65E837FA" alt="h4" width="50%">  | màn hình quản lý `khách hàng`  |
+
+
+
 </details>
 <details open="" align="left">
   <summary>
