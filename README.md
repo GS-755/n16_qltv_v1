@@ -34,7 +34,7 @@
   </p>
   <p align="left"><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=huynhthienthe&text_color=FFFFFF&bg_color=000000&title_color=94b4a4&langs_count=15&layout=compact&hide_border=true" alt="huynhthienthe" /></p>
 </details>
-<details open="" align="left">
+<details lose="" align="left">
   <summary>
     📔  Giới Thiệu về project của nhóm:
   </summary>
@@ -52,7 +52,7 @@
   linh hoạt và bảo trì tốt 🛠️ của mã nguồn, ngoài ra còn giúp cho mã nguồn có khả năng tái sử dụng lại cao.
   </p>
 </details>
-    <details open="" align="left">
+    <details lose="" align="left">
   <summary>
     📔  một số hình ảnh của phần mềm:
   </summary>
@@ -74,7 +74,7 @@
 
 
 </details>
-<details open="" align="left">
+<details lose="" align="left">
   <summary>
     📔  Cách cài đặt phần mềm:
   </summary>
@@ -191,11 +191,13 @@ B5: Bạn hãy dán đoạn Script này vào phần SQL của phpmyadmin và nh�
 B6 (Đây là bước cuối của phần hướng dẫn này): bạn chỉ cần cài đặc các IDE như: IntelliJ IDEA, Apache NetBeans, ... và chọn đường dẫn bạn đã clone project về và chạy nó!
 Chúc bạn thành công ! - GaCon -
 </details>
-    <details open="" align="left">
+    <details lose="" align="left">
   <summary>
     📔  Các tính năng của phền mềm:
   </summary>
         <h4>Sẽ được cập nhật trong thời gian sớm nhất!</h4>
+        Chức năng đăng nhập:
+        <img src="https://scontent-hkg1-2.xx.fbcdn.net/v/t39.30808-6/430138553_122116710656214596_8326752822438652453_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=3635dc&_nc_ohc=pDS8bJah1TgAX8v-okE&_nc_ht=scontent-hkg1-2.xx&oh=00_AfBuH6crKmVP31YExHXbNKUSSRhzj6sw7kdG7OVMU4uo-g&oe=65E89E6B" alt="h4" width="50%">
     </details>
 
 
