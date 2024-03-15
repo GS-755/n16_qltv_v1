@@ -193,6 +193,20 @@ public class StaffAdapter {
 
         return staffName;
     }
+    public static Date getStaffDob(String usrName) {
+        Date staffDob = null;
+        try {
+            for(Staff staff : staffArrayList)
+                if(staff.getUsrName().equals(usrName)) {
+                    staffDob = staff.getStaffDob();
+                }
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return staffDob;
+    }
     public static char getStaffGender(String usrName) {
         char gender = 'm';
         for(Staff staff : staffArrayList)

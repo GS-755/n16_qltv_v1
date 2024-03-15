@@ -47,7 +47,7 @@ public class EditFrame extends JFrame {
                         && txtRePassword.getText().isEmpty()) {
                     staff.setStaffName(txtName.getText());
                     staff.setGender(gender);
-                    staff.setStaffDob(Date.valueOf(selectDate.getDate()));
+                    staff.setStaffDob(StaffAdapter.getStaffDob(usrName));
                     staff.setStaffAddress(txtAddress.getText());
                     staff.setStaffPhone(txtPhone.getText());
                     staff.setUsrName(usrName.trim());
@@ -72,6 +72,12 @@ public class EditFrame extends JFrame {
                             staff.setGender(gender);
                             staff.setStaffPhone(txtPhone.getText());
                             staff.setStaffAddress(txtAddress.getText());
+                            if(selectDate.getDate() == null) {
+                                staff.setStaffDob(StaffAdapter.getStaffDob(usrName));
+                            }
+                            else {
+                                staff.setStaffDob(Date.valueOf(selectDate.getDate()));
+                            }
                             staff.setStaffDob(Date.valueOf(selectDate.getDate()));
                             staff.setUsrName(usrName.trim());
                             staff.setPassword(txtPassword.getText());
