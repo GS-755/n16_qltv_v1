@@ -15,7 +15,7 @@ public class AuthorAdapter {
             String query = "SELECT * " +
                     "FROM tacgia " +
                     "WHERE TenTacGia = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, authorName);
             ResultSet rs = ps.executeQuery();
@@ -35,7 +35,7 @@ public class AuthorAdapter {
     }
     public static void addAuthor(Author author) {
         try {
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             String query = "INSERT INTO tacgia("
                     + " TenTacGia, "
                     + " Website, "
@@ -60,7 +60,7 @@ public class AuthorAdapter {
                         "SET Website = ?," +
                         "GhiChu = ? " +
                         "WHERE TenTacGia = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, author.getAuthorAddress());
                 ps.setString(3, author.getAuthorName());
@@ -86,7 +86,7 @@ public class AuthorAdapter {
             if (checkExist(usrName)) {
                 String query = "DELETE FROM tacgia " +
                         " WHERE TenTacGia = ?";
-                Connection conn = MySQL.getConnection();
+                Connection conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, usrName);
                 ps.executeUpdate();
@@ -102,7 +102,7 @@ public class AuthorAdapter {
         try {
             authorArrayList = new ArrayList<>();
             String query = "SELECT * FROM tacgia";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 

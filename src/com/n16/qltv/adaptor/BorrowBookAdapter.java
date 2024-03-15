@@ -1,15 +1,15 @@
 package com.n16.qltv.adaptor;
 
-import com.n16.qltv.frame.borrowbook.CreateBorrowBook;
 import com.n16.qltv.model.BorrowBook;
-import com.n16.qltv.model.Staff;
 import com.n16.qltv.vendor.MySQL;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class BorrowBookAdapter {
     public static DefaultTableModel model;// khai báo data table
@@ -25,7 +25,7 @@ public class BorrowBookAdapter {
             model.addColumn("Mã nhân viên");
 
             String query = "SELECT * FROM muontra";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -50,7 +50,7 @@ public class BorrowBookAdapter {
         model.setRowCount(0);
         try {
             String query = "SELECT * FROM muontra";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -77,7 +77,7 @@ public class BorrowBookAdapter {
                     "MaDocGia = ?, " +
                     "MaNV = ? " +
                     "WHERE MaMuonTra = ?";
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setDate(1, java.sql.Date.
                     valueOf(borrowBook.getBorrowDate().toString()));

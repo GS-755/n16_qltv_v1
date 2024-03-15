@@ -1,20 +1,32 @@
 package com.n16.qltv.vendor;
 
-import com.n16.qltv.frame.config.ConfigFrame;
-
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class MySQL {
-    public static AppProperties appProperties = new AppProperties();
+    private static MySQL client = new MySQL();
+    private Connection conn;
+    private AppProperties properties;
 
-    public static Connection getConnection() {
+    private MySQL() {
+        try {
+            Thread.sleep(1200);
+            this.properties = new AppProperties();
+            this.properties.loadConfig();
+            this.conn = this.makeConnection();
+        }
+        catch(Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private Connection makeConnection() {
         Connection conn = null;
         try {
-            appProperties.loadConfig();
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(appProperties.getConnectionString(),
-                    appProperties.getUserName(), appProperties.getPassword());
+            conn = DriverManager.getConnection(properties.getConnectionString(),
+                    properties.getUserName(), properties.getPassword());
             System.out.println("Connect successfully!");
         } catch (Exception ex) {
             System.out.println("Connect failure :((");
@@ -22,5 +34,17 @@ public class MySQL {
         }
 
         return conn;
+    }
+    public Connection getConnection() { return this.conn; }
+
+    public static synchronized MySQL client() {
+        if(MySQL.client == null) {
+            MySQL.client = new MySQL();
+        }
+
+        return MySQL.client;
+    }
+    private static void setClient(MySQL client) {
+        MySQL.client = client;
     }
 }

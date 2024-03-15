@@ -21,7 +21,7 @@ public class AdminAdapter {
                 "WHERE usrName = ? " +
                 "AND password = ?";
         try {
-            Connection conn = MySQL.getConnection();
+            Connection conn = MySQL.client().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, usrName);
             ps.setString(2, authTmp);
