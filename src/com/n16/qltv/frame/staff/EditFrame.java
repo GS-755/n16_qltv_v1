@@ -1,5 +1,6 @@
 package com.n16.qltv.frame.staff;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.n16.qltv.adaptor.StaffAdapter;
 import com.n16.qltv.adaptor.Validation;
 import com.n16.qltv.model.Staff;
@@ -7,6 +8,7 @@ import com.n16.qltv.vendor.SHA256;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 
 public class EditFrame extends JFrame {
     public JPanel addPanel;
@@ -19,6 +21,7 @@ public class EditFrame extends JFrame {
     private JLabel usrNameLabel, passwordLabel, rePasswordLabel;
     private JLabel addressLabel, phoneLabel, dobLabel;
     private JLabel titleLabel;
+    private DatePicker selectDate;
 
     public EditFrame(String usrName) {
         setGenderComponents();
@@ -44,7 +47,7 @@ public class EditFrame extends JFrame {
                         && txtRePassword.getText().isEmpty()) {
                     staff.setStaffName(txtName.getText());
                     staff.setGender(gender);
-                    staff.setStaffDob("2000-1-1");
+                    staff.setStaffDob(Date.valueOf(selectDate.getDate()));
                     staff.setStaffAddress(txtAddress.getText());
                     staff.setStaffPhone(txtPhone.getText());
                     staff.setUsrName(usrName.trim());
@@ -69,7 +72,7 @@ public class EditFrame extends JFrame {
                             staff.setGender(gender);
                             staff.setStaffPhone(txtPhone.getText());
                             staff.setStaffAddress(txtAddress.getText());
-                            staff.setStaffDob("2000-1-1");
+                            staff.setStaffDob(Date.valueOf(selectDate.getDate()));
                             staff.setUsrName(usrName.trim());
                             staff.setPassword(txtPassword.getText());
                             if(Validation.isStrongPassword(staff.getPassword())) {

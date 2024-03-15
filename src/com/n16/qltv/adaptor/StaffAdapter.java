@@ -55,7 +55,7 @@ public class StaffAdapter {
 
             PreparedStatement st = conn.prepareStatement(query);
             st.setString(1, staff.getStaffName());
-            st.setDate(2, Date.valueOf(staff.getStaffDob()));
+            st.setDate(2, staff.getStaffDob());
             st.setString(3, staff.getStaffPhone());
             st.setString(4, staff.getStaffAddress());
             st.setString(5, staff.getUsrName());
@@ -84,7 +84,7 @@ public class StaffAdapter {
                 Connection conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, staff.getStaffName());
-                ps.setString(2, staff.getStaffDob());
+                ps.setDate(2, staff.getStaffDob());
                 ps.setString(3, staff.getStaffPhone());
                 ps.setString(4, staff.getStaffAddress());
                 ps.setString(5, staff.getPassword());
@@ -128,7 +128,7 @@ public class StaffAdapter {
 
             while(rs.next()) {
                 staffArrayList.add(new Staff(rs.getString(2), rs.getString(8).charAt(0),
-                        rs.getString(4), rs.getString(5), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getDate(3),
                         rs.getString(6), rs.getString(7)));
             }
             ps.close();
