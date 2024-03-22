@@ -1,8 +1,8 @@
 package com.n16.qltv.frame.BorrowHistory;
 
-import com.n16.qltv.adaptor.BorrowHistoryAdapter;
+import com.n16.qltv.daos.BorrowHistoryDAO;
 import com.n16.qltv.frame.staff.LoginFrame;
-import com.n16.qltv.vendor.Session;
+import com.n16.qltv.utils.Session;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,8 +25,8 @@ public class BorrowHistory extends JFrame {
     setResizable(true);
     setBounds(60, 60, 480, 320);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    BorrowHistoryAdapter.DataToTable(BHistory_Table);
-    BorrowHistoryAdapter.updateTable(BHistory_Table);
+    BorrowHistoryDAO.DataToTable(BHistory_Table);
+    BorrowHistoryDAO.updateTable(BHistory_Table);
     setVisible(true);
         JLable_Name_user.setText("Xin Chào! "+Session.get("admin").toString());
 

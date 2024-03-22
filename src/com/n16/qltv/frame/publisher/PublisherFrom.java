@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.publisher;
 
-import com.n16.qltv.adaptor.PublisherAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.PublisherDAO;
+import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Publisher;
 
 import javax.swing.*;
@@ -9,8 +9,8 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.n16.qltv.adaptor.PublisherAdapter.model;
-import static com.n16.qltv.adaptor.PublisherAdapter.CreatePulisher;
+import static com.n16.qltv.daos.PublisherDAO.model;
+import static com.n16.qltv.daos.PublisherDAO.CreatePulisher;
 
 public class PublisherFrom extends JFrame {
     private JTextField tf_NamePulisher;
@@ -34,8 +34,8 @@ public class PublisherFrom extends JFrame {
 // todo: setting JFrame
         setTitle("Pulisher page");
         setContentPane(Pulisher_JPanel);
-        PublisherAdapter.DataToTable(Puli_Table);
-        PublisherAdapter.updateTable(Puli_Table);
+        PublisherDAO.DataToTable(Puli_Table);
+        PublisherDAO.updateTable(Puli_Table);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -47,7 +47,7 @@ public class PublisherFrom extends JFrame {
 // todo: setting JFrame
 
         // lấy danh sách Puli
-        PulisherArrayList = PublisherAdapter.getPuliList();
+        PulisherArrayList = PublisherDAO.getPuliList();
             bnt_CreatePuli.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +57,7 @@ public class PublisherFrom extends JFrame {
                         publisher.setPublisherName(tf_NamePulisher.getText().toString().trim());
                         publisher.setPublisherEmail(tf_NamePulisher.getText().toString().trim());
                         publisher.setPublisherAddress(tf_NamePulisher.getText().toString().trim());
-                        publisher.setPublisherRepresen(tf_NamePulisher.getText().toString().trim());
+                        publisher.setPublisherRepresent(tf_NamePulisher.getText().toString().trim());
                         Validation.clearValidation();
                         Validation.publisherValidation(publisher);
                         if(Validation.getErrCount() != 0) {
@@ -70,7 +70,7 @@ public class PublisherFrom extends JFrame {
                                     tf_PulisherRepresen.getText().trim()) == true)
                             {
                                 // cập nhật lại dữ liệu trên JTable
-                                PublisherAdapter.DataToTable(Puli_Table);
+                                PublisherDAO.DataToTable(Puli_Table);
                             }
                         }
 
@@ -90,13 +90,13 @@ public class PublisherFrom extends JFrame {
                 else
                /* if(Puli_Table.getSelectedRow() <= 0)*/
                 {
-                    int id = Integer.parseInt(PublisherAdapter.model.getValueAt(
+                    int id = Integer.parseInt(PublisherDAO.model.getValueAt(
                             Puli_Table.getSelectedRow(), 0).toString());
                     Publisher publisher = new Publisher();
                     publisher.setPublisherName(tf_NamePulisher.getText().toString().trim());
                     publisher.setPublisherEmail(tf_EmailPulisher.getText().toString().trim());
                     publisher.setPublisherAddress(tf_PulisherAddress.getText().toString().trim());
-                    publisher.setPublisherRepresen(tf_PulisherRepresen.getText().toString().trim());
+                    publisher.setPublisherRepresent(tf_PulisherRepresen.getText().toString().trim());
                     //
                     Validation.clearValidation();
                     Validation.publisherValidation(publisher);
@@ -105,9 +105,9 @@ public class PublisherFrom extends JFrame {
                     }
                     else {
                         //
-                        PublisherAdapter.editPublisher(publisher,id);
+                        PublisherDAO.editPublisher(publisher,id);
                         //
-                        PublisherAdapter.updateTable(Puli_Table);
+                        PublisherDAO.updateTable(Puli_Table);
                     }
 
 
@@ -122,10 +122,10 @@ public class PublisherFrom extends JFrame {
                 Validation.clearValidation();
                 if(Puli_Table.getSelectedRow() >= 0)
                 {
-                    int idpuli = Integer.parseInt(PublisherAdapter.model.getValueAt(
+                    int idpuli = Integer.parseInt(PublisherDAO.model.getValueAt(
                             Puli_Table.getSelectedRow(), 0).toString());
-                    PublisherAdapter.deletePuli(idpuli);
-                    PublisherAdapter.updateTable(Puli_Table);
+                    PublisherDAO.deletePuli(idpuli);
+                    PublisherDAO.updateTable(Puli_Table);
 
                 }
                 else
@@ -165,16 +165,16 @@ public class PublisherFrom extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                int id = Integer.parseInt(PublisherAdapter.model.getValueAt(
+                int id = Integer.parseInt(PublisherDAO.model.getValueAt(
                         Puli_Table.getSelectedRow(), 0).toString());
 
-                String name = PublisherAdapter.model
+                String name = PublisherDAO.model
                         .getValueAt(Puli_Table.getSelectedRow(), 1).toString();
-                    String email = PublisherAdapter.model
+                    String email = PublisherDAO.model
                         .getValueAt(Puli_Table.getSelectedRow(), 2).toString();
-                String diachi = PublisherAdapter.model
+                String diachi = PublisherDAO.model
                         .getValueAt(Puli_Table.getSelectedRow(), 3).toString();
-                String rep = PublisherAdapter.model
+                String rep = PublisherDAO.model
                         .getValueAt(Puli_Table.getSelectedRow(), 4).toString();
                 //
                 tf_NamePulisher.setText(name);
@@ -206,13 +206,13 @@ public class PublisherFrom extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                PublisherAdapter.DataToTable(Puli_Table);
+                PublisherDAO.DataToTable(Puli_Table);
                 String keyword = tf_Search.getText().toString().trim();
                 if(keyword.length() == 0)
                 {
                     support_sreach.setVisible(false);
                     bnt_suport.setVisible(false);
-                    PublisherAdapter.updateTable(Puli_Table);
+                    PublisherDAO.updateTable(Puli_Table);
                 }
                 else {
                     /*String keyword = tf_Search.getText().toString().trim();
@@ -228,8 +228,8 @@ public class PublisherFrom extends JFrame {
                     model.setRowCount(0);
                     //support_sreach.setVisible(true);
                     try {
-                        PulisherArrayList = PublisherAdapter.getPuliList();
-                        PulisherArrayList = PublisherAdapter.findPuliName(keyword, Puli_Table, support_sreach);
+                        PulisherArrayList = PublisherDAO.getPuliList();
+                        PulisherArrayList = PublisherDAO.findPuliName(keyword, Puli_Table, support_sreach);
                         support_sreach.setVisible(true);
                         bnt_suport.setVisible(true);
                     } catch (SQLException ex) {
@@ -247,7 +247,7 @@ public class PublisherFrom extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
 
-                    PublisherAdapter.Quick_support_sreach(Puli_Table,support_sreach,bnt_suport);
+                    PublisherDAO.Quick_support_sreach(Puli_Table,support_sreach,bnt_suport);
 
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);

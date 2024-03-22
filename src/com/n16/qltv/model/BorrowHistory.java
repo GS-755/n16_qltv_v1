@@ -1,6 +1,5 @@
 package com.n16.qltv.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class BorrowHistory extends BorrowBook {

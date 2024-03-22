@@ -222,11 +222,6 @@
           <text value="Thoát"/>
         </properties>
       </component>
-      <hspacer id="e0ee3">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="12" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
       <vspacer id="3020a">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -286,12 +281,12 @@
           <grid row="7" column="9" row-span="2" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
-      <component id="55c8d" class="javax.swing.JButton" binding="bnt_BorrowBook_Form">
+      <component id="55c8d" class="javax.swing.JButton" binding="btnBorrowBook">
         <constraints>
-          <grid row="11" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="1" use-parent-layout="false"/>
+          <grid row="11" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Duyệt đơn Mượn Sách"/>
+          <text value="Duyệt đơn mượn sách"/>
         </properties>
       </component>
       <component id="89c42" class="javax.swing.JLabel">
@@ -341,7 +336,7 @@
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
       </hspacer>
-      <component id="a5c64" class="javax.swing.JButton" binding="bnt_Logout">
+      <component id="a5c64" class="javax.swing.JButton" binding="btnLogout">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -370,6 +365,21 @@
           <text value="Tên Nhân Viên"/>
         </properties>
       </component>
+      <vspacer id="c5449">
+        <constraints>
+          <grid row="24" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="28c62">
+        <constraints>
+          <grid row="0" column="11" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <hspacer id="bd72f">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="11" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
     </children>
   </grid>
 </form>

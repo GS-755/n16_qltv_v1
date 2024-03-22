@@ -1,6 +1,8 @@
 package com.n16.qltv.model;
 
-public class Author {
+import com.n16.qltv.model.interfaces.IModels;
+
+public class Author implements IModels {
     private int authorId;
     private String authorName;
     private String authorAddress, authorNote;
@@ -33,5 +35,11 @@ public class Author {
                 ", authorAddress='" + authorAddress + '\'' +
                 ", authorNote='" + authorNote + '\'' +
                 '}';
+    }
+
+
+    @Override
+    public Class<Author> getType() {
+        return Author.class;
     }
 }

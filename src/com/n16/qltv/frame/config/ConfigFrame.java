@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.config;
 
-import com.n16.qltv.vendor.AppProperties;
+import com.n16.qltv.utils.AppProperties;
 
 import javax.swing.*;
 

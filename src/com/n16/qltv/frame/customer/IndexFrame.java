@@ -1,9 +1,7 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.StaffAdapter;
+import com.n16.qltv.daos.CustomerDAO;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +37,7 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        customers = CustomerAdapter.getCustoList();
+        customers = CustomerDAO.getCustoList();
         model = new DefaultTableModel();
         addTableStyle();
         addTableData(model,customers);
@@ -71,7 +69,7 @@ public class IndexFrame extends JFrame{
         deleteButton.addActionListener(e -> {
             String id = model.getValueAt(
                     table1.getSelectedRow(), 5).toString();
-            CustomerAdapter.deleteCustomer(id);
+            CustomerDAO.deleteCustomer(id);
             refreshTableData();
         });
         escButton.addActionListener(new ActionListener() {
@@ -85,8 +83,8 @@ public class IndexFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteTableData();
-                customers = CustomerAdapter.sortUsrName(1);
-                addTableData(model, CustomerAdapter.sortUsrName(1));
+                customers = CustomerDAO.sortUsrName(1);
+                addTableData(model, CustomerDAO.sortUsrName(1));
                 model.fireTableDataChanged();
             }
         });
@@ -94,8 +92,8 @@ public class IndexFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteTableData();
-                customers = CustomerAdapter.sortUsrName(2);
-                addTableData(model, CustomerAdapter.sortUsrName(2));
+                customers = CustomerDAO.sortUsrName(2);
+                addTableData(model, CustomerDAO.sortUsrName(2));
                 model.fireTableDataChanged();
             }
         });
@@ -109,7 +107,7 @@ public class IndexFrame extends JFrame{
         model.addColumn("Tên đăng nhập");
     }
     public void addTableData(DefaultTableModel model, ArrayList<Customer> customers) {
-        customers = CustomerAdapter.getCustoList();
+        customers = CustomerDAO.getCustoList();
         for (Customer customer : customers)
             model.addRow(new Object[]{
                     customer.getNameCus(),
@@ -122,7 +120,7 @@ public class IndexFrame extends JFrame{
     }
     public void refreshTableData() {
         deleteTableData();
-        customers = CustomerAdapter.getCustoList();
+        customers = CustomerDAO.getCustoList();
         //addTableStyle(model);
         addTableData(model,customers);
     }

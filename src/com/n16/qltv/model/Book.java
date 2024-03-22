@@ -1,6 +1,8 @@
 package com.n16.qltv.model;
 
-public class Book {
+import com.n16.qltv.model.interfaces.IModels;
+
+public class Book implements IModels {
     private int bookId;
     private String bookName;
     private int bookYear;
@@ -48,4 +50,9 @@ public class Book {
     public void setCategory(Category category) { this.category = category; }
     public void setCover(String cover) { this.cover = cover; }
     public void setQty(int qty) { this.qty = qty; }
+
+    @Override
+    public Class<Book> getType() {
+        return Book.class;
+    }
 }

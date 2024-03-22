@@ -1,10 +1,10 @@
 package com.n16.qltv.model;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import com.n16.qltv.model.interfaces.IModels;
+
 import java.util.Date;
 
-public class BorrowBook {
+public class BorrowBook implements IModels {
     private String borrowId;
     private Date borrowDate;
     private Staff staff;
@@ -44,4 +44,8 @@ public class BorrowBook {
     // getBooks().get(0).setQty(5);
     public void setStaff(Staff staff) { this.staff = staff; }
 
+    @Override
+    public Class<BorrowBook> getType() {
+        return BorrowBook.class;
+    }
 }

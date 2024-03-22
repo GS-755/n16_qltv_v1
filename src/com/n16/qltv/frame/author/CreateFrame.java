@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.adaptor.AuthorAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
 import javax.swing.*;
@@ -26,10 +26,10 @@ public class CreateFrame extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         btnAdd.addActionListener(e->{
             Validation.clearValidation();
-            if(!(AuthorAdapter.checkExist(tfName.getText()))) {
+            if(!(AuthorDAO.checkExist(tfName.getText()))) {
                 Author author = new Author();
                 author.setAuthorName(tfName.getText());
-                String website = AuthorAdapter.
+                String website = AuthorDAO.
                         formatWebsite(tfAddress.getText()).trim();
                 if(website.isEmpty()) {
                     author.setAuthorAddress(tfAddress.getText().trim());
@@ -46,7 +46,7 @@ public class CreateFrame extends JFrame{
                 if(Validation.getErrCount() > 0)
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 else {
-                    AuthorAdapter.addAuthor(author);
+                    AuthorDAO.addAuthor(author);
                     JOptionPane.showMessageDialog(null, "Tạo tác giả thành công");
                     dispose();
                 }

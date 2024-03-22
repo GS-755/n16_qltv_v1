@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.borrowbook;
 
-import com.n16.qltv.adaptor.BorrowBookAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.BorrowBookDAO;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +35,7 @@ public class BorrowBook extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         try {
-            BorrowBookAdapter.DataToTable(BBook_Table);
+            BorrowBookDAO.DataToTable(BBook_Table);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -55,7 +55,7 @@ public class BorrowBook extends JFrame{
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Duyệt thành công");
-                        BorrowBookAdapter.updateTable(BBook_Table);
+                        BorrowBookDAO.updateTable(BBook_Table);
                     }
                 }
             } catch(Exception ex) {

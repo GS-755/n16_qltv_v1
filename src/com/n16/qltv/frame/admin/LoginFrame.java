@@ -1,8 +1,7 @@
 package com.n16.qltv.frame.admin;
 
-import com.n16.qltv.adaptor.AdminAdapter;
-import com.n16.qltv.adaptor.Validation;
-import com.n16.qltv.vendor.Session;
+import com.n16.qltv.daos.AdminDAO;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 
@@ -31,7 +30,7 @@ public class LoginFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
             }
             else {
-                boolean isLoggedIn = AdminAdapter.
+                boolean isLoggedIn = AdminDAO.
                         isLoggedIn(usrName, password);
                 if(isLoggedIn) {
                     JOptionPane.showMessageDialog(null, "Đăng nhập thành công");

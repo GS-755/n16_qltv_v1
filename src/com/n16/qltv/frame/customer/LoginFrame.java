@@ -1,9 +1,7 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.StaffAdapter;
-import com.n16.qltv.frame.staff.IndexFrame;
-import com.n16.qltv.vendor.Session;
+import com.n16.qltv.daos.CustomerDAO;
+import com.n16.qltv.utils.Session;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,8 +27,8 @@ public class LoginFrame extends JFrame{
             try{
                 String usrName = txtUrsName.getText();
                 String password = txtPass.getText();
-                if(CustomerAdapter.checkExistCustomer(usrName)) {
-                    boolean loginStatus = CustomerAdapter.loginAccount(usrName, password);
+                if(CustomerDAO.checkExistCustomer(usrName)) {
+                    boolean loginStatus = CustomerDAO.loginAccount(usrName, password);
                     if(loginStatus) {
                         dispose();
                         Session.put("Customer", usrName);

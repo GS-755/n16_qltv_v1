@@ -1,9 +1,9 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.CustomerDAO;
+import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.vendor.SHA256;
+import com.n16.qltv.utils.SHA256;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
@@ -44,7 +44,7 @@ public class EditFrame extends JFrame{
             char gender = 'm';
             if(!(maleRadio.isSelected()))
                 gender = 'f';
-            if(CustomerAdapter.checkExistCustomer(usrName.trim())) {
+            if(CustomerDAO.checkExistCustomer(usrName.trim())) {
                 Customer cus = new Customer();
                 if(txtPassword.getText().isBlank()
                         || txtRePassword.getText().isEmpty()){
@@ -53,14 +53,14 @@ public class EditFrame extends JFrame{
                     cus.setAddressCus(txtAddress.getText());
                     cus.setPhoneCus(txtPhone.getText());
                     cus.setUsrName(usrName.trim());
-                    cus.setPassword(CustomerAdapter.
+                    cus.setPassword(CustomerDAO.
                             getPassword(usrName.trim()));
                     Validation.customerValidation(cus);
                     if(Validation.getErrCount() > 0){
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else{
-                        CustomerAdapter.editCustomer(cus);
+                        CustomerDAO.editCustomer(cus);
                         JOptionPane.showMessageDialog(null,"Cập nhật thông tin thành công");
                     }
                 }
@@ -91,7 +91,7 @@ public class EditFrame extends JFrame{
                                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                             }
                             else {
-                                CustomerAdapter.editCustomer(cus);
+                                CustomerDAO.editCustomer(cus);
                                 JOptionPane.showMessageDialog(
                                         null, "Cập nhật thông tin thành công.");
                             }
@@ -107,10 +107,10 @@ public class EditFrame extends JFrame{
         });
     }
     public void setComponents(String usrName) {
-        char gender = CustomerAdapter.getCustoGender(usrName);
-        txtCusName.setText(CustomerAdapter.getCustoName(usrName));
-        txtAddress.setText(CustomerAdapter.getCustoAddress(usrName));
-        txtPhone.setText(CustomerAdapter.getCustoPhone(usrName));
+        char gender = CustomerDAO.getCustoGender(usrName);
+        txtCusName.setText(CustomerDAO.getCustoName(usrName));
+        txtAddress.setText(CustomerDAO.getCustoAddress(usrName));
+        txtPhone.setText(CustomerDAO.getCustoPhone(usrName));
         txtUsrname.setText(usrName);
         txtUsrname.setEditable(false);
         if(gender == 'm')

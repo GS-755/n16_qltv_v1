@@ -1,10 +1,9 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.CustomerDAO;
+import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.vendor.SHA256;
-import scala.Predef;
+import com.n16.qltv.utils.SHA256;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
@@ -43,7 +42,7 @@ public class CreateFrame extends JFrame {
             char gender = 'm';
             if(!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(CustomerAdapter.checkExistCustomer(txtUsrName.getText())))
+            if(!(CustomerDAO.checkExistCustomer(txtUsrName.getText())))
             {
                 if(!(txtPassword.getText().equals(txtRePassword.getText()))){
                     Validation.createValidation("Mật khẩu không trùng khớp ");}
@@ -70,7 +69,7 @@ public class CreateFrame extends JFrame {
                 if(Validation.getErrCount()>0)
                     JOptionPane.showMessageDialog(null,Validation.getStrValidation());
                 else{
-                    CustomerAdapter.addCustomer(customer);
+                    CustomerDAO.addCustomer(customer);
                     JOptionPane.showMessageDialog(null,"Tạo khách hàng thành công");
                     dispose();
                 }

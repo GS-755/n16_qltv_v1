@@ -1,17 +1,14 @@
 package com.n16.qltv.frame.category;
-import com.n16.qltv.adaptor.CategoryAdapter;
-import com.n16.qltv.frame.staff.EditFrame;
-import com.n16.qltv.frame.staff.IndexFrame;
+import com.n16.qltv.daos.CategoryDAO;
 import com.n16.qltv.model.Category;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static com.n16.qltv.adaptor.CategoryAdapter.*;
+import static com.n16.qltv.daos.CategoryDAO.*;
 
 
 public class CategoryForm extends JFrame{
@@ -31,15 +28,15 @@ public class CategoryForm extends JFrame{
         // setting JFrame
         setTitle("Category page");
         setContentPane(CategoryForm);
-        CategoryAdapter.DataToTable(CATEGORYSTable);
-        CategoryAdapter.updateTable(CATEGORYSTable);
+        CategoryDAO.DataToTable(CATEGORYSTable);
+        CategoryDAO.updateTable(CATEGORYSTable);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // setting JFrame
 
         // lấy danh sách cate
-        cateArrayList = CategoryAdapter.getCateList();
+        cateArrayList = CategoryDAO.getCateList();
 
         // thêm loại sách
         bnt_CreateCate.addActionListener(new ActionListener() {
@@ -49,7 +46,7 @@ public class CategoryForm extends JFrame{
                     if(CreateCategory(tf_NameCate.getText().trim()) == true)
                     {
                         // cập nhật lại dữ liệu trên JTable
-                        CategoryAdapter.updateTable(CATEGORYSTable);
+                        CategoryDAO.updateTable(CATEGORYSTable);
                     }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
@@ -63,9 +60,9 @@ public class CategoryForm extends JFrame{
             public void actionPerformed(ActionEvent e) {
                     if(CATEGORYSTable.getSelectedRow() >= 0)
                     {
-                        int idCate = Integer.parseInt(CategoryAdapter.model.getValueAt(
+                        int idCate = Integer.parseInt(CategoryDAO.model.getValueAt(
                                 CATEGORYSTable.getSelectedRow(), 0).toString());
-                        String nameCate = CategoryAdapter.model
+                        String nameCate = CategoryDAO.model
                                 .getValueAt(CATEGORYSTable.getSelectedRow(), 1).toString();
                         Edit_CateFrame ef = new Edit_CateFrame(new Category(idCate, nameCate));
                     }
@@ -82,12 +79,12 @@ public class CategoryForm extends JFrame{
 
                 if(CATEGORYSTable.getSelectedRow() >= 0)
                 {
-                    int idCate = Integer.parseInt(CategoryAdapter.model.getValueAt(
+                    int idCate = Integer.parseInt(CategoryDAO.model.getValueAt(
                             CATEGORYSTable.getSelectedRow(), 0).toString());
-                    String nameCate = CategoryAdapter.model
+                    String nameCate = CategoryDAO.model
                             .getValueAt(CATEGORYSTable.getSelectedRow(), 1).toString();
-                    CategoryAdapter.deleteCategory(new Category(idCate, nameCate));
-                    CategoryAdapter.updateTable(CATEGORYSTable);
+                    CategoryDAO.deleteCategory(new Category(idCate, nameCate));
+                    CategoryDAO.updateTable(CATEGORYSTable);
 
                 }
                 else
@@ -105,11 +102,11 @@ public class CategoryForm extends JFrame{
                 String keyword = tf_Search.getText().trim();
                 if(keyword.length() == 0)
                 {
-                    CategoryAdapter.updateTable(CATEGORYSTable);
+                    CategoryDAO.updateTable(CATEGORYSTable);
                 }
                 model.setRowCount(0);
                 try {
-                    cateArrayList = CategoryAdapter.findCateName(keyword);
+                    cateArrayList = CategoryDAO.findCateName(keyword);
 
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);

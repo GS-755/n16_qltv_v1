@@ -1,9 +1,7 @@
 package com.n16.qltv.frame.category;
 
-import com.n16.qltv.adaptor.CategoryAdapter;
-import com.n16.qltv.adaptor.StaffAdapter;
+import com.n16.qltv.daos.CategoryDAO;
 import com.n16.qltv.model.Category;
-import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -36,7 +34,7 @@ public class Edit_CateFrame extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 category.setNameCate(tf_CateName.getText().trim());
-                CategoryAdapter.editCategory(category);
+                CategoryDAO.editCategory(category);
                 System.out.println(category.toString());
                 CategoryForm catenew = new CategoryForm();
                 dispose();
@@ -46,6 +44,6 @@ public class Edit_CateFrame extends JFrame {
         setVisible(true);
     }
     public void setComponents(String NameCate) {
-        tf_CateName.setText(CategoryAdapter.getCateName(NameCate));
+        tf_CateName.setText(CategoryDAO.getCateName(NameCate));
     }
 }

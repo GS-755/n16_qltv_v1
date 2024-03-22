@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.adaptor.AuthorAdapter;
+import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.model.Author;
 
 import javax.swing.*;
@@ -30,18 +30,18 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        authorArrayList = AuthorAdapter.getAuthorList();
+        authorArrayList = AuthorDAO.getAuthorList();
 
         model = new DefaultTableModel();
         addTableStyle(model);
         addTableData(model, authorArrayList);
 
         btnDelete.addActionListener(e -> {
-            AuthorAdapter.deleteAuthor(
+            AuthorDAO.deleteAuthor(
                     model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
             deleteTableData();
 
-            authorArrayList = AuthorAdapter.getAuthorList();
+            authorArrayList = AuthorDAO.getAuthorList();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -62,19 +62,19 @@ public class IndexFrame extends JFrame{
         });
         btnUpdate.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorAdapter.getAuthorList();
+            authorArrayList = AuthorDAO.getAuthorList();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorAdapter.sortUsrName(1);
+            authorArrayList = AuthorDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorAdapter.sortUsrName(2);
+            authorArrayList = AuthorDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -84,7 +84,7 @@ public class IndexFrame extends JFrame{
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            authorArrayList = AuthorAdapter
+            authorArrayList = AuthorDAO
                     .findAuthorName(mode, keyword);
             addTableData(model, authorArrayList);
         });

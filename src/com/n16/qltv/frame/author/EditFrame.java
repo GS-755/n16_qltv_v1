@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.adaptor.AuthorAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
 import javax.swing.*;
@@ -25,10 +25,10 @@ public class EditFrame extends JFrame {
 
         btnAdd.addActionListener(e -> {
             Validation.clearValidation();
-            if(AuthorAdapter.checkExist(tfName.getText())) {
+            if(AuthorDAO.checkExist(tfName.getText())) {
                 Author author = new Author();
                 author.setAuthorName(auName);
-                String website = AuthorAdapter.
+                String website = AuthorDAO.
                         formatWebsite(tfAddress.getText()).trim();
                 if(website.isEmpty()) {
                     author.setAuthorAddress(tfAddress.getText().trim());
@@ -45,7 +45,7 @@ public class EditFrame extends JFrame {
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 } else {
-                    AuthorAdapter.editAuthor(author);
+                    AuthorDAO.editAuthor(author);
                     JOptionPane.showMessageDialog(null, "Cập nhật thành công");
                     dispose();
                 }
@@ -57,9 +57,9 @@ public class EditFrame extends JFrame {
         });
     }
     public void setComponents(String usrName) {
-        tfName.setText(AuthorAdapter.getAuthorName(usrName));
+        tfName.setText(AuthorDAO.getAuthorName(usrName));
         tfName.setEditable(false);
-        tfAddress.setText(AuthorAdapter.getAuthorAddress(usrName));
-        tfNote.setText(AuthorAdapter.getAuthorNote(usrName));
+        tfAddress.setText(AuthorDAO.getAuthorAddress(usrName));
+        tfNote.setText(AuthorDAO.getAuthorNote(usrName));
     }
 }

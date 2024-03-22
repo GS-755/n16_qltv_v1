@@ -1,8 +1,10 @@
 package com.n16.qltv.model;
 
+import com.n16.qltv.model.interfaces.IModels;
+
 import java.sql.Date;
 
-public class Staff {
+public class Staff implements IModels {
     private int staffId;
     private String staffName;
     private String staffPhone, staffAddress;
@@ -55,5 +57,10 @@ public class Staff {
                 ", usrName='" + usrName + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    @Override
+    public Class<Staff> getType() {
+        return Staff.class;
     }
 }

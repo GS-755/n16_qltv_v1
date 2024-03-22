@@ -1,7 +1,8 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.adaptor.*;
+import com.n16.qltv.daos.*;
 import com.n16.qltv.model.Book;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -24,11 +25,11 @@ public class IndexFrame extends JFrame {
     private ArrayList<Book> BookArrayList;
 
     public IndexFrame() {
-        BookArrayList = BookAdapter.getBookList();
+        BookArrayList = BookDAO.getBookList();
         // setup
         setTitle("Book page");    setContentPane(JPanel_Book);
-        BookAdapter.DataToTable(Book_Table);
-        BookAdapter.updateTable(Book_Table);
+        BookDAO.DataToTable(Book_Table);
+        BookDAO.updateTable(Book_Table);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -49,10 +50,10 @@ public class IndexFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Validation.clearValidation();
                 if(Book_Table.getSelectedRow() >= 0) {
-                    String idpuli = BookAdapter.model.getValueAt(
+                    String idpuli = BookDAO.model.getValueAt(
                             Book_Table.getSelectedRow(), 1).toString();
-                    BookAdapter.deleteBook(idpuli);
-                    BookAdapter.updateTable(Book_Table);
+                    BookDAO.deleteBook(idpuli);
+                    BookDAO.updateTable(Book_Table);
                 }
                 else {
                     Validation.createValidation("Hãy chọn 1 một Nhà Xuất Bản");
@@ -63,27 +64,27 @@ public class IndexFrame extends JFrame {
         bnt_Edit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String idpuli = BookAdapter.model.getValueAt(
+                String idpuli = BookDAO.model.getValueAt(
                         Book_Table.getSelectedRow(), 1).toString();
                 EditFrame editFrame = new EditFrame(idpuli);
-                BookAdapter.updateTable(Book_Table);
+                BookDAO.updateTable(Book_Table);
             }
         });
         bnt_Update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BookAdapter.updateTable(Book_Table);
+                BookDAO.updateTable(Book_Table);
             }
         });
     }
     public void setCbComponents() {
-        for(String s : CategoryAdapter.getCateName()) {
+        for(String s : CategoryDAO.getCateName()) {
             comboBox_Cate.addItem(s);
         }
-        for(String s : AuthorAdapter.getStrAuthorName()) {
+        for(String s : AuthorDAO.getStrAuthorName()) {
             comboBox_Author.addItem(s);
         }
-        for(String s : PublisherAdapter.getStrPublisher())
+        for(String s : PublisherDAO.getStrPublisher())
             comboBox_NXB.addItem(s);
     }
 }
