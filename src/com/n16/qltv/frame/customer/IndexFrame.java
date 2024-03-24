@@ -4,10 +4,9 @@ import com.n16.qltv.daos.CustomerDAO;
 import com.n16.qltv.model.Customer;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+
 public class IndexFrame extends JFrame{
     private JButton addButton;
     private JButton deleteButton;
@@ -27,9 +26,13 @@ public class IndexFrame extends JFrame{
     private JLabel searchLabel;
     private JLabel searchModeLabel;
     private JPanel IndexFrame;
-    private ArrayList<Customer> customers = new ArrayList<>();
+    private ArrayList<Customer> customers;
     private ButtonGroup radioSearchModeGroup;
+    private CustomerDAO customerDAO;
+
     public IndexFrame() {
+        this.customerDAO = new CustomerDAO();
+        this.customers = this.customerDAO.getListItem();
         setSearchModeComponents();
         setContentPane(IndexFrame);
         setTitle("Danh sách khách hàng");
@@ -37,65 +40,42 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        customers = CustomerDAO.getCustoList();
         model = new DefaultTableModel();
         addTableStyle();
-        addTableData(model,customers);
+        addTableData(model);
         table1.setModel(model);
 
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshTableData();
-            }
+        updateButton.addActionListener(e -> refreshTableData());
+        addButton.addActionListener(e -> {
+            CreateFrame cf = new CreateFrame();
         });
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CreateFrame cf = new CreateFrame();
-            }
-        });
-        EditButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(table1.getSelectedRow() < 0)
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
-                else {
-                    EditFrame ef = new EditFrame(model.getValueAt(
-                            table1.getSelectedRow(), 5).toString());
-                }
+        EditButton.addActionListener(e -> {
+            if(table1.getSelectedRow() < 0)
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
+            else {
+                EditFrame ef = new EditFrame(model.getValueAt(
+                        table1.getSelectedRow(), 5).toString());
             }
         });
         deleteButton.addActionListener(e -> {
             String id = model.getValueAt(
                     table1.getSelectedRow(), 5).toString();
-            CustomerDAO.deleteCustomer(id);
+            this.customerDAO.delete(id.trim());
             refreshTableData();
         });
-        escButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        escButton.addActionListener(e -> dispose());
 
-        increButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteTableData();
-                customers = CustomerDAO.sortUsrName(1);
-                addTableData(model, CustomerDAO.sortUsrName(1));
-                model.fireTableDataChanged();
-            }
+        increButton.addActionListener(e -> {
+            deleteTableData();
+            customers = this.customerDAO.sortUsrName(1);
+            addTableData(model);
+            model.fireTableDataChanged();
         });
-        decreButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteTableData();
-                customers = CustomerDAO.sortUsrName(2);
-                addTableData(model, CustomerDAO.sortUsrName(2));
-                model.fireTableDataChanged();
-            }
+        decreButton.addActionListener(e -> {
+            deleteTableData();
+            customers = this.customerDAO.sortUsrName(2);
+            addTableData(model);
+            model.fireTableDataChanged();
         });
     }
     public void addTableStyle() {
@@ -106,9 +86,8 @@ public class IndexFrame extends JFrame{
         model.addColumn("Ngày sinh");
         model.addColumn("Tên đăng nhập");
     }
-    public void addTableData(DefaultTableModel model, ArrayList<Customer> customers) {
-        customers = CustomerDAO.getCustoList();
-        for (Customer customer : customers)
+    public void addTableData(DefaultTableModel model) {
+        for (Customer customer : this.customers)
             model.addRow(new Object[]{
                     customer.getNameCus(),
                     customer.getStrGender(),
@@ -120,9 +99,8 @@ public class IndexFrame extends JFrame{
     }
     public void refreshTableData() {
         deleteTableData();
-        customers = CustomerDAO.getCustoList();
-        //addTableStyle(model);
-        addTableData(model,customers);
+        customers = this.customerDAO.getListItem();
+        addTableData(model);
     }
     public void deleteTableData() {
         model.getDataVector().removeAllElements();

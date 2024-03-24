@@ -1,6 +1,9 @@
 package com.n16.qltv.daos;
 
+import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Category;
+import com.n16.qltv.model.Customer;
+import com.n16.qltv.model.interfaces.IModels;
 import com.n16.qltv.utils.MySQL;
 
 import javax.swing.*;
@@ -12,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CategoryDAO {
+public class CategoryDAO implements IDAOs {
     public static Category category;
     private static Component CategoryForm;
     private static ArrayList<Category> cateArrayList = new ArrayList<>();
@@ -293,5 +296,35 @@ public class CategoryDAO {
 
             return null;
         }
+    }
+
+    @Override
+    public void create(IModels item) throws SQLException {
+
+    }
+
+    @Override
+    public Customer getItem(Object item) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Customer> getListItem() {
+        return null;
+    }
+
+    @Override
+    public void edit(IModels item) {
+
+    }
+
+    @Override
+    public void delete(Object item) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 }

@@ -15,8 +15,10 @@ public class LoginFrame extends JFrame{
     private JLabel passwordLabel;
     private JLabel titleLabel;
     private JPanel loginPanel;
+    private CustomerDAO customerDAO;
 
     public LoginFrame() throws HeadlessException {
+        this.customerDAO = new CustomerDAO();
         setContentPane(loginPanel);
         setTitle("Đăng nhập khách hàng");
         setVisible(true);
@@ -27,20 +29,22 @@ public class LoginFrame extends JFrame{
             try{
                 String usrName = txtUrsName.getText();
                 String password = txtPass.getText();
-                if(CustomerDAO.checkExistCustomer(usrName)) {
-                    boolean loginStatus = CustomerDAO.loginAccount(usrName, password);
+                if(this.customerDAO.isCustomerExist(usrName)) {
+                    boolean loginStatus = this.customerDAO.loginAccount(usrName, password);
                     if(loginStatus) {
                         dispose();
                         Session.put("Customer", usrName);
-                        com.n16.qltv.frame.customer.IndexFrame indexFrame = new com.n16.qltv.frame.customer.IndexFrame();
+                        IndexFrame indexFrame = new IndexFrame();
                     } else {
                         JOptionPane.showMessageDialog(null,
                                 "Thông tin đăng nhập KHÔNG chính xác");
                     }
-                } else if(txtPass.getText().isEmpty()
+                }
+                else if(txtPass.getText().isEmpty()
                         || txtPass.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Mật khẩu KHÔNG được để trắng!");
-                } else {
+                }
+                else {
                     JOptionPane.showMessageDialog(null, "KHÔNG có người dùng này trên máy chủ!");
                 }
             }
@@ -48,6 +52,5 @@ public class LoginFrame extends JFrame{
                 ex.printStackTrace();
             }
         });
-
     }
 }

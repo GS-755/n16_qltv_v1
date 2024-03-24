@@ -7,6 +7,7 @@ import com.n16.qltv.utils.SHA256;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class CreateFrame extends JFrame {
     ButtonGroup buttonGroup;
@@ -28,8 +29,10 @@ public class CreateFrame extends JFrame {
     private JPasswordField txtRePassword;
     private JLabel labelRePassword;
     private JPanel createFrame;
+    private CustomerDAO customerDAO;
 
     public CreateFrame() {
+        this.customerDAO = new CustomerDAO();
         setContentPane(createFrame);
         setVisible(true);
         setResizable(false);
@@ -42,7 +45,7 @@ public class CreateFrame extends JFrame {
             char gender = 'm';
             if(!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(CustomerDAO.checkExistCustomer(txtUsrName.getText())))
+            if(!(this.customerDAO.isCustomerExist(txtUsrName.getText())))
             {
                 if(!(txtPassword.getText().equals(txtRePassword.getText()))){
                     Validation.createValidation("Mật khẩu không trùng khớp ");}
@@ -69,13 +72,17 @@ public class CreateFrame extends JFrame {
                 if(Validation.getErrCount()>0)
                     JOptionPane.showMessageDialog(null,Validation.getStrValidation());
                 else{
-                    CustomerDAO.addCustomer(customer);
+                    try {
+                        this.customerDAO.create(customer);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     JOptionPane.showMessageDialog(null,"Tạo khách hàng thành công");
                     dispose();
                 }
             }
             else {
-                JOptionPane.showMessageDialog(null,"Đã có tên tác giả trong hệ thống");
+                JOptionPane.showMessageDialog(null,"Đã có khách hàng trong hệ thống");
             }
 
 

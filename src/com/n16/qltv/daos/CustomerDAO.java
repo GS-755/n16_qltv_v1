@@ -1,6 +1,8 @@
 package com.n16.qltv.daos;
 
+import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Customer;
+import com.n16.qltv.model.interfaces.IModels;
 import com.n16.qltv.utils.MySQL;
 import com.n16.qltv.utils.SHA256;
 
@@ -8,61 +10,154 @@ import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CustomerDAO {
-    private static ArrayList<Customer> custoArrayList;
+public class CustomerDAO implements IDAOs {
+    private Connection conn;
+    private ArrayList<Customer> customerArrayList;
 
-    public static boolean checkExistCustomer(String usrName) {
-        try{
-            String query = "SELECT * " +
-                    "FROM docgia " +
-                    "WHERE TenDangNhap = ?";
-            Connection conn = MySQL.client().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, usrName.trim());
-            ResultSet rs = ps.executeQuery();
+    public CustomerDAO() { }
 
-            while (rs.next()) {
-                if(rs.getString(5)
-                        .equals(usrName.trim())) {
-
+    public boolean isCustomerExist(String usrName) {
+        try {
+            for(Customer customer : this.customerArrayList) {
+                if(customer.getUsrName().trim().equals(usrName.trim())) {
                     return true;
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
 
         return false;
     }
-    public static void addCustomer(Customer customer) {
+    public boolean loginAccount(String ursName, String password) {
         try {
-            Connection conn = MySQL.client().getConnection();
-            String query = "INSERT INTO DocGia("
-                    + "TenDocGia, "
-                    + "DiaChi, "
-                    + " SoDT, "
-                    + " TenDangNhap, "
-                    + " MatKhau, "
-                    + " GioiTinh) VALUES("
-                    + "?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement st = conn.prepareStatement(query);
-            st.setString(1, customer.getNameCus());
-            st.setString(2, customer.getAddressCus());
-            st.setString(3, customer.getPhoneCus());
-            st.setString(4, customer.getUsrName());
-            st.setString(5, customer.getPassword());
-            st.setString(6, String.format("%s", customer.getGender()));
-
-            st.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Vui  lòng kiểm tra đường truyền");
+            String authTmp = SHA256.toSHA256(SHA256.getSHA256(password));
+            this.customerArrayList = this.getListItem();
+            for (Customer customer : this.customerArrayList) {
+                if (customer.getUsrName().trim().equals(ursName)
+                        && customer.getPassword().equals(authTmp)) {
+                    return true;
+                }
+            }
         }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return false;
     }
-    public static void editCustomer(Customer customer) {
+
+    public ArrayList<Customer> sortUsrName(int mode) {
+        customerArrayList = this.getListItem();
+        ArrayList<Customer> sortedCustomers = customerArrayList;
+        switch (mode) {
+            case 1:  {
+                // Ascending sort of usrName
+                sortedCustomers.sort((s1, s2)
+                        -> s1.getUsrName().compareTo(s2.getUsrName()));
+            } break;
+            case 2:  {
+                // Descending sort of usrName
+                sortedCustomers.sort((s1, s2)
+                        -> s2.getUsrName().compareTo(s1.getUsrName()));
+            } break;
+        }
+
+        return sortedCustomers;
+    }
+
+    public ArrayList<Customer> findCustomerByName(String keyword, int mode) {
+        ArrayList<Customer> foundStaffs = new ArrayList<>();
+        switch(mode) {
+            case 1: {
+                // Tìm người dùng ở chế độ tuyệt đối
+                for(Customer customer : customerArrayList){
+                    System.out.println(customer);
+                    if(customer.getNameCus().equals(keyword))
+                        foundStaffs.add(customer);
+                }
+            }
+            break;
+            case 2: {
+                // Tìm người dùng ở chế độ tương đối
+                for(Customer customer : customerArrayList)
+                    if(customer.getNameCus().startsWith(keyword))
+                        foundStaffs.add(customer);
+            }
+            break;
+        }
+
+        return foundStaffs;
+    }
+
+    @Override
+    public void create(IModels item) throws SQLException {
+        this.conn = MySQL.client().getConnection();
+        Customer customer = (Customer) item;
+        String query = "INSERT INTO DocGia ("
+                + "TenDocGia, "
+                + "DiaChi, "
+                + " SoDT, "
+                + " TenDangNhap, "
+                + " MatKhau, "
+                + " GioiTinh) VALUES("
+                + "?, ?, ?, ?, ?, ?)";
+        PreparedStatement st = conn.prepareStatement(query);
+        st.setString(1, customer.getNameCus());
+        st.setString(2, customer.getAddressCus());
+        st.setString(3, customer.getPhoneCus());
+        st.setString(4, customer.getUsrName());
+        st.setString(5, customer.getPassword());
+        st.setString(6, String.format("%s", customer.getGender()));
+
+        st.executeUpdate();
+    }
+
+    @Override
+    public Customer getItem(Object item) {
+        for(Customer customer : this.customerArrayList) {
+            if(customer.getUsrName().trim().equals(item.toString().trim())) {
+                return customer;
+            }
+        }
+
+        return null;
+    }
+    @Override
+    public ArrayList<Customer> getListItem() {
         try {
-            if(checkExistCustomer(customer.getUsrName().trim())) {
+            ArrayList<Customer> customers = new ArrayList<>();
+            String query = "SELECT * FROM docgia";
+            this.conn = MySQL.client().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Customer customer = new Customer();
+                customer.setNameCus(rs.getString(2));
+                customer.setAddressCus(rs.getString(3));
+                customer.setPhoneCus(rs.getString(4));
+                customer.setUsrName(rs.getString(5));
+                customer.setPassword(rs.getString(6));
+                customer.setGender(rs.getString(7).charAt(0));
+
+                customers.add(customer);
+            }
+            ps.close();
+
+            return customers;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+    @Override
+    public void edit(IModels item) {
+        try {
+            Customer customer = (Customer) item;
+            if(isCustomerExist(customer.getUsrName().trim())) {
                 String query = "UPDATE docgia "
                         + "SET TenDocGia = ?, "
                         + "DiaChi = ?, "
@@ -85,175 +180,36 @@ public class CustomerDAO {
                 JOptionPane.showMessageDialog(
                         null, "Lỗi tham số. Vui lòng kiểm tra lại.");
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             JOptionPane.showMessageDialog(
                     null, "Có lỗi xảy ra. Vui lòng kiểm tra lại.");
             ex.printStackTrace();
         }
     }
-    public static void deleteCustomer(String usrName) {
+
+    @Override
+    public void delete(Object item) {
         try {
-            if(checkExistCustomer(usrName)) {
+            if(isCustomerExist(item.toString().trim())) {
                 String query = "DELETE FROM docgia " +
                         " WHERE TenDangNhap = ?";
                 Connection conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
-                ps.setString(1, usrName);
+                ps.setString(1, item.toString().trim());
                 ps.executeUpdate();
             }
             else {
-                System.out.println("Có lỗi xảy ra :");
+                System.out.println("Không có người dùng trên hệ thống");
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    public static ArrayList<Customer> getCustoList() {
-        try {
-            custoArrayList = new ArrayList<>();
-            String query = "SELECT * FROM docgia";
-            Connection conn = MySQL.client().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
 
-            while(rs.next()) {
-                Customer customer = new Customer();
-                customer.setNameCus(rs.getString(2));
-                customer.setAddressCus(rs.getString(3));
-                customer.setPhoneCus(rs.getString(4));
-                customer.setUsrName(rs.getString(5));
-                customer.setPassword(rs.getString(6));
-                customer.setGender(rs.getString(7).charAt(0));
-
-                custoArrayList.add(customer);
-            }
-            ps.close();
-
-            return custoArrayList;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-            return null;
-        }
+    @Override
+    public int getItemCount() {
+        return this.customerArrayList.size();
     }
-    public static int getCustoCount() {
-        return custoArrayList.size();
-    }
-    public static boolean loginAccount(String ursName, String password) {
-        boolean ans = false;
-        try {
-            String authTmp = SHA256. toSHA256(SHA256.getSHA256(password));
-            String query = "SELECT * " +
-                    "FROM docgia " +
-                    " WHERE tendangnhap = ?";
-            Connection conn = MySQL.client().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, ursName);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                if(rs.getString(5).equals(ursName)
-                         && rs.getString(6).equals(authTmp)) {
-                    ans = true;
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return ans;
-    }
-    public static String getCustoPhone(String usrName) {
-        String custoPhone = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                custoPhone = customer.getPhoneCus();
-
-        return custoPhone;
-    }
-    public static String getCustoName(String usrName) {
-        String custoName = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                custoName = customer.getNameCus();
-
-        return custoName;
-    }
-
-
-    public static String getCustoAddress(String usrName) {
-        String custoAddress = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                custoAddress = customer.getAddressCus();
-
-        return custoAddress;
-    }
-
-    public static char getCustoGender(String usrName) {
-        char gender = 'm';
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                gender = customer.getGender();
-
-        return gender;
-    }
-
-    public static String getPassword(String usrName) {
-        String password = "";
-        for(Customer customer : custoArrayList)
-            if(customer.getUsrName().equals(usrName))
-                password = customer.getPassword();
-
-        return password;
-    }
-
-    public static ArrayList<Customer> sortUsrName(int mode) {
-        custoArrayList = getCustoList();
-        ArrayList<Customer> sortedCustomers = custoArrayList;
-        switch (mode) {
-            case 1:  {
-                // Ascending sort of usrName
-                sortedCustomers.sort((s1, s2)
-                        -> s1.getUsrName().compareTo(s2.getUsrName()));
-            }
-            break;
-            case 2:  {
-                // Descending sort of usrName
-                sortedCustomers.sort((s1, s2)
-                        -> s2.getUsrName().compareTo(s1.getUsrName()));
-            }
-            break;
-        }
-
-        return sortedCustomers;
-    }
-
-    public static ArrayList<Customer> findCustoName(int mode, String keyword) {
-        ArrayList<Customer> foundStaffs = new ArrayList<>();
-        switch(mode) {
-            case 1: {
-                // Tìm người dùng ở chế độ tuyệt đối
-                for(Customer customer : custoArrayList){
-                    System.out.println(customer);
-                    if(customer.getNameCus().equals(keyword))
-                        foundStaffs.add(customer);
-                    System.out.println(customer+" được chọn");
-                }
-            }
-            break;
-            case 2: {
-                // Tìm người dùng ở chế độ tương đối
-                for(Customer customer : custoArrayList)
-                    if(customer.getNameCus().startsWith(keyword))
-                        foundStaffs.add(customer);
-            }
-            break;
-        }
-
-        return foundStaffs;
-    }
-
-
 }

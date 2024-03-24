@@ -28,15 +28,18 @@ public class EditFrame extends JFrame{
     private JLabel nameLabel;
     private JLabel usrLabel;
     private JLabel repasswordLabel,titleLabel;
+    private CustomerDAO customerDAO;
 
-    public EditFrame(String usrName){
+    public EditFrame(String usrName) {
+        this.customerDAO = new CustomerDAO();
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setComponents(usrName);
+        Customer customer = this.customerDAO.getItem(usrName.toString().trim());
+        setComponents(customer);
         setGenderComponents();
 
         updateButton.addActionListener(e->{
@@ -44,7 +47,7 @@ public class EditFrame extends JFrame{
             char gender = 'm';
             if(!(maleRadio.isSelected()))
                 gender = 'f';
-            if(CustomerDAO.checkExistCustomer(usrName.trim())) {
+            if(this.customerDAO.isCustomerExist(usrName.trim())) {
                 Customer cus = new Customer();
                 if(txtPassword.getText().isBlank()
                         || txtRePassword.getText().isEmpty()){
@@ -53,14 +56,13 @@ public class EditFrame extends JFrame{
                     cus.setAddressCus(txtAddress.getText());
                     cus.setPhoneCus(txtPhone.getText());
                     cus.setUsrName(usrName.trim());
-                    cus.setPassword(CustomerDAO.
-                            getPassword(usrName.trim()));
+                    cus.setPassword("");
                     Validation.customerValidation(cus);
                     if(Validation.getErrCount() > 0){
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else{
-                        CustomerDAO.editCustomer(cus);
+                        this.customerDAO.edit(cus);
                         JOptionPane.showMessageDialog(null,"Cập nhật thông tin thành công");
                     }
                 }
@@ -91,7 +93,7 @@ public class EditFrame extends JFrame{
                                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                             }
                             else {
-                                CustomerDAO.editCustomer(cus);
+                                this.customerDAO.edit(cus);
                                 JOptionPane.showMessageDialog(
                                         null, "Cập nhật thông tin thành công.");
                             }
@@ -106,14 +108,13 @@ public class EditFrame extends JFrame{
             }
         });
     }
-    public void setComponents(String usrName) {
-        char gender = CustomerDAO.getCustoGender(usrName);
-        txtCusName.setText(CustomerDAO.getCustoName(usrName));
-        txtAddress.setText(CustomerDAO.getCustoAddress(usrName));
-        txtPhone.setText(CustomerDAO.getCustoPhone(usrName));
-        txtUsrname.setText(usrName);
+    public void setComponents(Customer customer) {
+        txtCusName.setText(customer.getNameCus());
+        txtAddress.setText(customer.getAddressCus());
+        txtPhone.setText(customer.getPhoneCus());
+        txtUsrname.setText(customer.getUsrName());
         txtUsrname.setEditable(false);
-        if(gender == 'm')
+        if(customer.getGender() == 'm')
             maleRadio.setSelected(true);
         else
             femaleRadio.setSelected(true);
@@ -131,7 +132,4 @@ public class EditFrame extends JFrame{
             femaleRadio.setSelected(true);
         });
     }
-
-
 }
-
