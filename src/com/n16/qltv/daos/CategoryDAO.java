@@ -21,6 +21,11 @@ public class CategoryDAO implements IDAOs {
     private static ArrayList<Category> cateArrayList = new ArrayList<>();
     public static DefaultTableModel model;
 
+    private CategoryDAO CategoryDAO;
+    private  Connection conn;
+    public  CategoryDAO(){
+        conn = MySQL.client().getConnection();
+    }
     // thêm category
     public static boolean CreateCategory(String tf_NameCate) throws SQLException {
         // lấy tên category
@@ -300,7 +305,25 @@ public class CategoryDAO implements IDAOs {
 
     @Override
     public void create(IModels item) throws SQLException {
+        try{
+            String query = "INSERT INTO TheLoai (TenTheLoai) VALUES (?)";
+            Category category = new Category();
+            category.setNameCate(item.toString().trim());
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1,category.getNameCate());
+            // kt số dòng có thay đổi hay ko ?
+//            int rowsInserted = preparedStatement.executeUpdate();
+//            if (rowsInserted > 0)
+//            {
+//                cateCheck = cate;
+//            }
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            //conn.close();
 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

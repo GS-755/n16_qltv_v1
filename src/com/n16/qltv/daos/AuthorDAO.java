@@ -1,17 +1,25 @@
 package com.n16.qltv.daos;
 
+import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Author;
+import com.n16.qltv.model.interfaces.IModels;
 import com.n16.qltv.utils.MySQL;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AuthorDAO {
-    private static Connection conn = MySQL.client().getConnection();
-    private static ArrayList<Author> authorArrayList = new ArrayList<>();
+public class AuthorDAO implements IDAOs {
+    private Connection conn;
+    private ArrayList<Author> authorArrayList;
+
+    public AuthorDAO() {
+        this.conn = MySQL.client().getConnection();
+        this.authorArrayList = new ArrayList<>();
+    }
 
     public static boolean checkExist(String authorName) {
         try {
@@ -36,14 +44,54 @@ public class AuthorDAO {
 
         return false;
     }
-    public static void addAuthor(Author author) {
+
+    public static String formatWebsite(String web) {
+        int _1stBlockLen = 0;
+        final int MAX_SPLIT_LEN = 3;
+        StringBuffer sb = new StringBuffer(web);
+        String[] testPattern = web.split("://");
+        _1stBlockLen = testPattern[0].length();
+        if (_1stBlockLen != 0) {
+            sb.replace(0, MAX_SPLIT_LEN + _1stBlockLen, "");
+
+            return sb.toString();
+        }
+
+        return web;
+    }
+
+    public ArrayList<Author> findAuthorName(int mode, String keyword) {
+        ArrayList<Author> foundAuthors = new ArrayList<>();
+        switch (mode) {
+            case 1: {
+                // Tìm người dùng ở chế độ tuyệt đối
+                for (Author author : this.authorArrayList)
+                    if (author.getAuthorName().equals(keyword))
+                        foundAuthors.add(author);
+            }
+            break;
+            case 2: {
+                // Tìm người dùng ở chế độ tương đối
+                for (Author author : this.authorArrayList)
+                    if (author.getAuthorName().startsWith(keyword))
+                        foundAuthors.add(author);
+            }
+            break;
+        }
+
+        return foundAuthors;
+    }
+
+    @Override
+    public void create(IModels item) throws SQLException {
+        Author author = (Author) item;
         try {
             String query = "INSERT INTO tacgia("
                     + " TenTacGia, "
                     + " Website, "
                     + " GhiChu) " +
                     "VALUES(?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(query);
+            PreparedStatement st = this.conn.prepareStatement(query);
             st.setString(1, author.getAuthorName());
             st.setString(2, author.getAuthorAddress());
             st.setString(3, author.getAuthorNote());
@@ -55,7 +103,12 @@ public class AuthorDAO {
                     null, "Có lỗi xảy ra :(((\nVui lòng kiểm tra đường truyền");
         }
     }
-    public static void editAuthor(Author author) {
+
+    @Override
+    public void edit(IModels item) {
+
+        Author author = (Author) item;
+
         try {
             if(checkExist(author.getAuthorName())) {
                 String query = "UPDATE tacgia " +
@@ -83,14 +136,15 @@ public class AuthorDAO {
         }
     }
 
-    public static void deleteAuthor(String usrName) {
+    @Override
+    public void delete(Object item) {
         try {
-            if (checkExist(usrName)) {
+            if (checkExist(item.toString().trim())) {
                 String query = "DELETE FROM tacgia " +
                         " WHERE TenTacGia = ?";
                 Connection conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
-                ps.setString(1, usrName);
+                ps.setString(1, item.toString().trim());
                 ps.executeUpdate();
             } else {
                 System.out.println("Co loi xay ra :((");
@@ -99,8 +153,19 @@ public class AuthorDAO {
             ex.printStackTrace();
         }
     }
-    public static int getAuthorCount() { return authorArrayList.size(); }
-    public static ArrayList<Author> getAuthorList() {
+
+    @Override
+    public Author getItem(Object item) {
+         Author author = new Author();
+        this.authorArrayList = (ArrayList<Author>) getListItem();
+         for (Author authoritem : this.authorArrayList)
+            if (authoritem.getAuthorName().equals(item.toString().trim()))
+                author = authoritem;
+        return author;
+    }
+
+    @Override
+    public Object getListItem() {
         try {
             authorArrayList = new ArrayList<>();
             String query = "SELECT * FROM tacgia";
@@ -125,33 +190,24 @@ public class AuthorDAO {
             return null;
         }
     }
-    public static String getAuthorName(String usrName) {
-        String authorName = "";
-        for (Author author : authorArrayList)
-            if (author.getAuthorName().equals(usrName))
-                authorName = author.getAuthorName();
 
-        return authorName;
-    }
-    public static String getAuthorNote(String usrName) {
-        String authorNote = "";
-        for (Author author : authorArrayList)
-            if (author.getAuthorName().equals(usrName))
-                authorNote= author.getAuthorNote();
-
-        return authorNote;
-    }
-    public static String getAuthorAddress(String usrName) {
-        String authorAddress = "";
-        for (Author author : authorArrayList)
-            if (author.getAuthorName().equals(usrName))
-                authorAddress = author.getAuthorAddress();
-
-        return authorAddress;
+    @Override
+    public int getItemCount() {
+        return authorArrayList.size();
     }
 
-    public static ArrayList<Author> sortUsrName(int mode) {
-        ArrayList<Author> sortedAuthors = getAuthorList();
+    public ArrayList<Author> findAuthorbyID(int id) {
+
+        this.authorArrayList = (ArrayList<Author>) getListItem();
+        ArrayList<Author> foundAuthor = new ArrayList<>();
+        for(Author author : authorArrayList)
+            if(author.getAuthorId() == id)
+                foundAuthor.add(author);
+        return foundAuthor;
+    }
+
+    public ArrayList<Author> sortUsrName(int mode) {
+        ArrayList<Author> sortedAuthors = (ArrayList<Author>) getListItem();
         switch(mode) {
             case 1: {
                 // Ascending sort of usrName
@@ -169,68 +225,15 @@ public class AuthorDAO {
 
         return sortedAuthors;
     }
-    public static ArrayList<Author> findAuthorName(int mode, String keyword) {
-        authorArrayList = getAuthorList();
-        ArrayList<Author> foundAuthors = new ArrayList<>();
-        switch(mode) {
-            case 1: {
-                // Tìm người dùng ở chế độ tuyệt đối
-                for(Author author : authorArrayList)
-                    if(author.getAuthorName().equals(keyword))
-                        foundAuthors.add(author);
-            }
-            break;
-            case 2: {
-                // Tìm người dùng ở chế độ tương đối
-                for(Author author : authorArrayList)
-                    if(author.getAuthorName().startsWith(keyword))
-                        foundAuthors.add(author);
-            }
-            break;
-        }
 
-        return foundAuthors;
-    }
-    public static String formatWebsite(String web) {
-        int _1stBlockLen = 0; final int MAX_SPLIT_LEN = 3;
-        StringBuffer sb = new StringBuffer(web);
-        String[] testPattern = web.split("://");
-        _1stBlockLen = testPattern[0].length();
-        if(_1stBlockLen != 0) {
-            sb.replace(0, MAX_SPLIT_LEN + _1stBlockLen, "");
-
-            return sb.toString();
-        }
-
-        return web;
-    }
-    public static int getAuthorId(String authorName) {
-        if(checkExist(authorName)) {
-            ArrayList<Author> foundAuthor = findAuthorName(1, authorName);
-
-            return foundAuthor.get(0).getAuthorId();
-        }
-
-        return -1;
-    }
-    public static ArrayList<Author> findAuthor(int id) {
-        authorArrayList = getAuthorList();
-        ArrayList<Author> foundAuthor = new ArrayList<>();
-        for(Author author : authorArrayList)
-            if(author.getAuthorId() == id)
-                foundAuthor.add(author);
-
-        return foundAuthor;
-    }
-    public static String[] getStrAuthorName() {
-        authorArrayList = getAuthorList();
-        String[] authorNames = new String[getAuthorCount()];
+    public String[] getStrAuthorName() {
+        this.authorArrayList = (ArrayList<Author>) getListItem();
+        String[] authorNames = new String[getItemCount()];
         int count = 0;
         for(Author author : authorArrayList) {
             authorNames[count] = author.getAuthorName();
             count++;
         }
-
         return authorNames;
     }
 }

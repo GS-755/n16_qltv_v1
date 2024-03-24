@@ -21,8 +21,11 @@ public class IndexFrame extends JFrame{
     private JLabel searchModeLabel;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
-
+    private AuthorDAO AuthorDAO;
     public IndexFrame() {
+
+        this.AuthorDAO = new AuthorDAO();
+
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách Tác giả");
@@ -30,18 +33,18 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        authorArrayList = AuthorDAO.getAuthorList();
+        authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
 
         model = new DefaultTableModel();
         addTableStyle(model);
         addTableData(model, authorArrayList);
 
         btnDelete.addActionListener(e -> {
-            AuthorDAO.deleteAuthor(
+            this.AuthorDAO.delete(
                     model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
             deleteTableData();
 
-            authorArrayList = AuthorDAO.getAuthorList();
+            authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -62,19 +65,19 @@ public class IndexFrame extends JFrame{
         });
         btnUpdate.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorDAO.getAuthorList();
+            authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorDAO.sortUsrName(1);
+            authorArrayList = this.AuthorDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorDAO.sortUsrName(2);
+            authorArrayList = this.AuthorDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -84,7 +87,7 @@ public class IndexFrame extends JFrame{
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            authorArrayList = AuthorDAO
+            authorArrayList = this.AuthorDAO
                     .findAuthorName(mode, keyword);
             addTableData(model, authorArrayList);
         });

@@ -1,10 +1,12 @@
 package com.n16.qltv.frame.author;
 
 import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.daos.StaffDAO;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class CreateFrame extends JFrame{
     private JTextField tfName;
@@ -17,7 +19,11 @@ public class CreateFrame extends JFrame{
     private JLabel titleLabel;
     private JLabel addressLabel;
 
+    private AuthorDAO AuthorDAO;
+
     public CreateFrame(){
+        this.AuthorDAO = new AuthorDAO();
+
         setContentPane(labelNote);
         setTitle("Thêm tác giả ");
         setVisible(true);
@@ -26,10 +32,10 @@ public class CreateFrame extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         btnAdd.addActionListener(e->{
             Validation.clearValidation();
-            if(!(AuthorDAO.checkExist(tfName.getText()))) {
+            if(!(this.AuthorDAO.checkExist(tfName.getText()))) {
                 Author author = new Author();
                 author.setAuthorName(tfName.getText());
-                String website = AuthorDAO.
+                String website = this.AuthorDAO.
                         formatWebsite(tfAddress.getText()).trim();
                 if(website.isEmpty()) {
                     author.setAuthorAddress(tfAddress.getText().trim());
@@ -46,7 +52,11 @@ public class CreateFrame extends JFrame{
                 if(Validation.getErrCount() > 0)
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 else {
-                    AuthorDAO.addAuthor(author);
+                    try {
+                        this.AuthorDAO.create(author);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     JOptionPane.showMessageDialog(null, "Tạo tác giả thành công");
                     dispose();
                 }

@@ -1,5 +1,6 @@
 package com.n16.qltv.utils;
 
+import com.n16.qltv.daos.CategoryDAO;
 import com.n16.qltv.model.*;
 
 import java.util.ArrayList;
@@ -102,7 +103,6 @@ public class Validation {
             createValidation("Mật khẩu KHÔNG để trống");
         }
     }
-    // Chỗ này của em :)))
     public static void publisherValidation(Publisher puli) {
         if(puli.getPublisherName().isEmpty()) {
             createValidation("Hãy Điền Tên NXB");
@@ -124,6 +124,13 @@ public class Validation {
         }
         else if(!isString(puli.getPublisherName()))
             createValidation("Tên người đại diện không hợp lệ");
+    }
+    public static void categoryValidation(Category category) {
+        if(category.getNameCate().isEmpty()) {
+            createValidation("Hãy Điền Tên thể loại");
+        }else if(CategoryDAO.checkExistCategory(category.getNameCate().trim())){
+            createValidation("thể loại này đã tồn tại trước đó");
+        }
     }
     public static String getStrValidation() {
         int errCount = 0;

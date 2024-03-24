@@ -20,9 +20,15 @@ public class CreateFrame extends JFrame {
     private JButton btnCreate;
     private JLabel labelPublisher, labelCategory, labelAuthor;
     private JLabel labelYear, labelName;
+    private BookDAO BookDAO;
+    private AuthorDAO AuthorDAO;
 
     public CreateFrame() {
+        this.AuthorDAO = new AuthorDAO();
+        this.BookDAO = new BookDAO();
+
         setContentPane(createFrame);
+
         setTitle("Thêm sách");
         setVisible(true);
         setResizable(true);
@@ -34,8 +40,8 @@ public class CreateFrame extends JFrame {
             Validation.clearValidation();
             try {
                 if(!BookDAO.checkExistBook(txtBookName.getText())) {
-                    ArrayList<Author> authors = AuthorDAO.
-                            findAuthorName(1, cbAuthor.getSelectedItem().toString());
+                    ArrayList<Author> authors = this.AuthorDAO.
+                           findAuthorName(1, cbAuthor.getSelectedItem().toString());
                     ArrayList<Category> categories = CategoryDAO.
                             findCateName(cbCategory.getSelectedItem().toString());
                     ArrayList<Publisher> publishers = PublisherDAO.
@@ -48,11 +54,15 @@ public class CreateFrame extends JFrame {
                     book.setPublisher(publishers.get(0));
                     book.getCategory().setCateId(CategoryDAO.
                             getCateId(book.getCategory().getNameCate()));
-                    book.getAuthor().setAuthorId(AuthorDAO.
-                            getAuthorId(book.getAuthor().getAuthorName()));
+
+                    // author:
+                    Author author = this.AuthorDAO.getItem(book.getAuthor().getAuthorName());
+                    book.getAuthor().setAuthorId(author.getAuthorId());
+
                     book.getPublisher().setPublisherId(PublisherDAO.
                             findPublisherId(book.getPublisher().getPublisherName(),
                                     book.getPublisher().getPublisherAddress()));
+
                     if(txtPublisherYear.getText().isEmpty()
                             || txtPublisherYear.getText().isBlank()) {
                         Validation.createValidation("Năm xuất bản KHÔNG để trống");
@@ -65,7 +75,7 @@ public class CreateFrame extends JFrame {
                     if(Validation.getErrCount() > 0) {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     } else {
-                        BookDAO.addBook(book);
+                        BookDAO.create(book);
                         JOptionPane.showMessageDialog(null, "Thêm sách thành công!");
                     }
                 } else {
@@ -80,7 +90,7 @@ public class CreateFrame extends JFrame {
         for(String s : CategoryDAO.getCateName()) {
             cbCategory.addItem(s);
         }
-        for(String s : AuthorDAO.getStrAuthorName()) {
+        for(String s : this.AuthorDAO.getStrAuthorName()) {
             cbAuthor.addItem(s);
         }
         for(String s : PublisherDAO.getStrPublisher())

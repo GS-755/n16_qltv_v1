@@ -40,8 +40,6 @@ public class BorrowHistoryDAO {
             e.printStackTrace();
         }
     }
-
-
     public static void updateTable(JTable Puli_Table) {
         DefaultTableModel model = (DefaultTableModel) Puli_Table.getModel();
         model.setRowCount(0); // xóa dữ liệu trong bảng

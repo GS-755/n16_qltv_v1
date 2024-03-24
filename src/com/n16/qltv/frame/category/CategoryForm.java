@@ -1,6 +1,8 @@
 package com.n16.qltv.frame.category;
+import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.daos.CategoryDAO;
 import com.n16.qltv.model.Category;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +26,9 @@ public class CategoryForm extends JFrame{
     private JTextField tf_Search;
     private JPanel CategoryFrom;
     private ArrayList<Category> cateArrayList;
+    private CategoryDAO CategoryDAO;
     public CategoryForm() {
+        CategoryDAO = new CategoryDAO();
         // setting JFrame
         setTitle("Category page");
         setContentPane(CategoryForm);
@@ -42,14 +46,21 @@ public class CategoryForm extends JFrame{
         bnt_CreateCate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if(CreateCategory(tf_NameCate.getText().trim()) == true)
-                    {
-                        // cập nhật lại dữ liệu trên JTable
+                Category category = new Category();
+                category.setNameCate(tf_NameCate.getText().trim());
+
+                Validation.clearValidation();
+                Validation.categoryValidation(category);
+                if(Validation.getErrCount() != 0) {
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                }
+                else {
+                    try {
+                        CategoryDAO.create(category);
                         CategoryDAO.updateTable(CATEGORYSTable);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -94,8 +105,6 @@ public class CategoryForm extends JFrame{
 
             }
         });
-
-
         tf_Search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,7 +124,6 @@ public class CategoryForm extends JFrame{
             }
         });
         setVisible(true);
-
     }
     public void deleteTableData() {
         model.getDataVector().removeAllElements();

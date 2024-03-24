@@ -30,7 +30,7 @@ public class Book implements IModels {
         this.publisher = publisher;
         this.author = author;
         this.category = category;
-        this.cover = cover;
+        this.cover = "";
         this.qty = 1;
     }
 

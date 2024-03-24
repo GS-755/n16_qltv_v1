@@ -21,8 +21,15 @@ public class EditFrame extends JFrame {
     private JButton bnt_Edit;
     private JPanel JPanel_EditBook;
 
+    private AuthorDAO AuthorDAO;
+    private BookDAO BookDAO;
+
     public EditFrame(String bookId) {
     // setup
+
+    this.AuthorDAO = new AuthorDAO();
+    this.BookDAO = new BookDAO();
+
     setContentPane(JPanel_EditBook);
     setTitle("Thêm sách");
     setVisible(true);
@@ -30,32 +37,35 @@ public class EditFrame extends JFrame {
     setBounds(60, 60, 480, 320);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     setCbComponents();
-    // setup
-
     bnt_Edit.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             Validation.clearValidation();
             try {
                     ArrayList<Author> authors = AuthorDAO.
-                            findAuthorName(1, cbAuthor.getSelectedItem().toString());
+                                    findAuthorName(1, cbAuthor.getSelectedItem().toString());
                     ArrayList<Category> categories = CategoryDAO.
                             findCateName(cbCategory.getSelectedItem().toString());
                     ArrayList<Publisher> publishers = PublisherDAO.
                             findPublisher(cbPublisher.getSelectedItem().toString());
 
                     Book book = new Book();
+                    book.setBookId(Integer.parseInt(bookId));
                     book.setBookName(tf_NameBook.getText());
                     book.setCategory(categories.get(0));
                     book.setAuthor(authors.get(0));
                     book.setPublisher(publishers.get(0));
+                    //
                     book.getCategory().setCateId(CategoryDAO.
                             getCateId(book.getCategory().getNameCate()));
-                    book.getAuthor().setAuthorId(AuthorDAO.
-                            getAuthorId(book.getAuthor().getAuthorName()));
+
+                    Author author = AuthorDAO.getItem(book.getAuthor().getAuthorName());
+                    book.getAuthor().setAuthorId(author.getAuthorId());
+
                     book.getPublisher().setPublisherId(PublisherDAO.
                             findPublisherId(book.getPublisher().getPublisherName(),
                                     book.getPublisher().getPublisherAddress()));
+
                     if(tf_YearBook.getText().isEmpty()
                             || tf_YearBook.getText().isBlank()) {
                         Validation.createValidation("Năm xuất bản KHÔNG để trống");
@@ -65,10 +75,11 @@ public class EditFrame extends JFrame {
                     }
 
                     Validation.bookValidation(book);
+
                     if(Validation.getErrCount() > 0) {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     } else {
-                        BookDAO.editBook(book);
+                        BookDAO.edit(book);
                         JOptionPane.showMessageDialog(null, "Chỉnh sửa sách thành công!");
                     }
             } catch (Exception ex) {

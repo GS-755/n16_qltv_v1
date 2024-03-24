@@ -13,7 +13,12 @@ public class EditFrame extends JFrame {
     private JLabel nameLabel, addressLabel;
     private JLabel noteLabel, titleLabel;
 
+    private AuthorDAO AuthorDAO;
+
     public EditFrame(String auName) {
+
+        this.AuthorDAO = new AuthorDAO();
+
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
         setVisible(true);
@@ -45,7 +50,7 @@ public class EditFrame extends JFrame {
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 } else {
-                    AuthorDAO.editAuthor(author);
+                    this.AuthorDAO.edit(author);
                     JOptionPane.showMessageDialog(null, "Cập nhật thành công");
                     dispose();
                 }
@@ -57,9 +62,10 @@ public class EditFrame extends JFrame {
         });
     }
     public void setComponents(String usrName) {
-        tfName.setText(AuthorDAO.getAuthorName(usrName));
+        Author author = this.AuthorDAO.getItem(usrName);
+        tfName.setText(author.getAuthorName().toString());
         tfName.setEditable(false);
-        tfAddress.setText(AuthorDAO.getAuthorAddress(usrName));
-        tfNote.setText(AuthorDAO.getAuthorNote(usrName));
+        tfAddress.setText(author.getAuthorAddress().toString());
+        tfNote.setText(author.getAuthorNote().toString());
     }
 }

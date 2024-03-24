@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+// cầm acc đi cày thuê DBCLPM nên có commit lz này :O
 public class StaffDAO implements IDAOs {
     private Connection conn;
     private ArrayList<Staff> staffArrayList;
@@ -126,7 +127,8 @@ public class StaffDAO implements IDAOs {
     @Override
     public Staff getItem(Object item) {
         for(Staff staff : this.staffArrayList) {
-            if(staff.getUsrName().trim().equals(item.toString().trim())) {
+            if(staff.getUsrName().trim().
+                    equals(item.toString().trim())) {
                 return staff;
             }
         }
