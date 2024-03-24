@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class MySQL {
-    private Connection conn;
     private static MySQL client = new MySQL();
+    private Connection conn;
     private AppProperties properties;
 
     private MySQL() {
@@ -13,6 +13,7 @@ public class MySQL {
             Thread.sleep(1200);
             this.properties = new AppProperties();
             this.properties.loadConfig();
+            this.conn = this.makeConnection();
         }
         catch(Exception ex) {
             System.out.println(ex.getMessage());
@@ -20,10 +21,11 @@ public class MySQL {
         }
     }
 
-    public Connection getConnection() {
+    private Connection makeConnection() {
+        Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.conn = DriverManager.getConnection(properties.getConnectionString(),
+            conn = DriverManager.getConnection(properties.getConnectionString(),
                     properties.getUserName(), properties.getPassword());
             System.out.println("Connect successfully!");
         } catch (Exception ex) {
@@ -33,19 +35,8 @@ public class MySQL {
 
         return conn;
     }
-    public synchronized void closeConnection() {
-        if (this.conn != null) {
-            try {
-                this.conn.close();
-                this.conn = null;
-                System.out.println("Connection closed.");
-            }
-            catch (Exception ex) {
-                System.out.println("Error while closing connection.");
-                ex.printStackTrace();
-            }
-        }
-    }
+    public Connection getConnection() { return this.conn; }
+
     public static synchronized MySQL client() {
         if(MySQL.client == null) {
             MySQL.client = new MySQL();
