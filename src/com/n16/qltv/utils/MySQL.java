@@ -10,7 +10,7 @@ public class MySQL {
 
     private MySQL() {
         try {
-            Thread.sleep(1200);
+            Thread.sleep(300);
             this.properties = new AppProperties();
             this.properties.loadConfig();
             this.conn = this.makeConnection();

@@ -165,7 +165,7 @@ public class AuthorDAO implements IDAOs {
     }
 
     @Override
-    public Object getListItem() {
+    public ArrayList<Author> getListItem() {
         try {
             authorArrayList = new ArrayList<>();
             String query = "SELECT * FROM tacgia";

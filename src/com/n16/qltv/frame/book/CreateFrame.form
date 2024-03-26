@@ -78,7 +78,7 @@
           <text value="Tác giả"/>
         </properties>
       </component>
-      <component id="58181" class="javax.swing.JTextField" binding="txtPublisherYear">
+      <component id="58181" class="javax.swing.JTextField" binding="txtPublishYear">
         <constraints>
           <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -86,7 +86,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="13e7c" class="javax.swing.JComboBox" binding="cbAuthor">
+      <component id="13e7c" class="javax.swing.JComboBox" binding="cmbAuthor">
         <constraints>
           <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -100,7 +100,7 @@
           <text value="Thể loại"/>
         </properties>
       </component>
-      <component id="99432" class="javax.swing.JComboBox" binding="cbCategory">
+      <component id="99432" class="javax.swing.JComboBox" binding="cmbCategory">
         <constraints>
           <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -114,7 +114,7 @@
           <text value="Nhà xuất bản"/>
         </properties>
       </component>
-      <component id="990cd" class="javax.swing.JComboBox" binding="cbPublisher">
+      <component id="990cd" class="javax.swing.JComboBox" binding="cmbPublisher">
         <constraints>
           <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

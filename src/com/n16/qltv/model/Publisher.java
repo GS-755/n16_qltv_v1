@@ -21,12 +21,12 @@ public class Publisher implements IModels {
     public String getPublisherName() { return this.publisherName; }
     public String getPublisherEmail() { return this.publisherEmail; }
     public String getPublisherAddress() { return this.publisherAddress; }
-    public String getPublisherRepresent() { return publisherRepresent; }
+    public String getRepresent() { return publisherRepresent; }
     public void setPublisherId(int publisherId) { this.publisherId = publisherId; }
     public void setPublisherName(String publisherName) { this.publisherName = publisherName; }
     public void setPublisherEmail(String publisherEmail) { this.publisherEmail = publisherEmail; }
     public void setPublisherAddress(String publisherAddress) { this.publisherAddress = publisherAddress; }
-    public void setPublisherRepresent(String publisherRepresent) { this.publisherRepresent = publisherRepresent;}
+    public void setRepresent(String publisherRepresent) { this.publisherRepresent = publisherRepresent;}
 
     @Override
     public Class<Publisher> getType() {

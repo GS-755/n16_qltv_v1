@@ -1,6 +1,9 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.daos.*;
+import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.daos.BookDAO;
+import com.n16.qltv.daos.CategoryDAO;
+import com.n16.qltv.daos.PublisherDAO;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
@@ -8,94 +11,75 @@ import com.n16.qltv.model.Publisher;
 import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class EditFrame extends JFrame {
-    private JTextField tf_NameBook;
-    private JTextField tf_YearBook;
-    private JComboBox cbPublisher;
-    private JComboBox cbAuthor;
-    private JComboBox<String> cbCategory;
-    private JButton bnt_Edit;
-    private JPanel JPanel_EditBook;
+    private JTextField txtBookName;
+    private JTextField txtBookYear;
+    private JComboBox cmbPublisher, cmbAuthor, cmbCategory;
+    private JButton btnEdit;
+    private JPanel editFrame;
+    private CategoryDAO categoryDAO;
+    private AuthorDAO authorDAO;
+    private BookDAO bookDAO;
+    private PublisherDAO publisherDAO;
 
-    private AuthorDAO AuthorDAO;
-    private BookDAO BookDAO;
+    public EditFrame(Book book) {
+        this.publisherDAO = new PublisherDAO();
+        this.categoryDAO = new CategoryDAO();
+        this.authorDAO = new AuthorDAO();
+        this.bookDAO = new BookDAO();
 
-    public EditFrame(String bookId) {
-    // setup
-
-    this.AuthorDAO = new AuthorDAO();
-    this.BookDAO = new BookDAO();
-
-    setContentPane(JPanel_EditBook);
-    setTitle("Thêm sách");
-    setVisible(true);
-    setResizable(true);
-    setBounds(60, 60, 480, 320);
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    setCbComponents();
-    bnt_Edit.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        setContentPane(editFrame);
+        setTitle("Chỉnh sửa sách");
+        setVisible(true);
+        setResizable(true);
+        setBounds(60, 60, 480, 320);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setComboBoxComponents();
+        btnEdit.addActionListener(e -> {
             Validation.clearValidation();
             try {
-                    ArrayList<Author> authors = AuthorDAO.
-                                    findAuthorName(1, cbAuthor.getSelectedItem().toString());
-                    ArrayList<Category> categories = CategoryDAO.
-                            findCateName(cbCategory.getSelectedItem().toString());
-                    ArrayList<Publisher> publishers = PublisherDAO.
-                            findPublisher(cbPublisher.getSelectedItem().toString());
+                Book editedBook = new Book();
+                editedBook.setBookId(book.getBookId());
+                editedBook.setBookName(txtBookName.getText());
+                editedBook.setBookYear(Integer.parseInt(this.txtBookYear.getText().toString().trim()));
+                editedBook.setCategory(this.categoryDAO.
+                        getItem(this.cmbCategory.getSelectedIndex()));
+                editedBook.setAuthor(this.authorDAO.
+                        getItem(this.cmbAuthor.getSelectedIndex()));
+                editedBook.setPublisher(this.publisherDAO.
+                        getItem(this.cmbPublisher.getSelectedIndex()));
 
-                    Book book = new Book();
-                    book.setBookId(Integer.parseInt(bookId));
-                    book.setBookName(tf_NameBook.getText());
-                    book.setCategory(categories.get(0));
-                    book.setAuthor(authors.get(0));
-                    book.setPublisher(publishers.get(0));
-                    //
-                    book.getCategory().setCateId(CategoryDAO.
-                            getCateId(book.getCategory().getNameCate()));
+                if(txtBookYear.getText().isEmpty()
+                        || txtBookYear.getText().isBlank()) {
+                    Validation.createValidation("Năm xuất bản KHÔNG để trống");
+                } else {
+                    editedBook.setBookYear(Integer.
+                            parseInt(txtBookYear.getText()));
+                }
 
-                    Author author = AuthorDAO.getItem(book.getAuthor().getAuthorName());
-                    book.getAuthor().setAuthorId(author.getAuthorId());
+                Validation.bookValidation(editedBook);
 
-                    book.getPublisher().setPublisherId(PublisherDAO.
-                            findPublisherId(book.getPublisher().getPublisherName(),
-                                    book.getPublisher().getPublisherAddress()));
-
-                    if(tf_YearBook.getText().isEmpty()
-                            || tf_YearBook.getText().isBlank()) {
-                        Validation.createValidation("Năm xuất bản KHÔNG để trống");
-                    } else {
-                        book.setBookYear(Integer.
-                                parseInt(tf_YearBook.getText()));
-                    }
-
-                    Validation.bookValidation(book);
-
-                    if(Validation.getErrCount() > 0) {
-                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
-                    } else {
-                        BookDAO.edit(book);
-                        JOptionPane.showMessageDialog(null, "Chỉnh sửa sách thành công!");
-                    }
+                if(Validation.getErrCount() > 0) {
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                } else {
+                    bookDAO.edit(editedBook);
+                    JOptionPane.showMessageDialog(null, "Chỉnh sửa sách thành công!");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        });
+    }
+    public void setComboBoxComponents() {
+        for(Category category : this.categoryDAO.getListItem()) {
+            this.cmbCategory.addItem(category.getNameCate().trim());
         }
-    });
-}
-    public void setCbComponents() {
-        for(String s : CategoryDAO.getCateName()) {
-            cbCategory.addItem(s);
+        for(Author author : this.authorDAO.getListItem()) {
+            this.cmbAuthor.addItem(author.getAuthorName().trim());
         }
-        for(String s : AuthorDAO.getStrAuthorName()) {
-            cbAuthor.addItem(s);
+        for(Publisher publisher : this.publisherDAO.getListItem()) {
+            this.cmbPublisher.addItem(publisher.getPublisherName().trim());
         }
-        for(String s : PublisherDAO.getStrPublisher())
-            cbPublisher.addItem(s);
     }
 }

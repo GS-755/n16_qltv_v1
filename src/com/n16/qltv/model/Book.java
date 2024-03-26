@@ -6,13 +6,14 @@ public class Book implements IModels {
     private int bookId;
     private String bookName;
     private int bookYear;
+    private String cover; // Đường dẫn hình ảnh bìa sách
+    private int qty; // Số lượng sách cần mượn
     private Publisher publisher;
     private Author author;
     private Category category;
-    private String cover; //Đường dẫn hình ảnh bìa sách
-    private int qty; //Số lượng sách cần mượn
 
     public Book() {
+        this.cover = "";
         this.qty = 1;
     }
     public Book(String bookName, int bookYear, Publisher publisher, Author author, Category category) {

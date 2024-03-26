@@ -1,24 +1,23 @@
 package com.n16.qltv.utils;
 
-import com.n16.qltv.daos.CategoryDAO;
 import com.n16.qltv.model.*;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class Validation {
-    private static ArrayList<String> err = new ArrayList<>();
+    private static ArrayList<String> errorArrayList = new ArrayList<>();
 
-    public static ArrayList<String> getErr() { return err; }
-    public static void setErr(ArrayList<String> newErr) { err = newErr; }
+    public static void createValidation(String newErr) { errorArrayList.add(newErr); }
+    public static void clearValidation() { errorArrayList.clear(); }
+    public static int getErrCount() { return errorArrayList.size(); }
 
-    public static void createValidation(String newErr) { err.add(newErr); }
     public static void authorValidation(Author author) {
         if(author.getAuthorName().isEmpty()
                 || author.getAuthorName().isBlank()) {
             createValidation("Tên tác giả KHÔNG được để trống");
         }
-        else if(!isString(author.getAuthorName())) {
+        else if(!isValidName(author.getAuthorName())) {
             createValidation("Tên tác giả KHÔNG hợp lệ");
         }
         else if(author.getAuthorName().length() < 4
@@ -48,7 +47,7 @@ public class Validation {
                 || staff.getStaffName().isBlank()) {
             createValidation("Tên nhân viên KHÔNG để trống");
         }
-        else if(!isString(staff.getStaffName())) {
+        else if(!isValidName(staff.getStaffName())) {
             createValidation("Tên nhân viên KHÔNG hợp lệ.");
         }
         // Kiểm tra tài khoản Nhân viên
@@ -78,7 +77,7 @@ public class Validation {
                 || book.getBookName().isBlank()) {
             createValidation("Tên sách KHÔNG để trống.");
         }
-        else if(!isString(book.getBookName())) {
+        else if(!isValidName(book.getBookName())) {
             createValidation("Tên sách KHÔNG hợp lệ");
         }
     }
@@ -87,7 +86,7 @@ public class Validation {
                 || customer.getNameCus().isBlank()) {
             createValidation("Tên khách hàng KHÔNG để trống");
         }
-        else if(!isString(customer.getNameCus())) {
+        else if(!isValidName(customer.getNameCus())) {
             createValidation("Tên khách hàng KHÔNG hợp lệ");
         }
         if(customer.getUsrName().isEmpty()
@@ -103,58 +102,51 @@ public class Validation {
             createValidation("Mật khẩu KHÔNG để trống");
         }
     }
-    public static void publisherValidation(Publisher puli) {
-        if(puli.getPublisherName().isEmpty()) {
+    public static void publisherValidation(Publisher publisher) {
+        if(publisher.getPublisherName().isEmpty()) {
             createValidation("Hãy Điền Tên NXB");
         }
-        else if(!isString(puli.getPublisherName())) {
+        else if(!isValidName(publisher.getPublisherName())) {
             createValidation("Tên NXB không được có ký tự đặc biệt");
         }
-        if(puli.getPublisherAddress().isEmpty()) {
-            createValidation("địa chỉ NXB không được để trống");
+        if(publisher.getPublisherAddress().isEmpty()) {
+            createValidation("Địa chỉ NXB không được để trống");
         }
-        if(puli.getPublisherEmail().isEmpty()) {
-            createValidation("email không được để trống");
+        if(publisher.getPublisherEmail().isEmpty()) {
+            createValidation("Email không được để trống");
         }
-//        else if(!isValidEmail(puli.getPublisherEmail())) {
-//            createValidation("email không hợp lệ");
-//        }
-        if(puli.getPublisherRepresent().isEmpty()) {
-            createValidation("hãy nhập tên người đại diện");
+        else if(!isValidEmail(publisher.getPublisherEmail())) {
+            createValidation("Email không hợp lệ");
         }
-        else if(!isString(puli.getPublisherName()))
-            createValidation("Tên người đại diện không hợp lệ");
+        if(publisher.getRepresent().isEmpty()) {
+            createValidation("Hãy nhập tên người đại diện");
+        }
     }
     public static void categoryValidation(Category category) {
         if(category.getNameCate().isEmpty()) {
-            createValidation("Hãy Điền Tên thể loại");
-        }else if(CategoryDAO.checkExistCategory(category.getNameCate().trim())){
-            createValidation("thể loại này đã tồn tại trước đó");
+            createValidation("Hãy điền Tên thể loại");
         }
     }
     public static String getStrValidation() {
-        int errCount = 0;
+        int errorCount = 0;
         String strValidation = "";
-        for(String err : getErr()) {
-            errCount++;
-            strValidation += String.format("%d. %s\n", errCount, err);
+        for(String item : errorArrayList) {
+            errorCount++;
+            strValidation += String.format("%d. %s\n", errorCount, item);
         }
 
         return strValidation;
     }
-    public static void clearValidation() { err.clear(); }
-    public static int getErrCount() { return err.size(); }
     public static boolean isValidEmail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
 
         return pattern.matcher(email).matches();
     }
-    public static boolean isString (String name) {
+    public static boolean isValidName(String name) {
         if (name.matches(".*\\d.*")) {
             return false;
         }
-        // Kiểm tra xem chuỗi có chứa ký tự đặc biệt không
         if (name.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
             return false;
         }

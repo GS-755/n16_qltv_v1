@@ -69,7 +69,8 @@ public class AppProperties {
 
     // Connection String function
     public String getConnectionString() {
-        return String.format("jdbc:mysql://%s:%s/%s", this.hostName, this.port, this.dbName);
+        return String.format("jdbc:mysql://%s:%s/%s?jdbcCompliantTruncation=false",
+                this.hostName, this.port, this.dbName);
     }
     // Method to load app.properties
     public void loadConfig() throws IOException {

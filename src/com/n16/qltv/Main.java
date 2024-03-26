@@ -2,7 +2,6 @@ package com.n16.qltv;
 
 import com.n16.qltv.frame.admin.LoginFrame;
 import com.n16.qltv.frame.config.ConfigFrame;
-
 import javax.swing.*;
 import java.io.File;
 

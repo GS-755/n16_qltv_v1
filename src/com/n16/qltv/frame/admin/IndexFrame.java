@@ -1,7 +1,6 @@
 package com.n16.qltv.frame.admin;
 
 import com.n16.qltv.frame.borrowbook.BorrowBook;
-import com.n16.qltv.frame.category.CategoryForm;
 import com.n16.qltv.utils.Session;
 import javax.swing.*;
 
@@ -39,8 +38,8 @@ public class IndexFrame extends JFrame {
         menu1.addSeparator();
         menu1.add("Nhà xuất bản");
         menu1.getItem(3).addActionListener(e -> {
-            com.n16.qltv.frame.publisher.PublisherFrom
-                    publisherFrom = new com.n16.qltv.frame.publisher.PublisherFrom();
+            com.n16.qltv.frame.publisher.IndexFrame
+                    publisherFrom = new com.n16.qltv.frame.publisher.IndexFrame();
         });
         menu1.add("Tác giả");
         menu1.getItem(4).addActionListener(e -> {
@@ -49,8 +48,8 @@ public class IndexFrame extends JFrame {
         });
         menu1.add("Thể loại");
         menu1.getItem(5).addActionListener(e -> {
-            com.n16.qltv.frame.category.CategoryForm
-                    categoryForm = new CategoryForm();
+            com.n16.qltv.frame.category.IndexFrame
+                    categoryForm = new com.n16.qltv.frame.category.IndexFrame();
         });
         menu1.addSeparator();
         menu1.add("Sách");

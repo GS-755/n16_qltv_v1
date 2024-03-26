@@ -22,8 +22,8 @@ public class IndexFrame extends JFrame {
     private JRadioButton approxModeRadio, absoluteModeRadio;
     private JLabel searchModeLabel;
     private JButton btnBorrowBook;
-    private JButton bnt_AddCustomer;
-    private JButton bnt_manageBooks;
+    private JButton btnToCustomers;
+    private JButton btnManageBooks;
     private JLabel tf_NameStaff;
     private JButton btnLogout;
     private DefaultTableModel model;
@@ -107,7 +107,6 @@ public class IndexFrame extends JFrame {
             staffArrayList = this.staffDAO.findStaffName(mode, keyword);
             addTableData(model, staffArrayList);
         });
-// todo  ****************************************** chức năng ******************************************  //
         btnBorrowBook.addActionListener(e -> {
             if(Session.get("staff") == null )  {
                 dispose();
@@ -115,7 +114,6 @@ public class IndexFrame extends JFrame {
             }
             else  {
                  BorrowBook borrowBook = new BorrowBook();
-                //CreateFrame createFrame = new CreateFrame();
             }
         });
         btnLogout.addActionListener(e -> {
@@ -123,10 +121,8 @@ public class IndexFrame extends JFrame {
             Session.remove("staff");
             dispose();
             LoginFrame loginFrame = new LoginFrame();
-
         });
     }
-// todo  ****************************************** chức năng ******************************************  //
     public void addTableStyle(DefaultTableModel model) {
         model.addColumn("Tên Nhân viên");
         model.addColumn("Giới tính");

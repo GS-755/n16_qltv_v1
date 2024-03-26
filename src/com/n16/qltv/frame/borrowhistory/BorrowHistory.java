@@ -1,4 +1,4 @@
-package com.n16.qltv.frame.BorrowHistory;
+package com.n16.qltv.frame.borrowhistory;
 
 import com.n16.qltv.daos.BorrowHistoryDAO;
 import com.n16.qltv.frame.staff.LoginFrame;
