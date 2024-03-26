@@ -34,7 +34,7 @@ public class BorrowHistoryDAO {
             }
             rs.close();
             preparedStatement.close();
-            conn.close();
+            //conn.close();
             Puli_Table.setModel(model);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class BorrowHistoryDAO {
             }
             rs.close();
             preparedStatement.close();
-            conn.close();
+           // conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

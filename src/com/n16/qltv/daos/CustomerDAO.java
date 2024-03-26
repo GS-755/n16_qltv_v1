@@ -110,7 +110,6 @@ public class CustomerDAO implements IDAOs {
         st.setString(4, customer.getUsrName());
         st.setString(5, customer.getPassword());
         st.setString(6, String.format("%s", customer.getGender()));
-
         st.executeUpdate();
     }
 

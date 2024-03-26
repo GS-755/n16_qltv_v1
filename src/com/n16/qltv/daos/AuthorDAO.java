@@ -106,9 +106,7 @@ public class AuthorDAO implements IDAOs {
 
     @Override
     public void edit(IModels item) {
-
         Author author = (Author) item;
-
         try {
             if(checkExist(author.getAuthorName())) {
                 String query = "UPDATE tacgia " +
@@ -227,7 +225,7 @@ public class AuthorDAO implements IDAOs {
     }
 
     public String[] getStrAuthorName() {
-        this.authorArrayList = (ArrayList<Author>) getListItem();
+        this.authorArrayList = getListItem();
         String[] authorNames = new String[getItemCount()];
         int count = 0;
         for(Author author : authorArrayList) {
