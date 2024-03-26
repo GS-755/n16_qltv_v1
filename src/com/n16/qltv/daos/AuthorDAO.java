@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AuthorDAO implements IDAOs {
+
+    BookDAO BookDAO;
     private Connection conn;
     private ArrayList<Author> authorArrayList;
 
@@ -137,6 +139,7 @@ public class AuthorDAO implements IDAOs {
     @Override
     public void delete(Object item) {
         try {
+            // kt author tồn tại ? - đã được dùng chưa ?
             if (checkExist(item.toString().trim())) {
                 String query = "DELETE FROM tacgia " +
                         " WHERE TenTacGia = ?";
@@ -155,8 +158,9 @@ public class AuthorDAO implements IDAOs {
     @Override
     public Author getItem(Object item) {
          Author author = new Author();
-        this.authorArrayList = (ArrayList<Author>) getListItem();
+        this.authorArrayList = this.getListItem();
          for (Author authoritem : this.authorArrayList)
+             // note: đổi thành getid thì (int)item bên create author bị lỗi kiểu
             if (authoritem.getAuthorName().equals(item.toString().trim()))
                 author = authoritem;
         return author;

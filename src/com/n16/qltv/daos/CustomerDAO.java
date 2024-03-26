@@ -14,10 +14,14 @@ public class CustomerDAO implements IDAOs {
     private Connection conn;
     private ArrayList<Customer> customerArrayList;
 
-    public CustomerDAO() { }
+    public CustomerDAO() {
+        this.customerArrayList = this.getListItem();
+        this.conn = MySQL.client().getConnection();
+    }
 
     public boolean isCustomerExist(String usrName) {
         try {
+            this.customerArrayList = this.getListItem();
             for(Customer customer : this.customerArrayList) {
                 if(customer.getUsrName().trim().equals(usrName.trim())) {
                     return true;
@@ -69,11 +73,11 @@ public class CustomerDAO implements IDAOs {
 
     public ArrayList<Customer> findCustomerByName(String keyword, int mode) {
         ArrayList<Customer> foundStaffs = new ArrayList<>();
+        this.customerArrayList = this.getListItem();
         switch(mode) {
             case 1: {
                 // Tìm người dùng ở chế độ tuyệt đối
-                for(Customer customer : customerArrayList){
-                    System.out.println(customer);
+                for(Customer customer : customerArrayList) {
                     if(customer.getNameCus().equals(keyword))
                         foundStaffs.add(customer);
                 }
@@ -82,7 +86,7 @@ public class CustomerDAO implements IDAOs {
             case 2: {
                 // Tìm người dùng ở chế độ tương đối
                 for(Customer customer : customerArrayList)
-                    if(customer.getNameCus().startsWith(keyword))
+                    if(customer.getNameCus().toLowerCase().trim().contains(keyword))
                         foundStaffs.add(customer);
             }
             break;
@@ -115,6 +119,7 @@ public class CustomerDAO implements IDAOs {
 
     @Override
     public Customer getItem(Object item) {
+        this.customerArrayList = this.getListItem();
         for(Customer customer : this.customerArrayList) {
             if(customer.getUsrName().trim().equals(item.toString().trim())) {
                 return customer;

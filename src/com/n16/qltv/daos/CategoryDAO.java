@@ -129,7 +129,18 @@ public class CategoryDAO implements IDAOs {
     public int getItemCount() {
         return this.cateArrayList.size();
     }
+
+    public boolean checkExistCategory(String Catename) {
+        boolean check = false;
+            cateArrayList = getListItem();
+            for ( Category category : cateArrayList)
+                check = category.getNameCate().equals(Catename.trim()) ? true : false;
+            return check;
+    }
+
 }
+
+
 
 //--------------code cũ-------------------
 // thêm category

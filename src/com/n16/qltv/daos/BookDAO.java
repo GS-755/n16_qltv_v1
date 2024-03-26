@@ -62,18 +62,20 @@ public class BookDAO implements IDAOs {
                     "TenSach," +
                     " NamXuatBan," +
                     " BiaSach," +
+                    " SoLuong," +
                     " MaNXB," +
                     " MaTacGia," +
                     " MaTheLoai) " +
-                    "VALUES(?, ?, ?, ?, ?, ?)";
+                    "VALUES(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement st = this.conn.prepareStatement(query);
 
             st.setString(1, book.getBookName());
             st.setInt(2, book.getBookYear());
-            st.setString(3, "");
-            st.setInt(4, book.getPublisher().getPublisherId());
-            st.setInt(5, book.getAuthor().getAuthorId());
-            st.setInt(6, book.getCategory().getCateId());
+            st.setString(3, book.getCover());
+            st.setInt(4, book.getQty());
+            st.setInt(5, book.getPublisher().getPublisherId());
+            st.setInt(6, book.getAuthor().getAuthorId());
+            st.setInt(7, book.getCategory().getCateId());
 
             st.executeUpdate();
         } catch (Exception ex) {
@@ -121,14 +123,17 @@ public class BookDAO implements IDAOs {
         try {
             if (this.getItem((int) item) != null) {
                 String query = "DELETE FROM sach " +
-                        " WHERE TenSach = ?";
+                        " WHERE MaSach = ?";
                 Connection conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, item.toString().trim());
                 ps.executeUpdate();
+                int rowsInserted = ps.executeUpdate();
+            if (rowsInserted > 0)
+                System.out.println("1 dòng trong csdl đã được xóa");
+            else
+                System.out.println("Không có dòng nào trong CSDL được xóa");
                 ps.close();
-            } else {
-                System.out.println("Co loi xay ra :((");
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Có lỗi xảy ra. vui lòng kiểm tra lại.");
@@ -161,20 +166,22 @@ public class BookDAO implements IDAOs {
 
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 Book book = new Book();
-                book.setBookId(rs.getInt(1));
-                book.setBookName(rs.getString(2));
-                book.setBookYear(rs.getInt(3));
-                if (rs.getString(4) != null) {
+                book.setBookId(rs.getInt("MaSach"));
+                book.setBookName(rs.getString("TenSach"));
+                book.setBookYear(rs.getInt("NamXuatBan"));
+
+                if (rs.getString("BiaSach") != null) {
                     book.setCover(rs.getString(4));
                 }
-                book.setQty(rs.getInt(5));
-                Author author = this.authorDAO.getItem(rs.getInt(6));
+                book.setQty(rs.getInt("SoLuong"));
+                Author author = this.authorDAO.getItem(rs.getInt("MaTacGia"));
                 book.setAuthor(author);
-                Publisher publisher = this.publisherDAO.getItem(rs.getInt(7));
+                Publisher publisher = this.publisherDAO.getItem(rs.getInt("MaNXB"));
                 book.setPublisher(publisher);
-                Category category = this.categoryDAO.getItem(rs.getInt(8));
+                Category category = this.categoryDAO.getItem(rs.getInt("MaTheLoai"));
                 book.setCategory(category);
 
                 books.add(book);

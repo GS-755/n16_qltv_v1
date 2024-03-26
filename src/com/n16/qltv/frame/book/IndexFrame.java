@@ -1,10 +1,13 @@
 package com.n16.qltv.frame.book;
 
 import com.n16.qltv.daos.BookDAO;
+import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
+import com.n16.qltv.model.Publisher;
 import com.n16.qltv.utils.Validation;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
@@ -27,29 +30,75 @@ public class IndexFrame extends JFrame {
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+
+        model = new DefaultTableModel();
+        addTableStyle(model);
+        addTableData(model, bookArrayList);
+
         btnCreate.addActionListener(e -> {
             CreateFrame createFrame = new CreateFrame();
+            refreshTableData();
         });
-        btnDelete.addActionListener(e -> {
-            Validation.clearValidation();
-            if(bookTable.getSelectedRow() >= 0) {
-                int bookId = Integer.parseInt(model.getValueAt(
-                        bookTable.getSelectedRow(), 0).toString());
-                this.bookDAO.delete(bookId);
-            }
-            else {
-                Validation.createValidation("Hãy chọn quyển sách cần xoá");
-                JOptionPane.showMessageDialog(null, Validation.getStrValidation());
-            }
-        });
-        btnEdit.addActionListener(e -> {
+
+btnDelete.addActionListener(e -> {
+    Validation.clearValidation();
+    if(bookTable.getSelectedRow() >= 0) {
+        int bookId = Integer.parseInt(model.getValueAt(
+                bookTable.getSelectedRow(), 0).toString());
+        this.bookDAO.delete(bookId);
+        refreshTableData();
+    }
+    else {
+        Validation.createValidation("Hãy chọn quyển sách cần xoá");
+        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+    }
+});
+
+btnEdit.addActionListener(e -> {
             int bookId = Integer.parseInt(model.getValueAt(
                     bookTable.getSelectedRow(), 0).toString());
             Book book = this.bookDAO.getItem(bookId);
             EditFrame editFrame = new EditFrame(book);
         });
         btnUpdate.addActionListener(e -> {
-
+            refreshTableData();
         });
+    }
+    public void addTableStyle(DefaultTableModel model) {
+        model.addColumn("Mã sách");
+        model.addColumn("tên sách");
+        model.addColumn("NamXB");
+        model.addColumn("Bìa Sách");
+        model.addColumn("Số Lượng");
+        model.addColumn("NXB");
+        model.addColumn("Tác Giả");
+        model.addColumn("Thể Loại");
+
+
+    }
+    public void addTableData(DefaultTableModel model, ArrayList<Book> books) {
+        for(Book book : books)
+            model.addRow(new Object[] {
+                    book.getBookId(),
+                    book.getBookName(),
+                    book.getBookYear(),
+                    book.getCover(),
+                    book.getQty(),
+                    book.getPublisher().getPublisherName(),
+                    book.getAuthor().getAuthorName(),
+                    book.getCategory().getNameCate()
+            });
+
+        bookTable.setModel(model);
+    }
+
+    public void refreshTableData() {
+        deleteTableData();
+        bookArrayList = this.bookDAO.getListItem();
+        addTableData(model, bookArrayList);
+    }
+    public void deleteTableData() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
     }
 }

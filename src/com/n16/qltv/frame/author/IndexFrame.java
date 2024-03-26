@@ -1,7 +1,10 @@
 package com.n16.qltv.frame.author;
 
 import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.daos.BookDAO;
 import com.n16.qltv.model.Author;
+import com.n16.qltv.model.Book;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,10 +24,13 @@ public class IndexFrame extends JFrame{
     private JLabel searchModeLabel;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
+    private ArrayList<Book> bookArrayList;
     private AuthorDAO AuthorDAO;
+    private BookDAO BookDAO;
     public IndexFrame() {
 
         this.AuthorDAO = new AuthorDAO();
+        this.BookDAO = new BookDAO();
 
         setSearchModeComponents();
         setContentPane(indexFrame);
@@ -39,10 +45,35 @@ public class IndexFrame extends JFrame{
         addTableStyle(model);
         addTableData(model, authorArrayList);
 
+        //
         btnDelete.addActionListener(e -> {
-            this.AuthorDAO.delete(
-                    model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
-            deleteTableData();
+            if(tableAuthor.getSelectedRow() >= 0) {
+                bookArrayList = this.BookDAO.getListItem();
+                String select = model.getValueAt(tableAuthor.getSelectedRow(), 0).toString();
+                // duyệt qua danh sách book xem author đã được dùng chưa.
+                for (Book book : bookArrayList) {
+                    // author theo tên
+                    Author author = AuthorDAO.getItem(select);
+                    book.getAuthor();
+                    if(book.getAuthor().getAuthorName() == author.getAuthorName()
+                    || book.getAuthor().getAuthorId() == author.getAuthorId()){
+                        Validation.clearValidation();
+                        Validation.createValidation
+                                ("tác giả này đang có sách phát hành không thể xóa!" +
+                                        "\nSách: " +
+                                        book.getBookName());
+                    }
+                }
+                if(Validation.getErrCount() > 0) {
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                }else {
+                    this.AuthorDAO.delete(
+                            model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
+                    deleteTableData();
+                }
+            }else {
+                JOptionPane.showMessageDialog(this,"hãy chọn 1 tác giả");
+            }
 
             authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
             //addTableStyle(model);

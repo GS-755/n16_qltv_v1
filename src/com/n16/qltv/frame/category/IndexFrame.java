@@ -6,6 +6,8 @@ import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -48,9 +50,18 @@ public class IndexFrame extends JFrame{
             }
             else {
                 try {
-                    this.categoryDAO.create(category);
-                    this.refreshTableData();
-                    this.addTableData(this.categoryDAO.getListItem());
+                    if(!categoryDAO.checkExistCategory(category.getNameCate()))
+                    {
+                        this.categoryDAO.create(category);
+                        this.refreshTableData();
+                        this.addTableData(this.categoryDAO.getListItem());
+                    }else {
+                        Validation.clearValidation();
+                        Validation.createValidation("tên thể loại đã tồn tại !");
+                        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                    }
+
+
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -102,6 +113,35 @@ public class IndexFrame extends JFrame{
                 System.out.println(ex.getMessage());
             }
         });
+
+        // tìm kiếm
+        searchInput.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                String keyword = searchInput.getText().trim();
+                if(keyword.isEmpty() || keyword.equals("") || keyword.isBlank() || keyword.length() == 0)
+                {
+                    deleteTableData();
+                    cateArrayList = categoryDAO.getListItem();
+                    addTableData(cateArrayList);
+
+                } else {
+                    cateArrayList.clear();
+                    deleteTableData();
+                    ArrayList<Category> foundCate = new ArrayList<>();
+                    cateArrayList = categoryDAO.getListItem();
+                    for (Category cates : cateArrayList) {
+                        if(cates.getNameCate().contains(keyword))
+                        {
+                            foundCate.add(cates);
+                        }
+                    }
+                    addTableData(foundCate);
+                }
+            }
+        });
+
         setVisible(true);
     }
     public void addTableDecoration() {
