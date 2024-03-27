@@ -200,17 +200,8 @@ public class AuthorDAO implements IDAOs {
 
     @Override
     public int getItemCount() {
+        authorArrayList = getListItem();
         return authorArrayList.size();
-    }
-
-    public ArrayList<Author> findAuthorbyID(int id) {
-
-        this.authorArrayList = (ArrayList<Author>) getListItem();
-        ArrayList<Author> foundAuthor = new ArrayList<>();
-        for(Author author : authorArrayList)
-            if(author.getAuthorId() == id)
-                foundAuthor.add(author);
-        return foundAuthor;
     }
 
     public ArrayList<Author> sortUsrName(int mode) {

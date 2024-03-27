@@ -14,9 +14,9 @@ public class CreateFrame extends JFrame {
     private JPanel createFrame;
     private JLabel mainTitle;
     private JTextField txtBookName, txtPublishYear;
-    private JComboBox<String> cmbAuthor;
-    private JComboBox<String> cmbCategory;
-    private JComboBox<String> cmbPublisher;
+    private JComboBox<Author> cmbAuthor;
+    private JComboBox<Category> cmbCategory;
+    private JComboBox<Publisher> cmbPublisher;
     private JButton btnCreate;
     private JLabel labelPublisher, labelCategory, labelAuthor;
     private JLabel labelYear, labelName;
@@ -50,7 +50,7 @@ public class CreateFrame extends JFrame {
                 book.setBookYear(Integer.parseInt(txtPublishYear.getText().trim()));
                 book.setCover(cover_txt.getText().trim());
                 book.setQty(Integer.parseInt(Qty_txt.getText().trim()));
-                Category category = (Category)this.cmbCategory.getSelectedItem();
+                Category category = (Category) this.cmbCategory.getSelectedItem();
                 book.setCategory(category);
                 //Author author = (Author)this.cmbAuthor.getSelectedItem();
                 Author author = (Author)this.cmbAuthor.getSelectedItem();
@@ -81,16 +81,15 @@ public class CreateFrame extends JFrame {
         });
     }
     public void setComboBoxComponents() {
-        //cmbPublisher.setRenderer(new PublisherListCellRenderer());
         for(Publisher publisher : this.publisherDAO.getListItem()) {
-            cmbPublisher.addItem(publisher.getPublisherName());
+            cmbPublisher.addItem(publisher);
         }
         //
         for(Author author : this.authorDAO.getListItem()) {
-            cmbAuthor.addItem(author.getAuthorName());
+            cmbAuthor.addItem(author);
         }
         for(Category category : this.categoryDAO.getListItem()) {
-            cmbCategory.addItem(category.getNameCate());
+            cmbCategory.addItem(category);
         }
     }
 

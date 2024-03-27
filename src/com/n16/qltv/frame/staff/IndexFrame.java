@@ -78,8 +78,8 @@ public class IndexFrame extends JFrame {
             if(tableStaff.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
             else {
-                EditFrame ef = new EditFrame(model.getValueAt(
-                        tableStaff.getSelectedRow(), 5).toString());
+               String SaffName  = model.getValueAt(tableStaff.getSelectedRow(), 5).toString();
+                EditFrame ef = new EditFrame(SaffName);
             }
         });
 

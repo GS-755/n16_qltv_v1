@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class BookDAO implements IDAOs {
     private AuthorDAO authorDAO;
@@ -29,7 +30,6 @@ public class BookDAO implements IDAOs {
         this.categoryDAO = new CategoryDAO();
         this.publisherDAO = new PublisherDAO();
     }
-
     public ArrayList<Book> findBookByName(int mode, String keyword) {
         ArrayList<Book> foundBooks = new ArrayList<>();
         switch (mode) {
@@ -84,7 +84,6 @@ public class BookDAO implements IDAOs {
                     "Có lỗi xảy ra :(((\nVui lòng kiểm tra lại.");
         }
     }
-
     @Override
     public void edit(IModels item) {
         try {
@@ -117,7 +116,6 @@ public class BookDAO implements IDAOs {
             ex.printStackTrace();
         }
     }
-
     @Override
     public void delete(Object item) {
         try {
@@ -140,7 +138,6 @@ public class BookDAO implements IDAOs {
             ex.printStackTrace();
         }
     }
-
     @Override
     public Book getItem(Object item) {
         try {
@@ -157,7 +154,6 @@ public class BookDAO implements IDAOs {
 
         return null;
     }
-
     @Override
     public ArrayList<Book> getListItem() {
         ArrayList<Book> books = new ArrayList<>();
@@ -193,10 +189,45 @@ public class BookDAO implements IDAOs {
 
         return books;
     }
-
+    public ArrayList<Book> getBooksOfYear(int year) {
+        ArrayList<Book> books = new ArrayList<>();
+        this.bookArrayList = getListItem();
+        for (Book book : bookArrayList){
+            if(book.getBookYear() == year){
+                books.add(book);
+            }
+        }
+        return books;
+    }
     @Override
     public int getItemCount() {
+        bookArrayList = getListItem();
         return this.bookArrayList.size();
+    }
+    public ArrayList<Book> BubbleSortByBooks(ArrayList<Book> bookList){
+        int Size = bookList.size();
+        for (int i = 0; i < Size-1; i++) {
+            for (int j = 0; j < Size-i-1; j++) {
+                if (bookList.get(j).getBookYear() > bookList.get(j+1).getBookYear()) {
+                    Book temp = bookList.get(j);
+                    bookList.set(j, bookList.get(j+1));
+                    bookList.set(j+1, temp);
+                }
+            }
+        }
+        return bookList;
+    }
+
+    public ArrayList<Book> removeDuplicatesByYear(ArrayList<Book> books){
+        HashSet<Integer> yearsSet = new HashSet<>();
+        ArrayList<Book> uniqueBooks = new ArrayList<>();
+        for (Book book : books) {
+            if (!yearsSet.contains(book.getBookYear())) {
+                yearsSet.add(book.getBookYear());
+                uniqueBooks.add(book);
+            }
+        }
+        return uniqueBooks;
     }
 }
 //    public static boolean checkExistBook(String TenSach) {

@@ -49,14 +49,15 @@ public class IndexFrame extends JFrame{
         btnDelete.addActionListener(e -> {
             if(tableAuthor.getSelectedRow() >= 0) {
                 bookArrayList = this.bookDAO.getListItem();
-                String select = model.getValueAt(tableAuthor.getSelectedRow(), 0).toString();
+                int select = (int) model.getValueAt(tableAuthor.getSelectedRow(), 0);
                 // duyệt qua danh sách book xem author đã được dùng chưa.
+
+
                 for (Book book : bookArrayList) {
                     // author theo tên
                     Author author = authorDAO.getItem(select);
-                    book.getAuthor();
-                    if(book.getAuthor().getAuthorName() == author.getAuthorName()
-                    || book.getAuthor().getAuthorId() == author.getAuthorId()){
+
+                    if(book.getAuthor().getAuthorId() == author.getAuthorId()){
                         Validation.clearValidation();
                         Validation.createValidation
                                 ("tác giả này đang có sách phát hành không thể xóa!" +
@@ -64,11 +65,12 @@ public class IndexFrame extends JFrame{
                                         book.getBookName());
                     }
                 }
+
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }else {
                     this.authorDAO.delete(
-                            model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
+                            model.getValueAt(tableAuthor.getSelectedRow(), 1).toString());
                     deleteTableData();
                 }
             }else {
@@ -82,9 +84,11 @@ public class IndexFrame extends JFrame{
         btnExit.addActionListener(e -> {
             dispose();
         });
+
         btnAdd.addActionListener(e -> {
             CreateFrame createFrame = new CreateFrame();
         });
+
         btnEdit.addActionListener(e -> {
             if(tableAuthor.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
@@ -95,24 +99,28 @@ public class IndexFrame extends JFrame{
                 EditFrame ef = new EditFrame(author);
             }
         });
+
         btnUpdate.addActionListener(e -> {
             deleteTableData();
             authorArrayList = (ArrayList<Author>) this.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
             authorArrayList = this.authorDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
             authorArrayList = this.authorDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnSearch.addActionListener( e -> {
             // Kiểm tra chế độ tìm kiếm
             int mode = 1; String keyword = tfSearch.getText().trim();

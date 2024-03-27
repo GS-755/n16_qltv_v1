@@ -126,6 +126,7 @@ public class StaffDAO implements IDAOs {
     }
     @Override
     public Staff getItem(Object item) {
+        staffArrayList = getListItem();
         for(Staff staff : this.staffArrayList) {
             if(staff.getUsrName().trim().
                     equals(item.toString().trim())) {
