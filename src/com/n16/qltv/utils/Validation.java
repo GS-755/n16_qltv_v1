@@ -24,11 +24,11 @@ public class Validation {
                 || author.getAuthorName().length() > 20) {
             createValidation("Tên tác giả phải từ 4 -> 20 ký tự");
         }
-        if(author.getAuthorAddress().isEmpty()
-                || author.getAuthorAddress().isBlank()) {
+        if(author.getAuthorSite().isEmpty()
+                || author.getAuthorSite().isBlank()) {
             createValidation("Website KHÔNG được để trống");
         }
-        else if(!isValidWebsite(author.getAuthorAddress())) {
+        else if(!isValidWebsite(author.getAuthorSite())) {
             createValidation("Website KHÔNG hợp lệ");
         }
     }

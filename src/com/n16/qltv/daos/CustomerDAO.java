@@ -169,7 +169,7 @@ public class CustomerDAO implements IDAOs {
                         + "MatKhau = ?, "
                         + "GioiTinh = ? "
                         + "WHERE TenDangNhap = ?";
-                Connection conn = MySQL.client().getConnection();
+                this.conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, customer.getNameCus());
                 ps.setString(2, customer.getAddressCus());
@@ -198,7 +198,7 @@ public class CustomerDAO implements IDAOs {
             if(isCustomerExist(item.toString().trim())) {
                 String query = "DELETE FROM docgia " +
                         " WHERE TenDangNhap = ?";
-                Connection conn = MySQL.client().getConnection();
+                this.conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, item.toString().trim());
                 ps.executeUpdate();

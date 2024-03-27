@@ -8,16 +8,15 @@ import javax.swing.*;
 
 public class EditFrame extends JFrame {
     private JPanel panel1;
-    private JTextField tfName, tfAddress, tfNote;
+    private JTextField tfName, tfWebsite, tfNote;
     private JButton btnAdd;
     private JLabel nameLabel, addressLabel;
     private JLabel noteLabel, titleLabel;
+    private AuthorDAO authorDAO;
 
-    private AuthorDAO AuthorDAO;
+    public EditFrame(Author author) {
 
-    public EditFrame(String auName) {
-
-        this.AuthorDAO = new AuthorDAO();
+        this.authorDAO = new AuthorDAO();
 
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
@@ -26,31 +25,25 @@ public class EditFrame extends JFrame {
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        setComponents(auName);
+        setComponents(author);
 
         btnAdd.addActionListener(e -> {
             Validation.clearValidation();
-            if(AuthorDAO.checkExist(tfName.getText())) {
-                Author author = new Author();
-                author.setAuthorName(auName);
-                String website = AuthorDAO.
-                        formatWebsite(tfAddress.getText()).trim();
-                if(website.isEmpty()) {
-                    author.setAuthorAddress(tfAddress.getText().trim());
-                } else {
+            if(authorDAO.checkExist(tfName.getText().trim())) {
+                if(!this.tfWebsite.getText().isEmpty()) {
+                    String website = authorDAO.
+                            formatWebsite(tfWebsite.getText()).trim();
                     author.setAuthorAddress(website);
                 }
-                if(tfNote.getText().isEmpty()
+                if(!tfNote.getText().isEmpty()
                         || tfNote.getText().isBlank()) {
-                    author.setAuthorNote("");
-                } else {
                     author.setAuthorNote(tfNote.getText());
                 }
                 Validation.authorValidation(author);
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 } else {
-                    this.AuthorDAO.edit(author);
+                    this.authorDAO.edit(author);
                     JOptionPane.showMessageDialog(null, "Cập nhật thành công");
                     dispose();
                 }
@@ -61,11 +54,10 @@ public class EditFrame extends JFrame {
 
         });
     }
-    public void setComponents(String usrName) {
-        Author author = this.AuthorDAO.getItem(usrName);
+    public void setComponents(Author author) {
         tfName.setText(author.getAuthorName().toString());
         tfName.setEditable(false);
-        tfAddress.setText(author.getAuthorAddress().toString());
+        tfWebsite.setText(author.getAuthorSite().toString());
         tfNote.setText(author.getAuthorNote().toString());
     }
 }

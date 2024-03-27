@@ -25,12 +25,12 @@ public class IndexFrame extends JFrame{
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
     private ArrayList<Book> bookArrayList;
-    private AuthorDAO AuthorDAO;
-    private BookDAO BookDAO;
+    private AuthorDAO authorDAO;
+    private BookDAO bookDAO;
     public IndexFrame() {
 
-        this.AuthorDAO = new AuthorDAO();
-        this.BookDAO = new BookDAO();
+        this.authorDAO = new AuthorDAO();
+        this.bookDAO = new BookDAO();
 
         setSearchModeComponents();
         setContentPane(indexFrame);
@@ -39,7 +39,7 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
+        authorArrayList = (ArrayList<Author>) this.authorDAO.getListItem();
 
         model = new DefaultTableModel();
         addTableStyle(model);
@@ -48,12 +48,12 @@ public class IndexFrame extends JFrame{
         //
         btnDelete.addActionListener(e -> {
             if(tableAuthor.getSelectedRow() >= 0) {
-                bookArrayList = this.BookDAO.getListItem();
+                bookArrayList = this.bookDAO.getListItem();
                 String select = model.getValueAt(tableAuthor.getSelectedRow(), 0).toString();
                 // duyệt qua danh sách book xem author đã được dùng chưa.
                 for (Book book : bookArrayList) {
                     // author theo tên
-                    Author author = AuthorDAO.getItem(select);
+                    Author author = authorDAO.getItem(select);
                     book.getAuthor();
                     if(book.getAuthor().getAuthorName() == author.getAuthorName()
                     || book.getAuthor().getAuthorId() == author.getAuthorId()){
@@ -67,7 +67,7 @@ public class IndexFrame extends JFrame{
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }else {
-                    this.AuthorDAO.delete(
+                    this.authorDAO.delete(
                             model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
                     deleteTableData();
                 }
@@ -75,7 +75,7 @@ public class IndexFrame extends JFrame{
                 JOptionPane.showMessageDialog(this,"hãy chọn 1 tác giả");
             }
 
-            authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
+            this.authorArrayList = this.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -89,26 +89,27 @@ public class IndexFrame extends JFrame{
             if(tableAuthor.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
             else {
-                String authorName = model.getValueAt(
-                        tableAuthor.getSelectedRow(), 0).toString().trim();
-                EditFrame ef = new EditFrame(authorName);
+                int authorId = Integer.parseInt(model.getValueAt(
+                        tableAuthor.getSelectedRow(), 0).toString().trim());
+                Author author = this.authorDAO.getItem(authorId);
+                EditFrame ef = new EditFrame(author);
             }
         });
         btnUpdate.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = (ArrayList<Author>) this.AuthorDAO.getListItem();
+            authorArrayList = (ArrayList<Author>) this.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = this.AuthorDAO.sortUsrName(1);
+            authorArrayList = this.authorDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = this.AuthorDAO.sortUsrName(2);
+            authorArrayList = this.authorDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -118,12 +119,13 @@ public class IndexFrame extends JFrame{
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            authorArrayList = this.AuthorDAO
+            authorArrayList = this.authorDAO
                     .findAuthorName(mode, keyword);
             addTableData(model, authorArrayList);
         });
     }
     public void addTableStyle(DefaultTableModel model) {
+        model.addColumn("Mã tác giả");
         model.addColumn("Tên tác giả");
         model.addColumn("Địa chỉ website");
         model.addColumn("Ghi chú");
@@ -131,8 +133,9 @@ public class IndexFrame extends JFrame{
     public void addTableData(DefaultTableModel model, ArrayList<Author> authors) {
         for(Author author : authors)
             model.addRow(new Object[] {
+                    author.getAuthorId(),
                     author.getAuthorName(),
-                    author.getAuthorAddress(),
+                    author.getAuthorSite(),
                     author.getAuthorNote()
             });
 

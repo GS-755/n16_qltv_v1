@@ -20,7 +20,7 @@ public class Author implements IModels {
 
     public int getAuthorId() { return this.authorId; }
     public String getAuthorName() { return this.authorName; }
-    public String getAuthorAddress() { return this.authorAddress; }
+    public String getAuthorSite() { return this.authorAddress; }
     public String getAuthorNote() { return this.authorNote; }
     public void setAuthorId(int authorId) { this.authorId = authorId; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }

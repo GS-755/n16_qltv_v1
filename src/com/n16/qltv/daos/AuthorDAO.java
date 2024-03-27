@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AuthorDAO implements IDAOs {
-
-    BookDAO BookDAO;
     private Connection conn;
     private ArrayList<Author> authorArrayList;
 
@@ -23,12 +21,12 @@ public class AuthorDAO implements IDAOs {
         this.authorArrayList = new ArrayList<>();
     }
 
-    public static boolean checkExist(String authorName) {
+    public boolean checkExist(String authorName) {
         try {
             String query = "SELECT * " +
                     "FROM tacgia " +
                     "WHERE TenTacGia = ?";
-            Connection conn = MySQL.client().getConnection();
+            this.conn = MySQL.client().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, authorName);
             ResultSet rs = ps.executeQuery();
@@ -95,7 +93,7 @@ public class AuthorDAO implements IDAOs {
                     "VALUES(?, ?, ?)";
             PreparedStatement st = this.conn.prepareStatement(query);
             st.setString(1, author.getAuthorName());
-            st.setString(2, author.getAuthorAddress());
+            st.setString(2, author.getAuthorSite());
             st.setString(3, author.getAuthorNote());
 
             st.executeUpdate();
@@ -115,9 +113,9 @@ public class AuthorDAO implements IDAOs {
                         "SET Website = ?," +
                         "GhiChu = ? " +
                         "WHERE TenTacGia = ?";
-                Connection conn = MySQL.client().getConnection();
+                this.conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
-                ps.setString(1, author.getAuthorAddress());
+                ps.setString(1, author.getAuthorSite());
                 ps.setString(3, author.getAuthorName());
                 if(author.getAuthorNote().isEmpty()
                         || author.getAuthorNote().isBlank()) {
@@ -143,7 +141,7 @@ public class AuthorDAO implements IDAOs {
             if (checkExist(item.toString().trim())) {
                 String query = "DELETE FROM tacgia " +
                         " WHERE TenTacGia = ?";
-                Connection conn = MySQL.client().getConnection();
+                this.conn = MySQL.client().getConnection();
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, item.toString().trim());
                 ps.executeUpdate();
@@ -157,13 +155,20 @@ public class AuthorDAO implements IDAOs {
 
     @Override
     public Author getItem(Object item) {
-         Author author = new Author();
-        this.authorArrayList = this.getListItem();
-         for (Author authoritem : this.authorArrayList)
-             // note: đổi thành getid thì (int)item bên create author bị lỗi kiểu
-            if (authoritem.getAuthorName().equals(item.toString().trim()))
-                author = authoritem;
-        return author;
+        try {
+            int authorId = (int) item;
+            this.authorArrayList = this.getListItem();
+            for (Author authorItem : this.authorArrayList) {
+                if (authorItem.getAuthorId() == authorId) {
+                    return authorItem;
+                }
+            }
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -171,7 +176,7 @@ public class AuthorDAO implements IDAOs {
         try {
             authorArrayList = new ArrayList<>();
             String query = "SELECT * FROM tacgia";
-            Connection conn = MySQL.client().getConnection();
+            this.conn = MySQL.client().getConnection();
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
