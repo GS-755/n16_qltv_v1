@@ -1,4 +1,4 @@
-package com.n16.qltv.Adapter;
+package com.n16.qltv.adapter;
 
 import com.n16.qltv.daos.BookDAO;
 import com.n16.qltv.model.Author;
@@ -6,10 +6,7 @@ import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class BookAdapter extends BookDAO {
     private Author author;

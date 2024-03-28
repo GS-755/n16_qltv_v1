@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.admin;
 
-import com.n16.qltv.Adapter.BookAdapter;
+import com.n16.qltv.adapter.BookAdapter;
 import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.daos.BookDAO;
 import com.n16.qltv.frame.borrowbook.BorrowBook;
@@ -14,8 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public class IndexFrame extends JFrame {
     private JPanel indexPanel, mainPanel;

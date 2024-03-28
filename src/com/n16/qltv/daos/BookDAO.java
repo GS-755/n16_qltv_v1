@@ -202,12 +202,13 @@ public class BookDAO implements IDAOs {
     @Override
     public int getItemCount() {
         bookArrayList = getListItem();
+
         return this.bookArrayList.size();
     }
     public ArrayList<Book> BubbleSortByBooks(ArrayList<Book> bookList){
         int Size = bookList.size();
-        for (int i = 0; i < Size-1; i++) {
-            for (int j = 0; j < Size-i-1; j++) {
+        for (int i = 0; i < Size - 1; i++) {
+            for (int j = 0; j < Size - i - 1; j++) {
                 if (bookList.get(j).getBookYear() > bookList.get(j+1).getBookYear()) {
                     Book temp = bookList.get(j);
                     bookList.set(j, bookList.get(j+1));

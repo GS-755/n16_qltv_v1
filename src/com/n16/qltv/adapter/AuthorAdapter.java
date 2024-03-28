@@ -1,4 +1,4 @@
-package com.n16.qltv.Adapter;
+package com.n16.qltv.adapter;
 
 import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.model.Author;
