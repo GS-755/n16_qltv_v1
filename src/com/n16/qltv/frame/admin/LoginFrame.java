@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.admin;
 
-import com.n16.qltv.daos.AdminDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
@@ -12,6 +12,7 @@ public class LoginFrame extends JFrame {
     private JLabel mainTitle;
     private JPanel loginPanel;
     private JPasswordField txtPassword;
+    private DaoFacade daoFacades = new DaoFacade();
 
     public LoginFrame() {
         setContentPane(loginPanel);
@@ -30,8 +31,8 @@ public class LoginFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
             }
             else {
-                boolean isLoggedIn = AdminDAO.
-                        isLoggedIn(usrName, password);
+                boolean isLoggedIn = daoFacades.
+                        adminDAO.isLoggedIn(usrName, password);
                 if(isLoggedIn) {
                     JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
                     dispose();

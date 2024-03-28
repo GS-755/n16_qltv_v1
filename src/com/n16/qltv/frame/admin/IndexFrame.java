@@ -1,8 +1,8 @@
 package com.n16.qltv.frame.admin;
 
-import com.n16.qltv.Adapter.BookAdapter;
-import com.n16.qltv.daos.AuthorDAO;
-import com.n16.qltv.daos.BookDAO;
+import com.n16.qltv.adapter.BookAdapter;
+import com.n16.qltv.facade.ServiceFacade;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.frame.borrowbook.BorrowBook;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
@@ -14,8 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public class IndexFrame extends JFrame {
     private JPanel indexPanel, mainPanel;
@@ -33,8 +31,7 @@ public class IndexFrame extends JFrame {
     private final JMenuBar menuBar;
 
     //
-    private AuthorDAO AuthorDAO;
-    private BookDAO bookDAO;
+    private DaoFacade facades;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
     private ArrayList<Book> bookArrayList;
@@ -56,19 +53,22 @@ public class IndexFrame extends JFrame {
         setToolbar();
         setJMenuBar(menuBar);
 
-        model = new DefaultTableModel();
-        this.bookDAO = new BookDAO();
-        this.AuthorDAO = new AuthorDAO();
+        DaoFacade daoFacade = new DaoFacade();
 
-        bookArrayList = bookDAO.getListItem();
+        model = new DefaultTableModel();
+        //this.bookDAO = new BookDAO();
+        //this.AuthorDAO = new AuthorDAO();
+
+        //bookArrayList = bookDAO.getListItem();
+        bookArrayList = daoFacade.bookDAO.getListItem();
         addTableData(model, bookArrayList);
 
-        bookStatistical = bookDAO.getItemCount();
+        bookStatistical = daoFacade.bookDAO.getItemCount();
         CountBookList.setText(String.valueOf(bookStatistical));
 
 
-        authorArrayList = AuthorDAO.getListItem();
-        this.authorStatistical= this.AuthorDAO.getItemCount();
+        authorArrayList = daoFacade.authorDAO.getListItem();
+        this.authorStatistical= daoFacade.authorDAO.getItemCount();
 
         authorListVisible(authorStatistical);
 
@@ -80,16 +80,16 @@ public class IndexFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 // đếm lại sách - tác giả
-                authorStatistical = AuthorDAO.getItemCount();
-                bookStatistical = bookDAO.getItemCount();
+                authorStatistical = daoFacade.authorDAO.getItemCount();
+                bookStatistical = daoFacade.bookDAO.getItemCount();
 
                 // xóa danh sách tác giả - sách cũ
                 authorArrayList.clear();
                 bookArrayList.clear();
 
                 // lấy lại danh sách tác giả - sách mới
-                authorArrayList = AuthorDAO.getListItem();
-                bookArrayList = bookDAO.getListItem();
+                authorArrayList = daoFacade.authorDAO.getListItem();
+                bookArrayList = daoFacade.bookDAO.getListItem();
 
                 // cập nhật số sách - tác giả
                 CountBookList.setText(String.valueOf(bookStatistical));
@@ -121,7 +121,7 @@ public class IndexFrame extends JFrame {
                 if (e.getStateChange() == ItemEvent.SELECTED){
 
                     // danh sách tác giả
-                    authorArrayList = AuthorDAO.getListItem();
+                    authorArrayList = daoFacade.authorDAO.getListItem();
                     String authorName = AuthorList_combobox.getSelectedItem().toString();
 
                     // tìm tác giả theo tên
@@ -158,14 +158,14 @@ public class IndexFrame extends JFrame {
                 if (e.getStateChange() == ItemEvent.SELECTED){
                     // sách theo năm:
                     int year = (int)BookByYear_combobox.getSelectedItem();
-
+                    // set tiều đề:
                     year_txt.setText(String.valueOf(year));
+
                     model.setRowCount(0);
                     model.setColumnCount(0);
                     refreshTableData();
 
                     booksByYear = new ArrayList<>();
-
                     for (Book bookItem : bookArrayList){
                         if(bookItem.getBookYear() == year)
                             booksByYear.add(bookItem);
@@ -202,22 +202,21 @@ public class IndexFrame extends JFrame {
         AuthorTable.setModel(model);
     }
     public void setComboBoxComponents() {
-        for(Author author : this.AuthorDAO.getListItem()) {
+        for(Author author : facades.authorDAO.getListItem()) {
             AuthorList_combobox.addItem(author.getAuthorName());
         }
 
+        ServiceFacade serviceFacade = new ServiceFacade(bookArrayList);
         // xóa những năm bị trùng trong danh sách
-        ArrayList<Book> booklist = bookDAO.removeDuplicatesByYear(bookArrayList);
-
-        //sắp xếp năm tăng dần
-        bookDAO.BubbleSortByBooks(booklist);
-        for(Book book : booklist){
+        serviceFacade.bookServices.removeDuplicatesByYear();
+        bookArrayList = serviceFacade.bookServices.BubbleSortByBooks();
+        for(Book book : bookArrayList){
             BookByYear_combobox.addItem(book.getBookYear());
         }
     }
     public void refreshTableData() {
         deleteTableData();
-        bookArrayList = this.bookDAO.getListItem();
+        bookArrayList = facades.bookDAO.getListItem();
         addTableData(model, bookArrayList);
     }
     public void authorListVisible(int authorList) {
@@ -228,7 +227,7 @@ public class IndexFrame extends JFrame {
         else{
             setComboBoxComponents();
             AuthorList_combobox.setVisible(true);
-            String count = "Số lượng: " + String.valueOf(this.AuthorDAO.getItemCount());
+            String count = "Số lượng: " + String.valueOf(facades.authorDAO.getItemCount());
             AuthorStatistical.setText(count);
         }
     }

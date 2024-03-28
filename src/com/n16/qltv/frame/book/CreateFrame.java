@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.book;
 
 import com.n16.qltv.daos.*;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
@@ -22,17 +23,10 @@ public class CreateFrame extends JFrame {
     private JLabel labelYear, labelName;
     private JTextField cover_txt;
     private JTextField Qty_txt;
-    private BookDAO bookDAO;
-    private AuthorDAO AuthorDAO;
-    private CategoryDAO categoryDAO;
-    private PublisherDAO publisherDAO;
-    private AuthorDAO authorDAO;
+
+    private DaoFacade daoFacade = new DaoFacade();
 
     public CreateFrame() {
-        this.categoryDAO = new CategoryDAO();
-        this.publisherDAO = new PublisherDAO();
-        this.authorDAO = new AuthorDAO();
-        this.bookDAO = new BookDAO();
 
         setContentPane(createFrame);
         setTitle("Thêm sách");
@@ -70,7 +64,7 @@ public class CreateFrame extends JFrame {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else {
-                        bookDAO.create(book);
+                        daoFacade.bookDAO.create(book);
                         JOptionPane.showMessageDialog(null, "Thêm sách thành công!");
                         dispose();
                     }
@@ -81,14 +75,14 @@ public class CreateFrame extends JFrame {
         });
     }
     public void setComboBoxComponents() {
-        for(Publisher publisher : this.publisherDAO.getListItem()) {
+        for(Publisher publisher : daoFacade.publisherDAO.getListItem()) {
             cmbPublisher.addItem(publisher);
         }
         //
-        for(Author author : this.authorDAO.getListItem()) {
+        for(Author author : daoFacade.authorDAO.getListItem()) {
             cmbAuthor.addItem(author);
         }
-        for(Category category : this.categoryDAO.getListItem()) {
+        for(Category category : daoFacade.categoryDAO.getListItem()) {
             cmbCategory.addItem(category);
         }
     }

@@ -1,6 +1,5 @@
 package com.n16.qltv.frame.staff;
-
-import com.n16.qltv.daos.StaffDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.utils.Session;
 
 import javax.swing.*;
@@ -13,10 +12,10 @@ public class LoginFrame extends JFrame {
     private JButton btnLogin;
     private JCheckBox checkBoxSavePassword;
     private JLabel usrNameLabel, passwordLabel, titleLabel;
-    private StaffDAO staffDAO;
+
+    private DaoFacade daoFacade = new DaoFacade();
 
     public LoginFrame() throws HeadlessException {
-        this.staffDAO = new StaffDAO();
         setContentPane(loginFrame);
         setTitle("Đăng nhập Nhân viên");
         setVisible(true);
@@ -28,8 +27,8 @@ public class LoginFrame extends JFrame {
             try {
                 String usrName = txtUsrName.getText();
                 String password = txtPassword.getText();
-                if(this.staffDAO.checkExistStaff(usrName)) {
-                    boolean loginStatus = this.staffDAO.loginAccount(usrName, password);
+                if(daoFacade.staffDAO.checkExistStaff(usrName)) {
+                    boolean loginStatus = daoFacade.staffDAO.loginAccount(usrName, password);
                     if(loginStatus) {
                         dispose();
                         Session.put("staff", usrName);

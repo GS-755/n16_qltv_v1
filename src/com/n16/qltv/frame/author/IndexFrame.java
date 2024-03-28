@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.daos.AuthorDAO;
-import com.n16.qltv.daos.BookDAO;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.utils.Validation;
@@ -25,12 +25,11 @@ public class IndexFrame extends JFrame{
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
     private ArrayList<Book> bookArrayList;
-    private AuthorDAO authorDAO;
-    private BookDAO bookDAO;
+
+    DaoFacade daoFacade = new DaoFacade();
+    ServiceFacade serviceFacades = new ServiceFacade();
     public IndexFrame() {
 
-        this.authorDAO = new AuthorDAO();
-        this.bookDAO = new BookDAO();
 
         setSearchModeComponents();
         setContentPane(indexFrame);
@@ -39,7 +38,7 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        authorArrayList = (ArrayList<Author>) this.authorDAO.getListItem();
+        authorArrayList = (ArrayList<Author>) daoFacade.authorDAO.getListItem();
 
         model = new DefaultTableModel();
         addTableStyle(model);
@@ -48,14 +47,14 @@ public class IndexFrame extends JFrame{
         //
         btnDelete.addActionListener(e -> {
             if(tableAuthor.getSelectedRow() >= 0) {
-                bookArrayList = this.bookDAO.getListItem();
+                bookArrayList = daoFacade.bookDAO.getListItem();
                 int select = (int) model.getValueAt(tableAuthor.getSelectedRow(), 0);
                 // duyệt qua danh sách book xem author đã được dùng chưa.
 
 
                 for (Book book : bookArrayList) {
                     // author theo tên
-                    Author author = authorDAO.getItem(select);
+                    Author author = daoFacade.authorDAO.getItem(select);
 
                     if(book.getAuthor().getAuthorId() == author.getAuthorId()){
                         Validation.clearValidation();
@@ -69,7 +68,7 @@ public class IndexFrame extends JFrame{
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }else {
-                    this.authorDAO.delete(
+                    daoFacade.authorDAO.delete(
                             model.getValueAt(tableAuthor.getSelectedRow(), 1).toString());
                     deleteTableData();
                 }
@@ -77,7 +76,7 @@ public class IndexFrame extends JFrame{
                 JOptionPane.showMessageDialog(this,"hãy chọn 1 tác giả");
             }
 
-            this.authorArrayList = this.authorDAO.getListItem();
+            this.authorArrayList = daoFacade.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -95,28 +94,28 @@ public class IndexFrame extends JFrame{
             else {
                 int authorId = Integer.parseInt(model.getValueAt(
                         tableAuthor.getSelectedRow(), 0).toString().trim());
-                Author author = this.authorDAO.getItem(authorId);
+                Author author = daoFacade.authorDAO.getItem(authorId);
                 EditFrame ef = new EditFrame(author);
             }
         });
 
         btnUpdate.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = (ArrayList<Author>) this.authorDAO.getListItem();
+            authorArrayList = (ArrayList<Author>) daoFacade.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
 
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = this.authorDAO.sortUsrName(1);
+            authorArrayList = serviceFacades.authorServices.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
 
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = this.authorDAO.sortUsrName(2);
+            authorArrayList = serviceFacades.authorServices.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -127,7 +126,7 @@ public class IndexFrame extends JFrame{
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            authorArrayList = this.authorDAO
+            authorArrayList = serviceFacades.authorServices
                     .findAuthorName(mode, keyword);
             addTableData(model, authorArrayList);
         });

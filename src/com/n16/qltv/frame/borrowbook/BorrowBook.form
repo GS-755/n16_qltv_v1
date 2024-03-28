@@ -78,7 +78,7 @@
           <text value="Mã Nhân Viên"/>
         </properties>
       </component>
-      <component id="2f228" class="javax.swing.JButton" binding="xoáButton" default-binding="true">
+      <component id="2f228" class="javax.swing.JButton" binding="xoaButton">
         <constraints>
           <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -86,7 +86,7 @@
           <text value="Xoá"/>
         </properties>
       </component>
-      <component id="be165" class="javax.swing.JButton" binding="sửaButton" default-binding="true">
+      <component id="be165" class="javax.swing.JButton" binding="suaButton">
         <constraints>
           <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -110,7 +110,7 @@
           <text value="Đơn Mượn Trả"/>
         </properties>
       </component>
-      <component id="8868c" class="javax.swing.JButton" binding="cậpNhậtButton" default-binding="true">
+      <component id="8868c" class="javax.swing.JButton" binding="capnhatButton">
         <constraints>
           <grid row="3" column="18" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

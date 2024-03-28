@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.staff;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.n16.qltv.daos.StaffDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.utils.SHA256;
 import com.n16.qltv.utils.Validation;
@@ -20,11 +20,12 @@ public class EditFrame extends JFrame {
     private JLabel usrNameLabel, passwordLabel, rePasswordLabel;
     private JLabel addressLabel, phoneLabel, dobLabel;
     private JLabel titleLabel;
+
+    //
     private DatePicker selectDate;
-    private StaffDAO staffDAO;
+    private DaoFacade daoFacade = new DaoFacade();
 
     public EditFrame(String usrName) {
-        this.staffDAO = new StaffDAO();
         setGenderComponents();
         setContentPane(addPanel);
         setTitle("Chỉnh sửa Nhân viên");
@@ -32,7 +33,7 @@ public class EditFrame extends JFrame {
         setResizable(false);
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        Staff staff = this.staffDAO.getItem(usrName.trim());
+        Staff staff = daoFacade.staffDAO.getItem(usrName.trim());
         this.setComponents(staff);
 
         btnEdit.addActionListener(e -> {
@@ -41,7 +42,7 @@ public class EditFrame extends JFrame {
             if (!(radioMale.isSelected()))
                 gender = 'f';
             try {
-                if(this.staffDAO.checkExistStaff(usrName.trim())) {
+                if(daoFacade.staffDAO.checkExistStaff(usrName.trim())) {
                     staff.setStaffName(txtName.getText().trim());
                     staff.setGender(gender);
                     staff.setStaffPhone(txtPhone.getText().trim());
@@ -73,7 +74,7 @@ public class EditFrame extends JFrame {
                         return;
                     }
 
-                    this.staffDAO.edit(staff);
+                    daoFacade.staffDAO.edit(staff);
                     JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công.");
                 }
                 else {

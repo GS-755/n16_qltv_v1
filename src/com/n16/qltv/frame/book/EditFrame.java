@@ -1,9 +1,7 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.daos.AuthorDAO;
-import com.n16.qltv.daos.BookDAO;
-import com.n16.qltv.daos.CategoryDAO;
-import com.n16.qltv.daos.PublisherDAO;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
@@ -18,16 +16,11 @@ public class EditFrame extends JFrame {
     private JComboBox cmbPublisher, cmbAuthor, cmbCategory;
     private JButton btnEdit;
     private JPanel editFrame;
-    private CategoryDAO categoryDAO;
-    private AuthorDAO authorDAO;
-    private BookDAO bookDAO;
-    private PublisherDAO publisherDAO;
+
+    private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade = new ServiceFacade();
 
     public EditFrame(Book book) {
-        this.publisherDAO = new PublisherDAO();
-        this.categoryDAO = new CategoryDAO();
-        this.authorDAO = new AuthorDAO();
-        this.bookDAO = new BookDAO();
 
         setContentPane(editFrame);
         setTitle("Chỉnh sửa sách");
@@ -43,11 +36,11 @@ public class EditFrame extends JFrame {
                 editedBook.setBookId(book.getBookId());
                 editedBook.setBookName(txtBookName.getText());
                 editedBook.setBookYear(Integer.parseInt(this.txtBookYear.getText().toString().trim()));
-                editedBook.setCategory(this.categoryDAO.
+                editedBook.setCategory(daoFacade.categoryDAO.
                         getItem(this.cmbCategory.getSelectedIndex()));
-                editedBook.setAuthor(this.authorDAO.
+                editedBook.setAuthor(daoFacade.authorDAO.
                         getItem(this.cmbAuthor.getSelectedIndex()));
-                editedBook.setPublisher(this.publisherDAO.
+                editedBook.setPublisher(daoFacade.publisherDAO.
                         getItem(this.cmbPublisher.getSelectedIndex()));
 
                 if(txtBookYear.getText().isEmpty()
@@ -63,7 +56,7 @@ public class EditFrame extends JFrame {
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 } else {
-                    bookDAO.edit(editedBook);
+                    daoFacade.bookDAO.edit(editedBook);
                     JOptionPane.showMessageDialog(null, "Chỉnh sửa sách thành công!");
                 }
             } catch (Exception ex) {
@@ -72,13 +65,13 @@ public class EditFrame extends JFrame {
         });
     }
     public void setComboBoxComponents() {
-        for(Category category : this.categoryDAO.getListItem()) {
+        for(Category category : daoFacade.categoryDAO.getListItem()) {
             this.cmbCategory.addItem(category.getNameCate().trim());
         }
-        for(Author author : this.authorDAO.getListItem()) {
+        for(Author author : daoFacade.authorDAO.getListItem()) {
             this.cmbAuthor.addItem(author.getAuthorName().trim());
         }
-        for(Publisher publisher : this.publisherDAO.getListItem()) {
+        for(Publisher publisher : daoFacade.publisherDAO.getListItem()) {
             this.cmbPublisher.addItem(publisher.getPublisherName().trim());
         }
     }

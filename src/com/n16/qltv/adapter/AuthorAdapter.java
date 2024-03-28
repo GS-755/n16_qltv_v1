@@ -1,4 +1,4 @@
-package com.n16.qltv.Adapter;
+package com.n16.qltv.adapter;
 
 import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.model.Author;
@@ -10,8 +10,8 @@ public class AuthorAdapter extends AuthorDAO {
 
     private Book book;
     private  ArrayList<Author> authorArrayList;
-    public AuthorAdapter(Book book){
-        this.book = book;
+    public AuthorAdapter(Object object){
+        this.book = (Book) object;
     }
     @Override
     public Author getItem(Object item) {

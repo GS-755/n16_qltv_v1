@@ -1,7 +1,6 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.daos.CategoryDAO;
-import com.n16.qltv.daos.CustomerDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Customer;
 
@@ -32,15 +31,17 @@ public class IndexFrame extends JFrame{
     private JLabel searchLabel;
     private JLabel searchModeLabel;
     private JPanel IndexFrame;
+
+    //
     private ArrayList<Customer> customerArrayList;
     private ArrayList<Customer> foundCustomerArrayList;
     private ButtonGroup radioSearchModeGroup;
-    private CustomerDAO customerDAO;
+    //
+    private DaoFacade daoFacade = new DaoFacade();
 
     public IndexFrame() {
-        this.customerDAO = new CustomerDAO();
         this.foundCustomerArrayList = new ArrayList<>();
-        this.customerArrayList = this.customerDAO.getListItem();
+        this.customerArrayList = daoFacade.customerDAO.getListItem();
         setSearchModeComponents();
         setContentPane(IndexFrame);
         setTitle("Danh sách khách hàng");
@@ -56,7 +57,7 @@ public class IndexFrame extends JFrame{
 
         updateButton.addActionListener(e -> {
             this.refreshTableData();
-            this.customerArrayList = this.customerDAO.getListItem();
+            this.customerArrayList = daoFacade.customerDAO.getListItem();
             this.addTableData(this.customerArrayList);
         });
         addButton.addActionListener(e -> {
@@ -68,14 +69,14 @@ public class IndexFrame extends JFrame{
             else {
                 String customerUserName = model.getValueAt(
                         table1.getSelectedRow(), 4).toString();
-                Customer customer = this.customerDAO.getItem(customerUserName);
+                Customer customer = daoFacade.customerDAO.getItem(customerUserName);
                 EditFrame editFrame = new EditFrame(customer);
                 editFrame.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowDeactivated(WindowEvent e) {
                         super.windowDeactivated(e);
                         refreshTableData();
-                        customerArrayList = customerDAO.getListItem();
+                        customerArrayList = daoFacade.customerDAO.getListItem();
                         addTableData(customerArrayList);
                     }
                 });
@@ -84,22 +85,22 @@ public class IndexFrame extends JFrame{
         deleteButton.addActionListener(e -> {
             String id = model.getValueAt(
                     table1.getSelectedRow(), 4).toString();
-            this.customerDAO.delete(id.trim());
+            daoFacade.customerDAO.delete(id.trim());
             refreshTableData();
-            this.customerArrayList = this.customerDAO.getListItem();
+            this.customerArrayList = daoFacade.customerDAO.getListItem();
             addTableData(this.customerArrayList);
         });
         escButton.addActionListener(e -> dispose());
 
         btnIncrease.addActionListener(e -> {
             deleteTableData();
-            customerArrayList = this.customerDAO.sortUsrName(1);
+            customerArrayList = daoFacade.customerDAO.sortUsrName(1);
             addTableData(this.customerArrayList);
             model.fireTableDataChanged();
         });
         btnDecrease.addActionListener(e -> {
             deleteTableData();
-            customerArrayList = this.customerDAO.sortUsrName(2);
+            customerArrayList = daoFacade.customerDAO.sortUsrName(2);
             addTableData(this.customerArrayList);
             model.fireTableDataChanged();
         });
@@ -131,11 +132,11 @@ public class IndexFrame extends JFrame{
             String keyword = this.txtSearchKeyword.getText().toString().trim();
             this.refreshTableData();
             if(this.approxModeRadio.isSelected()) {
-                this.foundCustomerArrayList = this.customerDAO.
+                this.foundCustomerArrayList = daoFacade.customerDAO.
                         findCustomerByName(keyword.toLowerCase().trim(), 2);
             }
             else {
-                this.foundCustomerArrayList = this.customerDAO.
+                this.foundCustomerArrayList = daoFacade.customerDAO.
                         findCustomerByName(keyword.trim(), 1);
             }
             this.addTableData(this.foundCustomerArrayList);
@@ -151,14 +152,14 @@ public class IndexFrame extends JFrame{
                 if(keyword.isEmpty() || keyword.equals("") || keyword.isBlank() || keyword.length() == 0)
                 {
                     deleteTableData();
-                    customerArrayList = customerDAO.getListItem();
+                    customerArrayList = daoFacade.customerDAO.getListItem();
                     addTableData(customerArrayList);
 
                 } else {
                     customerArrayList.clear();
                     deleteTableData();
                     ArrayList<Customer> foundCus = new ArrayList<>();
-                    customerArrayList = customerDAO.getListItem();
+                    customerArrayList = daoFacade.customerDAO.getListItem();
                     for (Customer cus : customerArrayList) {
                         if(cus.getUsrName().contains(keyword))
                         {

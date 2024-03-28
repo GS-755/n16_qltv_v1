@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.borrowbook;
 
 import com.n16.qltv.daos.BorrowBookDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
@@ -12,16 +13,17 @@ import java.util.ArrayList;
 public class BorrowBook extends JFrame{
     private JPanel BorrowBook_JPanel;
     private JTable BB_table;
-    private JButton duyệtButton;
     private JLabel tf_NameStaff;
     private JLabel tf_infoBorrow;
     private JButton bnt_Accept;
     private JTable BBook_Table;
     private JButton bnt_BorrowBook;
-    private JButton xoáButton;
-    private JButton sửaButton;
-    private JButton cậpNhậtButton;
+    private JButton xoaButton;
+    private JButton suaButton;
+    private JButton capnhatButton;
+    //
     private ArrayList<BorrowBook> BorrowBookArrayList;
+    private DaoFacade daoFacade = new DaoFacade();
 
     public BorrowBook() {
         // todo: setting JFrame
@@ -35,7 +37,7 @@ public class BorrowBook extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         try {
-            BorrowBookDAO.DataToTable(BBook_Table);
+            BorrowBookDAO.DataToTable(BBook_Table); // ??????????????????????????????????????????
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

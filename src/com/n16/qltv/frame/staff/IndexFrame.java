@@ -1,6 +1,5 @@
 package com.n16.qltv.frame.staff;
-
-import com.n16.qltv.daos.StaffDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.frame.borrowbook.BorrowBook;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.utils.Session;
@@ -26,20 +25,21 @@ public class IndexFrame extends JFrame {
     private JButton btnManageBooks;
     private JLabel tf_NameStaff;
     private JButton btnLogout;
+
+    //
     private DefaultTableModel model;
     private ArrayList<Staff> staffArrayList;
-    private StaffDAO staffDAO;
-
+    private DaoFacade daoFacade = new DaoFacade();
+    //
 
     public IndexFrame() {
-        this.staffDAO = new StaffDAO();
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
         setResizable(false);
         setBounds(50, 50, 1024, 768);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.staffArrayList = this.staffDAO.getListItem();
+        this.staffArrayList = daoFacade.staffDAO.getListItem();
         // info Staff //
         if(Session.get("admin") != null) {
             setVisible(true);
@@ -88,13 +88,13 @@ public class IndexFrame extends JFrame {
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = this.staffDAO.sortUsrName(1);
+            staffArrayList = daoFacade.staffDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, staffArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = this.staffDAO.sortUsrName(2);
+            staffArrayList = daoFacade.staffDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, staffArrayList);
         });
@@ -104,7 +104,7 @@ public class IndexFrame extends JFrame {
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            staffArrayList = this.staffDAO.findStaffName(mode, keyword);
+            staffArrayList = daoFacade.staffDAO.findStaffName(mode, keyword);
             addTableData(model, staffArrayList);
         });
         btnBorrowBook.addActionListener(e -> {
@@ -146,7 +146,7 @@ public class IndexFrame extends JFrame {
     }
     public void refreshTableData() {
         deleteTableData();
-        staffArrayList = this.staffDAO.getListItem();
+        staffArrayList = daoFacade.staffDAO.getListItem();
         addTableData(model, staffArrayList);
     }
     public void deleteTableData() {

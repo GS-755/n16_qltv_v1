@@ -1,9 +1,8 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.daos.BookDAO;
-import com.n16.qltv.model.Author;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Book;
-import com.n16.qltv.model.Publisher;
 import com.n16.qltv.utils.Validation;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,12 +17,14 @@ public class IndexFrame extends JFrame {
     private JPanel bookPanel;
     private JComboBox cmbPublisher, cmbAuthor, cmbCategory;
     private DefaultTableModel model;
-    private BookDAO bookDAO;
     private ArrayList<Book> bookArrayList;
 
+    private ServiceFacade serviceFacade = new ServiceFacade();
+
+    private DaoFacade daoFacade = new DaoFacade();
+
     public IndexFrame() {
-        this.bookDAO = new BookDAO();
-        this.bookArrayList = this.bookDAO.getListItem();
+        this.bookArrayList = daoFacade.bookDAO.getListItem();
         setTitle("Quản lý sách");
         setContentPane(bookPanel);
         setResizable(false);
@@ -45,7 +46,7 @@ btnDelete.addActionListener(e -> {
     if(bookTable.getSelectedRow() >= 0) {
         int bookId = Integer.parseInt(model.getValueAt(
                 bookTable.getSelectedRow(), 0).toString());
-        this.bookDAO.delete(bookId);
+        daoFacade.bookDAO.delete(bookId);
         refreshTableData();
     }
     else {
@@ -57,7 +58,7 @@ btnDelete.addActionListener(e -> {
 btnEdit.addActionListener(e -> {
             int bookId = Integer.parseInt(model.getValueAt(
                     bookTable.getSelectedRow(), 0).toString());
-            Book book = this.bookDAO.getItem(bookId);
+            Book book = daoFacade.bookDAO.getItem(bookId);
             EditFrame editFrame = new EditFrame(book);
         });
         btnUpdate.addActionListener(e -> {
@@ -94,7 +95,7 @@ btnEdit.addActionListener(e -> {
 
     public void refreshTableData() {
         deleteTableData();
-        bookArrayList = this.bookDAO.getListItem();
+        bookArrayList = daoFacade.bookDAO.getListItem();
         addTableData(model, bookArrayList);
     }
     public void deleteTableData() {

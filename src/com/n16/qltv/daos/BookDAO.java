@@ -1,6 +1,7 @@
 package com.n16.qltv.daos;
 
 import com.n16.qltv.daos.interfaces.IDAOs;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
@@ -17,43 +18,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class BookDAO implements IDAOs {
-    private AuthorDAO authorDAO;
-    private CategoryDAO categoryDAO;
-    private PublisherDAO publisherDAO;
+
     private static ArrayList<Book> bookArrayList;
+    private DaoFacade daoFacade = new DaoFacade();
     private Connection conn;
 
     public BookDAO() {
         this.conn = MySQL.client().getConnection();
         this.bookArrayList = new ArrayList<>();
-        this.authorDAO = new AuthorDAO();
-        this.categoryDAO = new CategoryDAO();
-        this.publisherDAO = new PublisherDAO();
     }
-    public ArrayList<Book> findBookByName(int mode, String keyword) {
-        ArrayList<Book> foundBooks = new ArrayList<>();
-        switch (mode) {
-            case 1: {
-                for (Book book : bookArrayList) {
-                    System.out.println(book);
-                    if (book.getBookName().equals(keyword))
-                        foundBooks.add(book);
-                    System.out.println(book + " được chọn");
-                }
-
-            }
-            break;
-            case 2: {
-                for (Book book : bookArrayList)
-                    if (book.getBookName().startsWith(keyword))
-                        foundBooks.add(book);
-            }
-            break;
-        }
-
-        return foundBooks;
-    }
-
     @Override
     public void create(IModels item) throws SQLException {
         try {
@@ -173,11 +146,11 @@ public class BookDAO implements IDAOs {
                     book.setCover(rs.getString(4));
                 }
                 book.setQty(rs.getInt("SoLuong"));
-                Author author = this.authorDAO.getItem(rs.getInt("MaTacGia"));
+                Author author = daoFacade.authorDAO.getItem(rs.getInt("MaTacGia"));
                 book.setAuthor(author);
-                Publisher publisher = this.publisherDAO.getItem(rs.getInt("MaNXB"));
+                Publisher publisher = daoFacade.publisherDAO.getItem(rs.getInt("MaNXB"));
                 book.setPublisher(publisher);
-                Category category = this.categoryDAO.getItem(rs.getInt("MaTheLoai"));
+                Category category = daoFacade.categoryDAO.getItem(rs.getInt("MaTheLoai"));
                 book.setCategory(category);
 
                 books.add(book);
@@ -189,47 +162,15 @@ public class BookDAO implements IDAOs {
 
         return books;
     }
-    public ArrayList<Book> getBooksOfYear(int year) {
-        ArrayList<Book> books = new ArrayList<>();
-        this.bookArrayList = getListItem();
-        for (Book book : bookArrayList){
-            if(book.getBookYear() == year){
-                books.add(book);
-            }
-        }
-        return books;
-    }
+
     @Override
     public int getItemCount() {
         bookArrayList = getListItem();
         return this.bookArrayList.size();
     }
-    public ArrayList<Book> BubbleSortByBooks(ArrayList<Book> bookList){
-        int Size = bookList.size();
-        for (int i = 0; i < Size-1; i++) {
-            for (int j = 0; j < Size-i-1; j++) {
-                if (bookList.get(j).getBookYear() > bookList.get(j+1).getBookYear()) {
-                    Book temp = bookList.get(j);
-                    bookList.set(j, bookList.get(j+1));
-                    bookList.set(j+1, temp);
-                }
-            }
-        }
-        return bookList;
-    }
-
-    public ArrayList<Book> removeDuplicatesByYear(ArrayList<Book> books){
-        HashSet<Integer> yearsSet = new HashSet<>();
-        ArrayList<Book> uniqueBooks = new ArrayList<>();
-        for (Book book : books) {
-            if (!yearsSet.contains(book.getBookYear())) {
-                yearsSet.add(book.getBookYear());
-                uniqueBooks.add(book);
-            }
-        }
-        return uniqueBooks;
-    }
 }
+
+
 //    public static boolean checkExistBook(String TenSach) {
 //        boolean check = false;
 //        try {

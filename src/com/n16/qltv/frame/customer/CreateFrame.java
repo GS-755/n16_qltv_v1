@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.daos.CustomerDAO;
+
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.utils.SHA256;
@@ -29,10 +30,10 @@ public class CreateFrame extends JFrame {
     private JPasswordField txtRePassword;
     private JLabel labelRePassword;
     private JPanel createFrame;
-    private CustomerDAO customerDAO;
 
+    //
+    private DaoFacade daoFacade = new DaoFacade();
     public CreateFrame() {
-        this.customerDAO = new CustomerDAO();
         setContentPane(createFrame);
         setVisible(true);
         setResizable(false);
@@ -45,7 +46,7 @@ public class CreateFrame extends JFrame {
             char gender = 'm';
             if(!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(this.customerDAO.isCustomerExist(txtUsrName.getText())))
+            if(!(daoFacade.customerDAO.isCustomerExist(txtUsrName.getText())))
             {
                 if(!(txtPassword.getText().equals(txtRePassword.getText()))){
                     Validation.createValidation("Mật khẩu không trùng khớp ");}
@@ -73,7 +74,7 @@ public class CreateFrame extends JFrame {
                     JOptionPane.showMessageDialog(null,Validation.getStrValidation());
                 else{
                     try {
-                        this.customerDAO.create(customer);
+                        daoFacade.customerDAO.create(customer);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
