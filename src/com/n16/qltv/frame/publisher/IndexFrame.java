@@ -1,10 +1,12 @@
 package com.n16.qltv.frame.publisher;
 
 import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.utils.StrProcessor;
 import com.n16.qltv.utils.Validation;
 
+import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyAdapter;
@@ -27,9 +29,11 @@ public class IndexFrame extends JFrame {
 
     //
     private DefaultTableModel tableModel;
-    Publisher foundPublisher;
-    ArrayList<Publisher> publisherArrayList;
-    ArrayList<Publisher> foundPublisherArrayList;
+    private Publisher foundPublisher;
+    private ArrayList<Publisher> publisherArrayList;
+    private ArrayList<Publisher> foundPublisherArrayList;
+
+    private ServiceFacade serviceFacade;
 
     private DaoFacade daoFacade = new DaoFacade();
 
@@ -49,6 +53,8 @@ public class IndexFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
+        serviceFacade = new ServiceFacade(publisherArrayList);
+
         this.tableModel = new DefaultTableModel();
         this.addTableStyle();
         this.addTableData(this.publisherArrayList);
@@ -58,6 +64,7 @@ public class IndexFrame extends JFrame {
         btnSupport.setVisible(false);
 
         btnCreate.addActionListener(e -> {
+
             try {
                 Publisher publisher = new Publisher();
                 publisher.setPublisherName(txtPublisherName.getText().toString().trim());
@@ -70,20 +77,29 @@ public class IndexFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
                 else {
-                    daoFacade.publisherDAO.create(publisher);
-                    this.refreshTableData();
-                    this.publisherArrayList = daoFacade.publisherDAO.getListItem();
-                    this.addTableData(this.publisherArrayList);
+                        String publisherName = txtPublisherName.getText().trim();
+                        if(serviceFacade.publisherService.checkExistPublisher(publisherName)){
+                             Validation.clearValidation();
+                             Validation.createValidation("Nhà XB: "+ publisherName +" đã tồn tại!");
+                            JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+
+                        } else {
+                             daoFacade.publisherDAO.create(publisher);
+                             this.refreshTableData();
+                             this.publisherArrayList = daoFacade.publisherDAO.getListItem();
+                             this.addTableData(this.publisherArrayList);
+                         }
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         });
+
         btnEdit.addActionListener(e -> {
             Validation.clearValidation();
-            if(publisherTable.getSelectedRow() < 0) {
+            if(publisherTable.getSelectedRow() <= 0) {
                 Validation.createValidation("Hãy chọn 1 một Nhà xuất bản");
-                JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                JOptionPane.showMessageDialog(this, Validation.getStrValidation());
             }
             else {
                 Publisher publisher = new Publisher();
@@ -93,6 +109,9 @@ public class IndexFrame extends JFrame {
                 publisher.setRepresent(txtPublisherRepresent.getText().toString().trim());
                 Validation.clearValidation();
                 Validation.publisherValidation(publisher);
+                if(serviceFacade.publisherService.checkExistPublisher(publisher.getPublisherName()))
+                    Validation.createValidation("Nhà XB: "+ publisher.getPublisherName() +"đã tồn tại !");
+
                 if (Validation.getErrCount() != 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
@@ -105,6 +124,7 @@ public class IndexFrame extends JFrame {
                 }
             }
         });
+
         btnDelete.addActionListener(e -> {
             Validation.clearValidation();
             if(publisherTable.getSelectedRow() >= 0) {
@@ -112,6 +132,8 @@ public class IndexFrame extends JFrame {
                         getValueAt(publisherTable.getSelectedRow(), 0).toString());
                 daoFacade.publisherDAO.delete(selectedId);
                 this.refreshTableData();
+                this.publisherArrayList = daoFacade.publisherDAO.getListItem();
+                this.addTableData(this.publisherArrayList);
             }
             else {
                 Validation.createValidation("Hãy chọn 1 một Nhà xuất bản");
@@ -137,7 +159,10 @@ public class IndexFrame extends JFrame {
             }
         });
         btnClear.addActionListener(e -> {
-            this.setContentFormInput(new Publisher());
+            txtPublisherName.setText("");
+            txtPublisherEmail.setText("");
+            txtPublisherRepresent.setText("");
+            txtPublisherAddress.setText("");
         });
         txtPublisherSearch.addKeyListener(new KeyAdapter() {
             @Override

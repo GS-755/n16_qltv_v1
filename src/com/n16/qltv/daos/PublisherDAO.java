@@ -62,7 +62,7 @@ public class PublisherDAO implements IDAOs {
                     "Email = ?, " +
                     "DiaChi = ?, " +
                     "TenNgDaiDien = ? " +
-                    "WHERE MaNXB = ?";
+                    "WHERE TenNXB = ?";
         try {
             Publisher publisher = (Publisher) item;
             this.conn = MySQL.client().getConnection();

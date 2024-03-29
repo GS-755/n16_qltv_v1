@@ -20,7 +20,7 @@ public class CreateFrame extends JFrame{
     private JLabel addressLabel;
 
     private DaoFacade daoFacade = new DaoFacade();
-    private ServiceFacade serviceFacade = new ServiceFacade();
+    private ServiceFacade serviceFacade = new ServiceFacade(daoFacade.authorDAO.getListItem());
 
     public CreateFrame(){
 

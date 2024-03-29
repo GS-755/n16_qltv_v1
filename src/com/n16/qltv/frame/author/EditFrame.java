@@ -10,12 +10,12 @@ import javax.swing.*;
 public class EditFrame extends JFrame {
     private JPanel panel1;
     private JTextField tfName, tfWebsite, tfNote;
-    private JButton btnAdd;
+    private JButton btnEdit;
     private JLabel nameLabel, addressLabel;
     private JLabel noteLabel, titleLabel;
 
     private DaoFacade daoFacade = new DaoFacade();
-    private ServiceFacade serviceFacade = new ServiceFacade();
+    private ServiceFacade serviceFacade;
 
     public EditFrame(Author author) {
         setContentPane(panel1);
@@ -25,14 +25,15 @@ public class EditFrame extends JFrame {
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        serviceFacade = new ServiceFacade(daoFacade.authorDAO.getListItem());
         setComponents(author);
 
-        btnAdd.addActionListener(e -> {
+        btnEdit.addActionListener(e -> {
             Validation.clearValidation();
             if(daoFacade.authorDAO.checkExist(tfName.getText().trim())) {
                 if(!this.tfWebsite.getText().isEmpty()) {
                     String website = serviceFacade.authorServices.
-                            formatWebsite(tfWebsite.getText()).trim();
+                            formatWebsite(tfWebsite.getText().trim()).trim();
                     author.setAuthorAddress(website);
                 }
                 if(!tfNote.getText().isEmpty()
@@ -49,7 +50,7 @@ public class EditFrame extends JFrame {
                 }
             }
             else {
-                JOptionPane.showMessageDialog(null, "KHÔNG có tài khoản trong hệ thống!");
+                JOptionPane.showMessageDialog(this, "KHÔNG có tác giả này trong hệ thống!");
             }
 
         });

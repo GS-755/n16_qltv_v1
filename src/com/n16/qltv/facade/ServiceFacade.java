@@ -17,8 +17,8 @@ public class ServiceFacade {
     public CategoryServices categoryServices;
     public CustomerService customerService;
     public StaffService staffService;
+    public PublisherService publisherService;
 
-    public ServiceFacade() {}
     public ServiceFacade(ArrayList<?> objectsArrayList){
         this.bookArrayList      = (ArrayList<Book>)      objectsArrayList;
         this.authorArrayList    = (ArrayList<Author>)    objectsArrayList;
@@ -31,6 +31,7 @@ public class ServiceFacade {
         categoryServices = new CategoryServices(categoryArrayList);
         customerService = new CustomerService(customerArrayList);
         staffService = new StaffService(staffArrayList);
+        publisherService = new PublisherService(publisherArrayList);
     }
 
 

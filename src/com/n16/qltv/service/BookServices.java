@@ -40,7 +40,7 @@ public class BookServices extends BookDAO {
                 books.add(book);
         } return books;
     }
-    public ArrayList<Book> BubbleSortByBooks(){
+    public ArrayList<Book> bubbleSortByBooks() {
         int Size = bookArrayList.size();
         for (int i = 0; i < Size-1; i++) {
             for (int j = 0; j < Size-i-1; j++) {

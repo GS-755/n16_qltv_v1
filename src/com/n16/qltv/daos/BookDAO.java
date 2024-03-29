@@ -20,7 +20,7 @@ import java.util.HashSet;
 public class BookDAO implements IDAOs {
 
     private static ArrayList<Book> bookArrayList;
-    private DaoFacade daoFacade = new DaoFacade();
+    private DaoFacade daoFacade;
     private Connection conn;
 
     public BookDAO() {
@@ -130,6 +130,7 @@ public class BookDAO implements IDAOs {
     @Override
     public ArrayList<Book> getListItem() {
         ArrayList<Book> books = new ArrayList<>();
+        daoFacade = new DaoFacade();
         try {
             String query = "SELECT * FROM sach";
 

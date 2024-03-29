@@ -28,8 +28,7 @@ public class IndexFrame extends JFrame{
     private ArrayList<Category> cateArrayList;
 
     private DaoFacade daoFacade = new DaoFacade();
-    private ServiceFacade serviceFacade = new ServiceFacade();
-
+    private ServiceFacade serviceFacade;
     public IndexFrame() {
         this.cateArrayList = new ArrayList<>();
         setTitle("Danh sách thể loại");
@@ -37,7 +36,10 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         this.cateArrayList = daoFacade.categoryDAO.getListItem();
+        serviceFacade = new ServiceFacade(cateArrayList);
+
         this.model = new DefaultTableModel();
         this.addTableDecoration();
         this.addTableData(this.cateArrayList);

@@ -31,7 +31,7 @@ public class IndexFrame extends JFrame {
     private final JMenuBar menuBar;
 
     //
-    private DaoFacade facades;
+    private DaoFacade daoFacade;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
     private ArrayList<Book> bookArrayList;
@@ -40,6 +40,8 @@ public class IndexFrame extends JFrame {
     private ArrayList<Book> booksByYear;
     private int authorStatistical;
     private int bookStatistical;
+
+    ServiceFacade serviceFacade;
     //
 
     public IndexFrame() {
@@ -53,7 +55,7 @@ public class IndexFrame extends JFrame {
         setToolbar();
         setJMenuBar(menuBar);
 
-        DaoFacade daoFacade = new DaoFacade();
+        daoFacade = new DaoFacade();
 
         model = new DefaultTableModel();
         //this.bookDAO = new BookDAO();
@@ -202,21 +204,21 @@ public class IndexFrame extends JFrame {
         AuthorTable.setModel(model);
     }
     public void setComboBoxComponents() {
-        for(Author author : facades.authorDAO.getListItem()) {
+        for(Author author : daoFacade.authorDAO.getListItem()) {
             AuthorList_combobox.addItem(author.getAuthorName());
         }
 
-        ServiceFacade serviceFacade = new ServiceFacade(bookArrayList);
+        serviceFacade = new ServiceFacade(bookArrayList);
+        bookArrayList = serviceFacade.bookServices.bubbleSortByBooks();
         // xóa những năm bị trùng trong danh sách
-        serviceFacade.bookServices.removeDuplicatesByYear();
-        bookArrayList = serviceFacade.bookServices.BubbleSortByBooks();
+        bookArrayList = serviceFacade.bookServices.removeDuplicatesByYear();
         for(Book book : bookArrayList){
             BookByYear_combobox.addItem(book.getBookYear());
         }
     }
     public void refreshTableData() {
         deleteTableData();
-        bookArrayList = facades.bookDAO.getListItem();
+        bookArrayList = daoFacade.bookDAO.getListItem();
         addTableData(model, bookArrayList);
     }
     public void authorListVisible(int authorList) {
@@ -227,7 +229,7 @@ public class IndexFrame extends JFrame {
         else{
             setComboBoxComponents();
             AuthorList_combobox.setVisible(true);
-            String count = "Số lượng: " + String.valueOf(facades.authorDAO.getItemCount());
+            String count = "Số lượng: " + String.valueOf(daoFacade.authorDAO.getItemCount());
             AuthorStatistical.setText(count);
         }
     }

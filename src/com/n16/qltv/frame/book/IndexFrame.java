@@ -19,7 +19,7 @@ public class IndexFrame extends JFrame {
     private DefaultTableModel model;
     private ArrayList<Book> bookArrayList;
 
-    private ServiceFacade serviceFacade = new ServiceFacade();
+    private ServiceFacade serviceFacade = new ServiceFacade(bookArrayList);
 
     private DaoFacade daoFacade = new DaoFacade();
 

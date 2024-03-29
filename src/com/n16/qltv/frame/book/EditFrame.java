@@ -18,7 +18,6 @@ public class EditFrame extends JFrame {
     private JPanel editFrame;
 
     private DaoFacade daoFacade = new DaoFacade();
-    private ServiceFacade serviceFacade = new ServiceFacade();
 
     public EditFrame(Book book) {
 

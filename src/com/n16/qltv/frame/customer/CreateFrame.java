@@ -2,6 +2,7 @@ package com.n16.qltv.frame.customer;
 
 
 import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.utils.SHA256;
@@ -9,6 +10,7 @@ import com.n16.qltv.utils.SHA256;
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CreateFrame extends JFrame {
     ButtonGroup buttonGroup;
@@ -33,6 +35,9 @@ public class CreateFrame extends JFrame {
 
     //
     private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade;
+    ArrayList<Customer> customerArrayList;
+    //
     public CreateFrame() {
         setContentPane(createFrame);
         setVisible(true);
@@ -41,12 +46,15 @@ public class CreateFrame extends JFrame {
         setTitle("Thêm khách hàng");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setComponents();
+        customerArrayList = daoFacade.customerDAO.getListItem();
+        serviceFacade = new ServiceFacade(customerArrayList);
+
         btnAdd.addActionListener(e -> {
             Validation.clearValidation();
             char gender = 'm';
             if(!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(daoFacade.customerDAO.isCustomerExist(txtUsrName.getText())))
+            if(!(serviceFacade.customerService.isCustomerExist(txtUsrName.getText())))
             {
                 if(!(txtPassword.getText().equals(txtRePassword.getText()))){
                     Validation.createValidation("Mật khẩu không trùng khớp ");}

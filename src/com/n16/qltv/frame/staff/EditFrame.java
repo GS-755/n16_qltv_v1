@@ -76,6 +76,7 @@ public class EditFrame extends JFrame {
 
                     daoFacade.staffDAO.edit(staff);
                     JOptionPane.showMessageDialog(null, "Cập nhật thông tin thành công.");
+                    dispose();
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "KHÔNG có tài khoản trong hệ thống!");

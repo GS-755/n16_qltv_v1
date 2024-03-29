@@ -72,6 +72,7 @@ public class CreateFrame extends JFrame {
                     else {
                         daoFacade.staffDAO.create(staff);
                         JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!");
+                        dispose();
                     }
                 }
                 catch (Exception ex) {

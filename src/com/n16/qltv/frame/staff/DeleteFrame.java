@@ -26,6 +26,7 @@ public class DeleteFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Staff staff = daoFacade.staffDAO.getItem(usrName.trim());
         setComponents(staff);
+
         btnDelete.addActionListener(e -> {
             if(daoFacade.staffDAO.checkExistStaff(usrName.trim())) {
                 daoFacade.staffDAO.delete(usrName);

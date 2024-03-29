@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.customer;
 
 import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Customer;
 
@@ -38,6 +39,7 @@ public class IndexFrame extends JFrame{
     private ButtonGroup radioSearchModeGroup;
     //
     private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade;
 
     public IndexFrame() {
         this.foundCustomerArrayList = new ArrayList<>();
@@ -54,6 +56,8 @@ public class IndexFrame extends JFrame{
         addTableData(this.customerArrayList);
         table1.setModel(model);
         this.setActionSearchCustomer();
+
+        serviceFacade = new ServiceFacade(customerArrayList);
 
         updateButton.addActionListener(e -> {
             this.refreshTableData();
@@ -94,13 +98,13 @@ public class IndexFrame extends JFrame{
 
         btnIncrease.addActionListener(e -> {
             deleteTableData();
-            customerArrayList = daoFacade.customerDAO.sortUsrName(1);
+            customerArrayList = serviceFacade.customerService.sortUsrName(1);
             addTableData(this.customerArrayList);
             model.fireTableDataChanged();
         });
         btnDecrease.addActionListener(e -> {
             deleteTableData();
-            customerArrayList = daoFacade.customerDAO.sortUsrName(2);
+            customerArrayList = serviceFacade.customerService.sortUsrName(2);
             addTableData(this.customerArrayList);
             model.fireTableDataChanged();
         });
@@ -129,14 +133,21 @@ public class IndexFrame extends JFrame{
     }
     public void setActionSearchCustomer() {
         this.searchButton.addActionListener(e -> {
+            serviceFacade = new ServiceFacade(customerArrayList);
+
             String keyword = this.txtSearchKeyword.getText().toString().trim();
+            if(keyword.equals("")){
+                refreshTableData();
+                addTableData(daoFacade.customerDAO.getListItem());
+                return;
+            }
             this.refreshTableData();
             if(this.approxModeRadio.isSelected()) {
-                this.foundCustomerArrayList = daoFacade.customerDAO.
+                this.foundCustomerArrayList = serviceFacade.customerService.
                         findCustomerByName(keyword.toLowerCase().trim(), 2);
             }
             else {
-                this.foundCustomerArrayList = daoFacade.customerDAO.
+                this.foundCustomerArrayList = serviceFacade.customerService.
                         findCustomerByName(keyword.trim(), 1);
             }
             this.addTableData(this.foundCustomerArrayList);

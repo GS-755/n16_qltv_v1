@@ -15,7 +15,7 @@ public class CustomerDAO implements IDAOs {
     private Connection conn;
     private ArrayList<Customer> customerArrayList;
 
-    private ServiceFacade serviceFacade = new ServiceFacade();
+    private ServiceFacade serviceFacade;
 
     public CustomerDAO() {
         this.customerArrayList = this.getListItem();
@@ -86,6 +86,7 @@ public class CustomerDAO implements IDAOs {
     }
     @Override
     public void edit(IModels item) {
+        serviceFacade = new ServiceFacade(customerArrayList);
         try {
             Customer customer = (Customer) item;
             if(serviceFacade.customerService.isCustomerExist(customer.getUsrName().trim())) {
@@ -122,6 +123,7 @@ public class CustomerDAO implements IDAOs {
     @Override
     public void delete(Object item) {
         try {
+            serviceFacade = new ServiceFacade(customerArrayList);
             if(serviceFacade.customerService.isCustomerExist(item.toString().trim())) {
                 String query = "DELETE FROM docgia " +
                         " WHERE TenDangNhap = ?";

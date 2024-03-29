@@ -24,6 +24,7 @@ public class EditFrame extends JFrame {
         btnEdit.addActionListener(e -> {
             category.setNameCate(txtCateName.getText().trim());
             daoFacade.categoryDAO.edit(category);
+
             JOptionPane.showMessageDialog(this, "Chỉnh sửa thành công");
             dispose();
         });

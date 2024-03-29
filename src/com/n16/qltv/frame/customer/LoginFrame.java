@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.customer;
 
 import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.utils.Session;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class LoginFrame extends JFrame{
     private JLabel titleLabel;
     private JPanel loginPanel;
     private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade = new ServiceFacade(daoFacade.customerDAO.getListItem());
     public LoginFrame() throws HeadlessException {
         setContentPane(loginPanel);
         setTitle("Đăng nhập khách hàng");
@@ -27,8 +29,8 @@ public class LoginFrame extends JFrame{
             try{
                 String usrName = txtUrsName.getText();
                 String password = txtPass.getText();
-                if(daoFacade.customerDAO.isCustomerExist(usrName)) {
-                    boolean loginStatus = daoFacade.customerDAO.loginAccount(usrName, password);
+                if(serviceFacade.customerService.isCustomerExist(usrName)) {
+                    boolean loginStatus = serviceFacade.customerService.loginAccount(usrName, password);
                     if(loginStatus) {
                         dispose();
                         Session.put("Customer", usrName);

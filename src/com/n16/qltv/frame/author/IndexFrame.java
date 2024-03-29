@@ -27,7 +27,7 @@ public class IndexFrame extends JFrame{
     private ArrayList<Book> bookArrayList;
 
     DaoFacade daoFacade = new DaoFacade();
-    ServiceFacade serviceFacades = new ServiceFacade();
+    ServiceFacade serviceFacade;
     public IndexFrame() {
 
 
@@ -38,8 +38,9 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        authorArrayList = (ArrayList<Author>) daoFacade.authorDAO.getListItem();
+        authorArrayList =daoFacade.authorDAO.getListItem();
 
+        serviceFacade = new ServiceFacade(authorArrayList);
         model = new DefaultTableModel();
         addTableStyle(model);
         addTableData(model, authorArrayList);
@@ -108,14 +109,14 @@ public class IndexFrame extends JFrame{
 
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = serviceFacades.authorServices.sortUsrName(1);
+            authorArrayList = serviceFacade.authorServices.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
 
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = serviceFacades.authorServices.sortUsrName(2);
+            authorArrayList = serviceFacade.authorServices.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
@@ -126,7 +127,7 @@ public class IndexFrame extends JFrame{
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            authorArrayList = serviceFacades.authorServices
+            authorArrayList = serviceFacade.authorServices
                     .findAuthorName(mode, keyword);
             addTableData(model, authorArrayList);
         });

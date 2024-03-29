@@ -42,6 +42,7 @@ public class EditFrame extends JFrame{
         setGenderComponents();
 
         updateButton.addActionListener(e -> {
+
             Validation.clearValidation();
             char gender = 'm';
             if(!(maleRadio.isSelected()))
@@ -109,6 +110,8 @@ public class EditFrame extends JFrame{
             }
         });
     }
+
+
     public void setComponents(Customer customer) {
         txtCusName.setText(customer.getNameCus());
         txtAddress.setText(customer.getAddressCus());

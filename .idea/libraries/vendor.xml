@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="vendor">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../n11_qltv_libs/vendor" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../n11_qltv_libs/vendor" recursive="false" />
+  </library>
+</component>

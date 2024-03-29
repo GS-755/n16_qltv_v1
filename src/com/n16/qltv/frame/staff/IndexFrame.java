@@ -80,6 +80,7 @@ public class IndexFrame extends JFrame {
             else {
                String SaffName  = model.getValueAt(tableStaff.getSelectedRow(), 5).toString();
                 EditFrame ef = new EditFrame(SaffName);
+                refreshTableData();
             }
         });
 
