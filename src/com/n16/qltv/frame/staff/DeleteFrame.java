@@ -1,6 +1,5 @@
 package com.n16.qltv.frame.staff;
-
-import com.n16.qltv.daos.StaffDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
@@ -14,21 +13,22 @@ public class DeleteFrame extends JFrame {
     private JLabel mainTitle, questionTitle;
     private JPanel deletePanel;
     private JButton btnDelete, btnCancel;
-    private StaffDAO staffDAO;
+
+    //
+    private DaoFacade daoFacade = new DaoFacade();
 
     public DeleteFrame(String usrName) {
-        this.staffDAO = new StaffDAO();
         setContentPane(deletePanel);
         setTitle("Xoá Nhân viên");
         setVisible(true);
         setBounds(80, 90, 480, 320);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        Staff staff = this.staffDAO.getItem(usrName.trim());
+        Staff staff = daoFacade.staffDAO.getItem(usrName.trim());
         setComponents(staff);
         btnDelete.addActionListener(e -> {
-            if(this.staffDAO.checkExistStaff(usrName.trim())) {
-                this.staffDAO.delete(usrName);
+            if(daoFacade.staffDAO.checkExistStaff(usrName.trim())) {
+                daoFacade.staffDAO.delete(usrName);
                 dispose();
             }
             else {

@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.category;
 
-import com.n16.qltv.daos.CategoryDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Category;
 
 import javax.swing.*;
@@ -9,10 +9,8 @@ public class EditFrame extends JFrame {
     private JTextField txtCateName;
     private JPanel editPanel;
     private JButton btnEdit;
-    private CategoryDAO categoryDAO;
-
+    private DaoFacade daoFacade = new DaoFacade();
     public EditFrame(Category category) {
-        this.categoryDAO = new CategoryDAO();
 
         setContentPane(editPanel);
         txtCateName.setText(category.getNameCate().trim());
@@ -25,7 +23,7 @@ public class EditFrame extends JFrame {
 
         btnEdit.addActionListener(e -> {
             category.setNameCate(txtCateName.getText().trim());
-            this.categoryDAO.edit(category);
+            daoFacade.categoryDAO.edit(category);
             JOptionPane.showMessageDialog(this, "Chỉnh sửa thành công");
             dispose();
         });

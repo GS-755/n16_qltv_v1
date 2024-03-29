@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
@@ -12,12 +13,11 @@ public class EditFrame extends JFrame {
     private JButton btnAdd;
     private JLabel nameLabel, addressLabel;
     private JLabel noteLabel, titleLabel;
-    private AuthorDAO authorDAO;
+
+    private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade = new ServiceFacade();
 
     public EditFrame(Author author) {
-
-        this.authorDAO = new AuthorDAO();
-
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
         setVisible(true);
@@ -29,9 +29,9 @@ public class EditFrame extends JFrame {
 
         btnAdd.addActionListener(e -> {
             Validation.clearValidation();
-            if(authorDAO.checkExist(tfName.getText().trim())) {
+            if(daoFacade.authorDAO.checkExist(tfName.getText().trim())) {
                 if(!this.tfWebsite.getText().isEmpty()) {
-                    String website = authorDAO.
+                    String website = serviceFacade.authorServices.
                             formatWebsite(tfWebsite.getText()).trim();
                     author.setAuthorAddress(website);
                 }
@@ -43,7 +43,7 @@ public class EditFrame extends JFrame {
                 if(Validation.getErrCount() > 0) {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 } else {
-                    this.authorDAO.edit(author);
+                    daoFacade.authorDAO.edit(author);
                     JOptionPane.showMessageDialog(null, "Cập nhật thành công");
                     dispose();
                 }

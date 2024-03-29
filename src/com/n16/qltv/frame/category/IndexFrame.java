@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.category;
 
-import com.n16.qltv.daos.CategoryDAO;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.utils.Validation;
 
@@ -24,18 +25,19 @@ public class IndexFrame extends JFrame{
     private JScrollPane categoryScrollTable;
     private JPanel categoryPanel;
     private DefaultTableModel model;
-    private CategoryDAO categoryDAO;
     private ArrayList<Category> cateArrayList;
 
+    private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade = new ServiceFacade();
+
     public IndexFrame() {
-        this.categoryDAO = new CategoryDAO();
         this.cateArrayList = new ArrayList<>();
         setTitle("Danh sách thể loại");
         setContentPane(categoryForm);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.cateArrayList = this.categoryDAO.getListItem();
+        this.cateArrayList = daoFacade.categoryDAO.getListItem();
         this.model = new DefaultTableModel();
         this.addTableDecoration();
         this.addTableData(this.cateArrayList);
@@ -50,11 +52,11 @@ public class IndexFrame extends JFrame{
             }
             else {
                 try {
-                    if(!categoryDAO.checkExistCategory(category.getNameCate()))
+                    if(!serviceFacade.categoryServices.checkExistCategory(category.getNameCate()))
                     {
-                        this.categoryDAO.create(category);
+                        this.daoFacade.categoryDAO.create(category);
                         this.refreshTableData();
-                        this.addTableData(this.categoryDAO.getListItem());
+                        this.addTableData(this.daoFacade.categoryDAO.getListItem());
                     }else {
                         Validation.clearValidation();
                         Validation.createValidation("tên thể loại đã tồn tại !");
@@ -72,13 +74,13 @@ public class IndexFrame extends JFrame{
             if(categoryTable.getSelectedRow() >= 0) {
                 int idCate = Integer.parseInt(model.getValueAt(
                         categoryTable.getSelectedRow(), 0).toString());
-                Category category = this.categoryDAO.getItem(idCate);
+                Category category = daoFacade.categoryDAO.getItem(idCate);
                 EditFrame editFrame = new EditFrame(category);
                 editFrame.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         refreshTableData();
-                        cateArrayList = categoryDAO.getListItem();
+                        cateArrayList = daoFacade.categoryDAO.getListItem();
                         addTableData(cateArrayList);
                     }
                 });
@@ -92,9 +94,9 @@ public class IndexFrame extends JFrame{
             if(categoryTable.getSelectedRow() >= 0) {
                 int idCate = Integer.parseInt(this.model.getValueAt(
                         categoryTable.getSelectedRow(), 0).toString());
-                this.categoryDAO.delete(idCate);
+                daoFacade.categoryDAO.delete(idCate);
                 refreshTableData();
-                this.cateArrayList = this.categoryDAO.getListItem();
+                this.cateArrayList = daoFacade.categoryDAO.getListItem();
                 addTableData(cateArrayList);
             }
             else {
@@ -106,7 +108,7 @@ public class IndexFrame extends JFrame{
             String keyword = this.searchInput.getText().trim();
             this.refreshTableData();
             try {
-                this.cateArrayList = this.categoryDAO.findCateName(keyword);
+                this.cateArrayList = daoFacade.categoryDAO.findCateName(keyword);
                 this.addTableData(this.cateArrayList);
             }
             catch (Exception ex) {
@@ -123,14 +125,14 @@ public class IndexFrame extends JFrame{
                 if(keyword.isEmpty() || keyword.equals("") || keyword.isBlank() || keyword.length() == 0)
                 {
                     deleteTableData();
-                    cateArrayList = categoryDAO.getListItem();
+                    cateArrayList = daoFacade.categoryDAO.getListItem();
                     addTableData(cateArrayList);
 
                 } else {
                     cateArrayList.clear();
                     deleteTableData();
                     ArrayList<Category> foundCate = new ArrayList<>();
-                    cateArrayList = categoryDAO.getListItem();
+                    cateArrayList = daoFacade.categoryDAO.getListItem();
                     for (Category cates : cateArrayList) {
                         if(cates.getNameCate().contains(keyword))
                         {

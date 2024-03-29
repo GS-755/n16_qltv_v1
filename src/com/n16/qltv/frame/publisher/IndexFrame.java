@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.publisher;
 
-import com.n16.qltv.daos.PublisherDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.utils.StrProcessor;
 import com.n16.qltv.utils.Validation;
@@ -24,18 +24,23 @@ public class IndexFrame extends JFrame {
     private JPanel contentPane;
     private JButton btnClear;
     private JLabel labelSearchResult;
+
+    //
     private DefaultTableModel tableModel;
-    PublisherDAO publisherDAO;
     Publisher foundPublisher;
     ArrayList<Publisher> publisherArrayList;
     ArrayList<Publisher> foundPublisherArrayList;
 
+    private DaoFacade daoFacade = new DaoFacade();
+
     public IndexFrame() {
         // Lấy danh sách Publisher
         foundPublisher = new Publisher();
-        publisherDAO = new PublisherDAO();
+
         foundPublisherArrayList = new ArrayList<>();
-        publisherArrayList = publisherDAO.getListItem();
+
+        publisherArrayList = daoFacade.publisherDAO.getListItem();
+
         // Todo: Setting JFrame
         setTitle("Nhà xuất bản");
         setContentPane(contentPane);
@@ -43,12 +48,15 @@ public class IndexFrame extends JFrame {
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+
         this.tableModel = new DefaultTableModel();
         this.addTableStyle();
         this.addTableData(this.publisherArrayList);
+
         // Ẩn trợ giúp tìm kiếm
         labelSearchResult.setVisible(false);
         btnSupport.setVisible(false);
+
         btnCreate.addActionListener(e -> {
             try {
                 Publisher publisher = new Publisher();
@@ -62,9 +70,9 @@ public class IndexFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
                 else {
-                    this.publisherDAO.create(publisher);
+                    daoFacade.publisherDAO.create(publisher);
                     this.refreshTableData();
-                    this.publisherArrayList = this.publisherDAO.getListItem();
+                    this.publisherArrayList = daoFacade.publisherDAO.getListItem();
                     this.addTableData(this.publisherArrayList);
                 }
             } catch (Exception ex) {
@@ -89,9 +97,9 @@ public class IndexFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 }
                 else {
-                    this.publisherDAO.edit(publisher);
+                    daoFacade.publisherDAO.edit(publisher);
                     this.refreshTableData();
-                    this.publisherArrayList = this.publisherDAO.getListItem();
+                    this.publisherArrayList = daoFacade.publisherDAO.getListItem();
                     this.addTableData(this.publisherArrayList);
                     this.foundPublisher = new Publisher();
                 }
@@ -102,7 +110,7 @@ public class IndexFrame extends JFrame {
             if(publisherTable.getSelectedRow() >= 0) {
                 int selectedId = Integer.parseInt(tableModel.
                         getValueAt(publisherTable.getSelectedRow(), 0).toString());
-                this.publisherDAO.delete(selectedId);
+                daoFacade.publisherDAO.delete(selectedId);
                 this.refreshTableData();
             }
             else {
@@ -117,7 +125,7 @@ public class IndexFrame extends JFrame {
                 try {
                     int selectedId = Integer.parseInt(tableModel.
                             getValueAt(publisherTable.getSelectedRow(), 0).toString());
-                    Publisher selectedPublisher = publisherDAO.getItem(selectedId);
+                    Publisher selectedPublisher = daoFacade.publisherDAO.getItem(selectedId);
                     txtPublisherName.setText(selectedPublisher.getPublisherName().toString().trim());
                     txtPublisherEmail.setText(selectedPublisher.getPublisherEmail().toString().trim());
                     txtPublisherAddress.setText(selectedPublisher.getPublisherAddress().toString().trim());
@@ -143,7 +151,7 @@ public class IndexFrame extends JFrame {
                 else {
                     labelSearchResult.setVisible(true);
                     try {
-                        foundPublisherArrayList = publisherDAO.findPublisherByName(keyword);
+                        foundPublisherArrayList = daoFacade.publisherDAO.findPublisherByName(keyword);
                         if(foundPublisherArrayList.size() > 0) {
                             labelSearchResult.setVisible(true);
                             btnSupport.setVisible(true);

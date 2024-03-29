@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-// cầm acc đi cày thuê DBCLPM nên có commit lz này :O
+// cầm acc đi cày thuê DBCLPM nên có commit này :O
 public class StaffDAO implements IDAOs {
     private Connection conn;
     private ArrayList<Staff> staffArrayList;
@@ -21,15 +21,9 @@ public class StaffDAO implements IDAOs {
         this.conn = MySQL.client().getConnection();
         this.staffArrayList = new ArrayList<>();
     }
-
-
-    public ArrayList<Staff> getStaffArrayList() {
-        return this.staffArrayList;
-    }
-
     public boolean checkExistStaff(String usrName) {
         try {
-            this.getStaffArrayList();
+            this.getListItem();
             for(Staff staff : this.staffArrayList) {
                 if(staff.getUsrName().trim().equals(usrName.trim())) {
                     return true;
@@ -99,7 +93,6 @@ public class StaffDAO implements IDAOs {
 
         return foundStaffs;
     }
-
     @Override
     public void create(IModels item) {
         try {

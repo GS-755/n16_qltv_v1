@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.staff;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.n16.qltv.daos.StaffDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.utils.SHA256;
@@ -22,10 +22,9 @@ public class CreateFrame extends JFrame {
     private JLabel addressLabel, phoneLabel, dobLabel;
     private JLabel titleLabel;
     private DatePicker datePicker;
-    private StaffDAO staffDAO;
+    private DaoFacade daoFacade = new DaoFacade();
 
     public CreateFrame() {
-        this.staffDAO = new StaffDAO();
         setGenderComponents();
         setContentPane(addPanel);
         setTitle("Thêm Nhân viên");
@@ -39,7 +38,7 @@ public class CreateFrame extends JFrame {
             char gender = 'm';
             if (!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(this.staffDAO.checkExistStaff(txtUsrName.getText()))) {
+            if(!(daoFacade.staffDAO.checkExistStaff(txtUsrName.getText()))) {
                 try {
                     if(!(txtPassword.getText().equals(txtRePassword.getText()))) {
                         Validation.createValidation("Mật khẩu KHÔNG trùng khớp");
@@ -71,7 +70,7 @@ public class CreateFrame extends JFrame {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else {
-                        this.staffDAO.create(staff);
+                        daoFacade.staffDAO.create(staff);
                         JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!");
                     }
                 }

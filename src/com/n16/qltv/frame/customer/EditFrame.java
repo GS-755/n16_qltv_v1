@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.daos.CustomerDAO;
+import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.utils.SHA256;
@@ -28,10 +28,10 @@ public class EditFrame extends JFrame{
     private JLabel nameLabel;
     private JLabel usrLabel;
     private JLabel repasswordLabel,titleLabel;
-    private CustomerDAO customerDAO;
+    //
+    private DaoFacade daoFacade = new DaoFacade();
 
     public EditFrame(Customer customer) {
-        this.customerDAO = new CustomerDAO();
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
         setVisible(true);
@@ -46,7 +46,7 @@ public class EditFrame extends JFrame{
             char gender = 'm';
             if(!(maleRadio.isSelected()))
                 gender = 'f';
-            if(this.customerDAO.getItem(customer.getUsrName()) != null) {
+            if(daoFacade.customerDAO.getItem(customer.getUsrName()) != null) {
                 Customer editedCustomer = new Customer();
                 if(txtPassword.getText().isBlank()
                         || txtRePassword.getText().isEmpty()){
@@ -61,7 +61,7 @@ public class EditFrame extends JFrame{
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else{
-                        this.customerDAO.edit(editedCustomer);
+                        daoFacade.customerDAO.edit(editedCustomer);
                         JOptionPane.showMessageDialog(null,"Cập nhật thông tin thành công");
                         dispose();
                     }
@@ -93,7 +93,7 @@ public class EditFrame extends JFrame{
                                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                             }
                             else {
-                                this.customerDAO.edit(editedCustomer);
+                                daoFacade.customerDAO.edit(editedCustomer);
                                 JOptionPane.showMessageDialog(
                                         null, "Cập nhật thông tin thành công.");
                                 this.dispose();
