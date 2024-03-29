@@ -1,12 +1,8 @@
 package com.n16.qltv.model;
 
 import com.n16.qltv.daos.BorrowBookDAO;
-import java.sql.Date;
 
 public class BorrowHistory extends BorrowBook {
-    private char state;
-    private Date returnDate;
-    private String note;
     private Book book;
 
     public BorrowHistory() {
@@ -27,12 +23,6 @@ public class BorrowHistory extends BorrowBook {
         }
     }
 
-    public char getState() { return this.state; }
-    public Date getReturnDate() { return this.returnDate; }
-    public String getNote() { return this.note; }
     public Book getBook() { return this.book; }
     public void setBook(Book book) { this.book = book; }
-    public void setState(char state) { this.state = state; }
-    public void setReturnDate(Date returnDate) { this.returnDate = returnDate; }
-    public void setNote(String note) { this.note = note; }
 }

@@ -1,6 +1,6 @@
 package com.n16.qltv.model;
 
-enum EReturnState {
+public enum EReturnState {
     YES,
     NO
 }

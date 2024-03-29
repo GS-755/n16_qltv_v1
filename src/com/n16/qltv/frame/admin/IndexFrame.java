@@ -50,7 +50,7 @@ public class IndexFrame extends JFrame {
         setBounds(60, 60, 750, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuBar = new JMenuBar();
-        setToolbar();
+        setToolbarDecorationAndAction();
         setJMenuBar(menuBar);
 
         model = new DefaultTableModel();
@@ -227,7 +227,7 @@ public class IndexFrame extends JFrame {
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
     }
-    public void setToolbar() {
+    public void setToolbarDecorationAndAction() {
         JMenu menu1 = new JMenu("Quản lý");
         menuBar.add(menu1);
         menu1.add("Khách hàng");
@@ -264,7 +264,7 @@ public class IndexFrame extends JFrame {
         });
         menu1.add("Mượn trả sách");
         menu1.getItem(8).addActionListener(e -> {
-            // BorrowBook borrowBook = new BorrowBook();
+            com.n16.qltv.frame.borrowbook.IndexFrame indexFrame = new com.n16.qltv.frame.borrowbook.IndexFrame();
         });
         JMenu menu2 = new JMenu("Tài khoản");
         menuBar.add(menu2);

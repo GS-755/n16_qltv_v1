@@ -3,6 +3,7 @@ package com.n16.qltv.daos;
 import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.model.BorrowHistory;
+import com.n16.qltv.model.EReturnState;
 import com.n16.qltv.model.interfaces.IModels;
 import com.n16.qltv.utils.MySQL;
 
@@ -30,7 +31,12 @@ public class BorrowHistoryDAO implements IDAOs {
             BorrowHistory borrowHistory = (BorrowHistory) item;
             PreparedStatement ps = this.conn.prepareStatement(query);
             ps.setString(1, borrowHistory.getNote().trim());
-            ps.setString(2, String.valueOf(borrowHistory.getState()));
+            if(borrowHistory.getHasReturned().equals(EReturnState.YES)) {
+                ps.setString(2, "Y");
+            }
+            else {
+                ps.setString(2, "N");
+            }
             ps.setDate(3, borrowHistory.getReturnDate());
             ps.setString(4, borrowHistory.getBorrowId().toUpperCase().trim());
             ps.setInt(5, borrowHistory.getBook().getBookId());
@@ -76,7 +82,13 @@ public class BorrowHistoryDAO implements IDAOs {
                 if (rs.getDate("NgayTra") != null) {
                     item.setReturnDate(rs.getDate("NgayTra"));
                 }
-                item.setState(rs.getString(2).charAt(0));
+                if(rs.getString(2).charAt(0) == 'Y') {
+                    item.setHasReturned(EReturnState.YES);
+                }
+                else {
+                    item.setHasReturned(EReturnState.NO);
+                }
+
                 Book book = this.bookDAO.getItem(rs.getInt("MaSach"));
                 item.setBook(book);
 

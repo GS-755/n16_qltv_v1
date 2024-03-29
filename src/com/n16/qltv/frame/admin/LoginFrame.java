@@ -4,6 +4,7 @@ import com.n16.qltv.daos.AdminDAO;
 import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class LoginFrame extends JFrame {
     private JButton btnLogin;

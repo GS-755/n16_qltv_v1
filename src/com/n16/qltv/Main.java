@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
         if(isConfigAvailable()) {
             LoginFrame loginFrame = new LoginFrame();
+            loginFrame.setLocationRelativeTo(null);
         }
         else {
             JOptionPane.showMessageDialog(null, "Không tìm thấy file app.properties!\n" +
