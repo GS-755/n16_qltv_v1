@@ -83,7 +83,7 @@ public class AuthorDAO implements IDAOs {
     }
 
     @Override
-    public void create(IModels item) throws SQLException {
+    public void create(IModels item) {
         Author author = (Author) item;
         try {
             String query = "INSERT INTO tacgia("

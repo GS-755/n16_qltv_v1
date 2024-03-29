@@ -3,7 +3,6 @@ package com.n16.qltv.frame.admin;
 import com.n16.qltv.adapter.BookAdapter;
 import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.daos.BookDAO;
-import com.n16.qltv.frame.borrowbook.BorrowBook;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.utils.Session;
@@ -47,7 +46,7 @@ public class IndexFrame extends JFrame {
         setContentPane(indexPanel);
         setVisible(true);
         setResizable(false);
-        setTitle("Quản lý Thư viện v3.75.12");
+        setTitle("Quản lý Thư viện");
         setBounds(60, 60, 750, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuBar = new JMenuBar();
@@ -57,19 +56,13 @@ public class IndexFrame extends JFrame {
         model = new DefaultTableModel();
         this.bookDAO = new BookDAO();
         this.AuthorDAO = new AuthorDAO();
-
         bookArrayList = bookDAO.getListItem();
         addTableData(model, bookArrayList);
-
         bookStatistical = bookDAO.getItemCount();
         CountBookList.setText(String.valueOf(bookStatistical));
-
-
         authorArrayList = AuthorDAO.getListItem();
         this.authorStatistical= this.AuthorDAO.getItemCount();
-
         authorListVisible(authorStatistical);
-
         AuthorTitle.setVisible(true);
         author = new Author();
 
@@ -271,7 +264,7 @@ public class IndexFrame extends JFrame {
         });
         menu1.add("Mượn trả sách");
         menu1.getItem(8).addActionListener(e -> {
-            BorrowBook borrowBook = new BorrowBook();
+            // BorrowBook borrowBook = new BorrowBook();
         });
         JMenu menu2 = new JMenu("Tài khoản");
         menuBar.add(menu2);

@@ -1,7 +1,6 @@
 package com.n16.qltv.frame.staff;
 
 import com.n16.qltv.daos.StaffDAO;
-import com.n16.qltv.frame.borrowbook.BorrowBook;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.utils.Session;
 
@@ -113,7 +112,7 @@ public class IndexFrame extends JFrame {
                 LoginFrame loginFrame = new LoginFrame();
             }
             else  {
-                 BorrowBook borrowBook = new BorrowBook();
+                 //BorrowBook borrowBook = new BorrowBook();
             }
         });
         btnLogout.addActionListener(e -> {

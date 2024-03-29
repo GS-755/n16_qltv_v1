@@ -2,46 +2,29 @@ package com.n16.qltv.model;
 
 import com.n16.qltv.model.interfaces.IModels;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class BorrowBook implements IModels {
     private String borrowId;
     private Date borrowDate;
     private Staff staff;
-    private Customer customer;
+    private LibraryCard libraryCard;
 
-    public BorrowBook() { this.borrowDate = new Date(); }
-    public BorrowBook(String borrowId, Date borrowDate, Staff staff) {
-        this.borrowId = borrowId;
-        this.borrowDate = borrowDate;
-        this.staff = staff;
-    }
+    public BorrowBook() {  }
 
     public String getBorrowId() { return this.borrowId; }
     public Staff getStaff() { return this.staff; }
-
-    public Customer getCustomer() {
-        return customer;
+    public Date getBorrowDate() {
+        return this.borrowDate;
     }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
+    public LibraryCard getLibraryCard() { return this.libraryCard; }
     public void setBorrowId(String borrowId) {
         this.borrowId = borrowId;
     }
-
-    public Date getBorrowDate() {
-        return borrowDate;
-    }
-
     public void setBorrowDate(Date borrowDate) {
         this.borrowDate = borrowDate;
     }
-
-    // TODO: KHÔNG tạo Setter cho books (ArrayList<Book>)
-    // getBooks().get(0).setQty(5);
+    public void setLibraryCard(LibraryCard libraryCard) { this.libraryCard = libraryCard; }
     public void setStaff(Staff staff) { this.staff = staff; }
 
     @Override

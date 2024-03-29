@@ -1,13 +1,12 @@
 package com.n16.qltv.frame.customer;
 
 import com.n16.qltv.daos.CustomerDAO;
-import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.utils.SHA256;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 
 public class CreateFrame extends JFrame {
     ButtonGroup buttonGroup;
@@ -69,12 +68,12 @@ public class CreateFrame extends JFrame {
                     throw new RuntimeException(ex);
                 }
                 Validation.customerValidation(customer);
-                if(Validation.getErrCount()>0)
+                if(Validation.getErrCount() > 0)
                     JOptionPane.showMessageDialog(null,Validation.getStrValidation());
                 else{
                     try {
                         this.customerDAO.create(customer);
-                    } catch (SQLException ex) {
+                    } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                     JOptionPane.showMessageDialog(null,"Tạo khách hàng thành công");

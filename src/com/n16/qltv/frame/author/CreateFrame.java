@@ -1,7 +1,6 @@
 package com.n16.qltv.frame.author;
 
 import com.n16.qltv.daos.AuthorDAO;
-import com.n16.qltv.daos.StaffDAO;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
@@ -54,7 +53,7 @@ public class CreateFrame extends JFrame{
                 else {
                     try {
                         this.AuthorDAO.create(author);
-                    } catch (SQLException ex) {
+                    } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                     JOptionPane.showMessageDialog(null, "Tạo tác giả thành công");

@@ -96,25 +96,30 @@ public class CustomerDAO implements IDAOs {
     }
 
     @Override
-    public void create(IModels item) throws SQLException {
-        this.conn = MySQL.client().getConnection();
-        Customer customer = (Customer) item;
-        String query = "INSERT INTO DocGia ("
-                + "TenDocGia, "
-                + "DiaChi, "
-                + " SoDT, "
-                + " TenDangNhap, "
-                + " MatKhau, "
-                + " GioiTinh) VALUES("
-                + "?, ?, ?, ?, ?, ?)";
-        PreparedStatement st = conn.prepareStatement(query);
-        st.setString(1, customer.getNameCus());
-        st.setString(2, customer.getAddressCus());
-        st.setString(3, customer.getPhoneCus());
-        st.setString(4, customer.getUsrName());
-        st.setString(5, customer.getPassword());
-        st.setString(6, String.format("%s", customer.getGender()));
-        st.executeUpdate();
+    public void create(IModels item) {
+        try {
+            this.conn = MySQL.client().getConnection();
+            Customer customer = (Customer) item;
+            String query = "INSERT INTO DocGia ("
+                    + "TenDocGia, "
+                    + "DiaChi, "
+                    + " SoDT, "
+                    + " TenDangNhap, "
+                    + " MatKhau, "
+                    + " GioiTinh) VALUES("
+                    + "?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, customer.getNameCus());
+            st.setString(2, customer.getAddressCus());
+            st.setString(3, customer.getPhoneCus());
+            st.setString(4, customer.getUsrName());
+            st.setString(5, customer.getPassword());
+            st.setString(6, String.format("%s", customer.getGender()));
+            st.executeUpdate();
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @Override

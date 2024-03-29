@@ -102,27 +102,32 @@ public class StaffDAO implements IDAOs {
     }
 
     @Override
-    public void create(IModels item) throws SQLException {
-        Staff staff = (Staff)item;
-        String query = "INSERT INTO NhanVien ("
-                + " TenNV,"
-                + " NgaySinh,"
-                + " SoDT,"
-                + " DiaChi,"
-                + " TenDangNhap,"
-                + " MatKhau,"
-                + " GioiTinh) VALUES("
-                + "?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement st = this.conn.prepareStatement(query);
-        st.setString(1, staff.getStaffName());
-        st.setDate(2, staff.getStaffDob());
-        st.setString(3, staff.getStaffPhone());
-        st.setString(4, staff.getStaffAddress());
-        st.setString(5, staff.getUsrName());
-        st.setString(6, staff.getPassword());
-        st.setString(7, String.format("%s", staff.getGender()));
+    public void create(IModels item) {
+        try {
+            Staff staff = (Staff)item;
+            String query = "INSERT INTO NhanVien ("
+                    + " TenNV,"
+                    + " NgaySinh,"
+                    + " SoDT,"
+                    + " DiaChi,"
+                    + " TenDangNhap,"
+                    + " MatKhau,"
+                    + " GioiTinh) VALUES("
+                    + "?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = this.conn.prepareStatement(query);
+            st.setString(1, staff.getStaffName());
+            st.setDate(2, staff.getStaffDob());
+            st.setString(3, staff.getStaffPhone());
+            st.setString(4, staff.getStaffAddress());
+            st.setString(5, staff.getUsrName());
+            st.setString(6, staff.getPassword());
+            st.setString(7, String.format("%s", staff.getGender()));
 
-        st.executeUpdate();
+            st.executeUpdate();
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     @Override
     public Staff getItem(Object item) {

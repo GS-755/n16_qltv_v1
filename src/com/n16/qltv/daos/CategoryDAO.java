@@ -36,7 +36,7 @@ public class CategoryDAO implements IDAOs {
         return foundCate;
     }
     @Override
-    public void create(IModels item) throws SQLException {
+    public void create(IModels item) {
         try {
             String query = "INSERT INTO TheLoai (TenTheLoai) VALUES (?)";
             Category category = (Category) item;

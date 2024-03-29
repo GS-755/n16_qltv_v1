@@ -37,7 +37,7 @@ public class PublisherDAO implements IDAOs {
         return foundPublishers;
     }
     @Override
-    public void create(IModels item) throws SQLException {
+    public void create(IModels item) {
         String query = "INSERT INTO NhaXB(TenNXB, Email, DiaChi, TenNgDaiDien) VALUES(?, ?, ?, ?)";
         try {
             Publisher publisher = (Publisher) item;

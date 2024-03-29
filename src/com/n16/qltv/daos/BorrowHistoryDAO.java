@@ -1,67 +1,105 @@
 package com.n16.qltv.daos;
 
+import com.n16.qltv.daos.interfaces.IDAOs;
+import com.n16.qltv.model.Book;
+import com.n16.qltv.model.BorrowHistory;
+import com.n16.qltv.model.interfaces.IModels;
 import com.n16.qltv.utils.MySQL;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
 
-public class BorrowHistoryDAO {
-    public static DefaultTableModel model;// khai báo data table
-    public static void DataToTable(JTable Puli_Table){
-        try{
-            model = new DefaultTableModel();
-            model.addColumn("GhiChu");
-            model.addColumn("DaTra");
-            model.addColumn("NgayTra");
-            model.addColumn("MaMuonTra");
-            model.addColumn("MaSach");
-            String query = "SELECT * FROM ctmuontra ";// ? là dữ liệu nhập vào !
-            Connection conn = MySQL.client().getConnection();
-            // set data parameter ( ? = tên category trong đối tượng cate kởi tạo ở trên )
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                String GhiChu = rs.getString("GhiChu");
-                String DaTra = rs.getString("DaTra");
-                String NgayTra = rs.getString("NgayTra");
-                String MaMuonTra = rs.getString("MaMuonTra");
-                int  MaSach = rs.getInt("MaSach");
-                model.addRow(new Object[]{GhiChu, DaTra,NgayTra,MaMuonTra,MaSach});
-            }
-            rs.close();
-            preparedStatement.close();
-            //conn.close();
-            Puli_Table.setModel(model);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+public class BorrowHistoryDAO implements IDAOs {
+    private Connection conn;
+    private BookDAO bookDAO;
+    private ArrayList<BorrowHistory> borrowHistoryArrayList;
+
+    public BorrowHistoryDAO() {
+        this.conn = MySQL.client().getConnection();
+        this.bookDAO = new BookDAO();
+        this.borrowHistoryArrayList = new ArrayList<>();
     }
-    public static void updateTable(JTable Puli_Table) {
-        DefaultTableModel model = (DefaultTableModel) Puli_Table.getModel();
-        model.setRowCount(0); // xóa dữ liệu trong bảng
+
+    @Override
+    public void create(IModels item) {
+        this.conn = MySQL.client().getConnection();
+        String query = "INSERT INTO CTMuonTra VALUES(?, ?, ?, ?, ?);";
         try {
-            String query = "SELECT * FROM ctmuontra";
-            Connection conn = MySQL.client().getConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                String GhiChu = rs.getString("GhiChu");
-                String DaTra = rs.getString("DaTra");
-                String NgayTra = rs.getString("NgayTra");
-                String MaMuonTra = rs.getString("MaMuonTra");
-                int  MaSach = rs.getInt("MaSach");
-                model.addRow(new Object[]{GhiChu, DaTra,NgayTra,MaMuonTra,MaSach});
-            }
-            rs.close();
-            preparedStatement.close();
-           // conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            BorrowHistory borrowHistory = (BorrowHistory) item;
+            PreparedStatement ps = this.conn.prepareStatement(query);
+            ps.setString(1, borrowHistory.getNote().trim());
+            ps.setString(2, String.valueOf(borrowHistory.getState()));
+            ps.setDate(3, borrowHistory.getReturnDate());
+            ps.setString(4, borrowHistory.getBorrowId().toUpperCase().trim());
+            ps.setInt(5, borrowHistory.getBook().getBookId());
+
+            ps.executeUpdate();
+            ps.close();
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
+    @Override
+    public ArrayList<BorrowHistory> getItem(Object item) {
+        ArrayList<BorrowHistory> borrowHistories = new ArrayList<>();
+        try {
+            String borrowId = item.toString().toUpperCase().trim();
+            this.borrowHistoryArrayList = this.getListItem();
+            for (BorrowHistory borrowHistory : this.borrowHistoryArrayList) {
+                if (borrowHistory.getBorrowId().trim().equals(borrowId)) {
+                    borrowHistories.add(borrowHistory);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
+        return borrowHistories;
+    }
+    @Override
+    public ArrayList<BorrowHistory> getListItem() {
+        this.conn = MySQL.client().getConnection();
+        ArrayList<BorrowHistory> borrowHistories = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM CTMuonTra";
+            PreparedStatement ps = this.conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String borrowId = rs.getString("MaMuonTra").toUpperCase().trim();
+                BorrowHistory item = new BorrowHistory(borrowId);
+                if (rs.getString("GhiChu") != null) {
+                    item.setNote(rs.getString("GhiChu").trim());
+                }
+                if (rs.getDate("NgayTra") != null) {
+                    item.setReturnDate(rs.getDate("NgayTra"));
+                }
+                item.setState(rs.getString(2).charAt(0));
+                Book book = this.bookDAO.getItem(rs.getInt("MaSach"));
+                item.setBook(book);
+
+                borrowHistories.add(item);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return borrowHistories;
+    }
+    @Override
+    public int getItemCount() {
+        return this.borrowHistoryArrayList.size();
+    }
+
+    // TODO: Apply Template method to remove unused methods
+    @Override
+    public void edit(IModels item) {
+
+    }
+    @Override
+    public void delete(Object item) {
+
+    }
 }
