@@ -1,6 +1,7 @@
 package com.n16.qltv.frame.author;
 
 import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.utils.StrProcessor;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
@@ -34,8 +35,7 @@ public class CreateFrame extends JFrame{
             if(!(this.AuthorDAO.checkExist(tfName.getText()))) {
                 Author author = new Author();
                 author.setAuthorName(tfName.getText());
-                String website = this.AuthorDAO.
-                        formatWebsite(tfAddress.getText()).trim();
+                String website = StrProcessor.formatWebsite(tfAddress.getText()).trim();
                 if(website.isEmpty()) {
                     author.setAuthorAddress(tfAddress.getText().trim());
                 } else {
