@@ -3,6 +3,7 @@ package com.n16.qltv.frame.admin;
 import com.n16.qltv.adapter.BookAdapter;
 import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.daos.BookDAO;
+import com.n16.qltv.frame.login.LoginFrame;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.utils.Session;
@@ -47,7 +48,7 @@ public class IndexFrame extends JFrame {
         setVisible(true);
         setResizable(false);
         setTitle("Quản lý Thư viện");
-        setBounds(60, 60, 750, 750);
+        setBounds(60, 60, 1024, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuBar = new JMenuBar();
         setToolbarDecorationAndAction();
@@ -57,6 +58,7 @@ public class IndexFrame extends JFrame {
         this.bookDAO = new BookDAO();
         this.AuthorDAO = new AuthorDAO();
         bookArrayList = bookDAO.getListItem();
+        addTableStyle(model);
         addTableData(model, bookArrayList);
         bookStatistical = bookDAO.getItemCount();
         CountBookList.setText(String.valueOf(bookStatistical));
@@ -134,11 +136,11 @@ public class IndexFrame extends JFrame {
                         Title_Label.setText("Sách được phát hành bởi Tác Giả: \n"+author.getAuthorName());
                         addTableStyle(model);
                         addTableData(model,bookArrayList);
-                    }else {
+                    }
+                    else {
                         Title_Label.setText("Tác Giả "+ author.getAuthorName() +" chưa có tựa sách nào phát hành!");
 
                     }
-
                 }
             }
         });
@@ -177,8 +179,8 @@ public class IndexFrame extends JFrame {
     public void addTableStyle(DefaultTableModel model) {
         model.addColumn("Tên Sách");
         model.addColumn("Thể Loại");
-        model.addColumn("số bản in");
-        model.addColumn("NXB");
+        model.addColumn("Số bản in");
+        model.addColumn("Nhà Xuất Bản");
 
     }
     public void addTableData(DefaultTableModel model, ArrayList<Book> books) {
@@ -196,10 +198,8 @@ public class IndexFrame extends JFrame {
         for(Author author : this.AuthorDAO.getListItem()) {
             AuthorList_combobox.addItem(author.getAuthorName());
         }
-
         // xóa những năm bị trùng trong danh sách
         ArrayList<Book> booklist = bookDAO.removeDuplicatesByYear(bookArrayList);
-
         //sắp xếp năm tăng dần
         bookDAO.BubbleSortByBooks(booklist);
         for(Book book : booklist){
@@ -232,8 +232,7 @@ public class IndexFrame extends JFrame {
         menuBar.add(menu1);
         menu1.add("Khách hàng");
         menu1.getItem(0).addActionListener(e -> {
-            com.n16.qltv.frame.customer.IndexFrame
-                    indexFrame = new com.n16.qltv.frame.customer.IndexFrame();
+            JOptionPane.showMessageDialog(null, "Không được xem thông tin khách hàng");
         });
         menu1.add("Nhân viên");
         menu1.getItem(1).addActionListener(e -> {

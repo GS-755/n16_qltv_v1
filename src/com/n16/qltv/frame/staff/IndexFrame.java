@@ -37,7 +37,7 @@ public class IndexFrame extends JFrame {
         setTitle("Danh sách nhân viên");
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.staffArrayList = this.staffDAO.getListItem();
         // info Staff //
         if(Session.get("admin") != null) {
@@ -50,7 +50,6 @@ public class IndexFrame extends JFrame {
         }
         else {
             dispose();
-            LoginFrame loginFrame = new LoginFrame();
         }
 
         model = new DefaultTableModel();
@@ -68,7 +67,12 @@ public class IndexFrame extends JFrame {
             }
         });
         btnExit.addActionListener(e -> {
-            System.exit(3);
+            if(Session.get("staff") != null) {
+
+            }
+            else {
+                System.exit(0);
+            }
         });
         btnAdd.addActionListener(e -> {
             CreateFrame cf = new CreateFrame();
@@ -109,7 +113,6 @@ public class IndexFrame extends JFrame {
         btnBorrowBook.addActionListener(e -> {
             if(Session.get("staff") == null )  {
                 dispose();
-                LoginFrame loginFrame = new LoginFrame();
             }
             else  {
                  //BorrowBook borrowBook = new BorrowBook();
@@ -119,7 +122,6 @@ public class IndexFrame extends JFrame {
             tf_NameStaff.setText("");
             Session.remove("staff");
             dispose();
-            LoginFrame loginFrame = new LoginFrame();
         });
     }
     public void addTableStyle(DefaultTableModel model) {

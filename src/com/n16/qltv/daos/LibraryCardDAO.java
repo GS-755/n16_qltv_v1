@@ -3,7 +3,7 @@ package com.n16.qltv.daos;
 import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.LibraryCard;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,4 +1,6 @@
-package com.n16.qltv.utils;
+package com.n16.qltv.patterns.singleton;
+
+import com.n16.qltv.utils.AppProperties;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -5,7 +5,7 @@ import com.n16.qltv.model.Book;
 import com.n16.qltv.model.BorrowHistory;
 import com.n16.qltv.model.EReturnState;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package com.n16.qltv.model.interfaces;
+package com.n16.qltv.patterns.prototype;
 
 public interface IPrototype {
     IPrototype clone();

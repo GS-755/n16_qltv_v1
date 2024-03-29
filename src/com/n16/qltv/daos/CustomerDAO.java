@@ -3,7 +3,7 @@ package com.n16.qltv.daos;
 import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 import com.n16.qltv.utils.SHA256;
 
 import javax.swing.*;
@@ -34,7 +34,7 @@ public class CustomerDAO implements IDAOs {
 
         return false;
     }
-    public boolean loginAccount(String ursName, String password) {
+    public boolean isLoggedIn(String ursName, String password) {
         try {
             String authTmp = SHA256.toSHA256(SHA256.getSHA256(password));
             this.customerArrayList = this.getListItem();

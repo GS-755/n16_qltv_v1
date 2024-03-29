@@ -181,22 +181,6 @@
           <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
-      <component id="cdc71" class="javax.swing.JButton" binding="btnAcceptRequest">
-        <constraints>
-          <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Duyệt"/>
-        </properties>
-      </component>
-      <component id="a60d9" class="javax.swing.JButton" binding="btnDetails">
-        <constraints>
-          <grid row="14" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Chi tiết"/>
-        </properties>
-      </component>
       <vspacer id="4b9d">
         <constraints>
           <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
@@ -216,6 +200,30 @@
         </constraints>
         <properties>
           <text value="Cập nhật"/>
+        </properties>
+      </component>
+      <component id="a60d9" class="javax.swing.JButton" binding="btnDetails">
+        <constraints>
+          <grid row="14" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Chi tiết"/>
+        </properties>
+      </component>
+      <component id="cdc71" class="javax.swing.JButton" binding="btnAcceptRequest">
+        <constraints>
+          <grid row="14" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Duyệt"/>
+        </properties>
+      </component>
+      <component id="64093" class="javax.swing.JButton" binding="btnCreate">
+        <constraints>
+          <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Tạo yêu cầu mượn trả"/>
         </properties>
       </component>
     </children>

@@ -3,14 +3,13 @@ package com.n16.qltv.daos;
 import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 import com.n16.qltv.utils.SHA256;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 // cầm acc đi cày thuê DBCLPM nên có commit lz này :O
@@ -43,7 +42,7 @@ public class StaffDAO implements IDAOs {
 
         return false;
     }
-    public boolean loginAccount(String usrName, String password) {
+    public boolean isLoggedIn(String usrName, String password) {
         try {
             this.staffArrayList = this.getListItem();
             String authTmp = SHA256.toSHA256(SHA256.getSHA256(password));

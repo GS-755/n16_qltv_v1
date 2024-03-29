@@ -6,13 +6,12 @@ import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -31,18 +30,19 @@ public class BookDAO implements IDAOs {
         this.publisherDAO = new PublisherDAO();
     }
     public ArrayList<Book> findBookByName(int mode, String keyword) {
+        this.bookArrayList = this.getListItem();
         ArrayList<Book> foundBooks = new ArrayList<>();
         switch (mode) {
             case 1: {
-                for (Book book : bookArrayList) {
+                for (Book book : this.bookArrayList) {
                     if (book.getBookName().equals(keyword))
                         foundBooks.add(book);
                 }
             }
             break;
             case 2: {
-                for (Book book : bookArrayList)
-                    if (book.getBookName().startsWith(keyword))
+                for (Book book : this.bookArrayList)
+                    if (book.getBookName().toLowerCase().contains(keyword))
                         foundBooks.add(book);
             }
             break;

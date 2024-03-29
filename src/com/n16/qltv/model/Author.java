@@ -28,18 +28,12 @@ public class Author implements IModels {
     public void setAuthorNote(String authorNote) { this.authorNote = authorNote; }
 
     @Override
-    public String toString() {
-        return "Author{" +
-                "authorId=" + authorId +
-                ", authorName='" + authorName + '\'' +
-                ", authorAddress='" + authorAddress + '\'' +
-                ", authorNote='" + authorNote + '\'' +
-                '}';
-    }
-
-
-    @Override
     public Class<Author> getType() {
         return Author.class;
+    }
+
+    @Override
+    public String toString() {
+        return this.authorName.trim();
     }
 }
