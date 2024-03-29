@@ -1,16 +1,12 @@
 package com.n16.qltv.frame.customer;
 
-
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.facade.ServiceFacade;
-import com.n16.qltv.utils.Validation;
+import com.n16.qltv.daos.CustomerDAO;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.utils.SHA256;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class CreateFrame extends JFrame {
     ButtonGroup buttonGroup;
@@ -32,13 +28,10 @@ public class CreateFrame extends JFrame {
     private JPasswordField txtRePassword;
     private JLabel labelRePassword;
     private JPanel createFrame;
+    private CustomerDAO customerDAO;
 
-    //
-    private DaoFacade daoFacade = new DaoFacade();
-    private ServiceFacade serviceFacade;
-    ArrayList<Customer> customerArrayList;
-    //
     public CreateFrame() {
+        this.customerDAO = new CustomerDAO();
         setContentPane(createFrame);
         setVisible(true);
         setResizable(false);
@@ -46,15 +39,12 @@ public class CreateFrame extends JFrame {
         setTitle("Thêm khách hàng");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setComponents();
-        customerArrayList = daoFacade.customerDAO.getListItem();
-        serviceFacade = new ServiceFacade(customerArrayList);
-
         btnAdd.addActionListener(e -> {
             Validation.clearValidation();
             char gender = 'm';
             if(!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(serviceFacade.customerService.isCustomerExist(txtUsrName.getText())))
+            if(!(this.customerDAO.isCustomerExist(txtUsrName.getText())))
             {
                 if(!(txtPassword.getText().equals(txtRePassword.getText()))){
                     Validation.createValidation("Mật khẩu không trùng khớp ");}
@@ -78,12 +68,12 @@ public class CreateFrame extends JFrame {
                     throw new RuntimeException(ex);
                 }
                 Validation.customerValidation(customer);
-                if(Validation.getErrCount()>0)
+                if(Validation.getErrCount() > 0)
                     JOptionPane.showMessageDialog(null,Validation.getStrValidation());
                 else{
                     try {
-                        daoFacade.customerDAO.create(customer);
-                    } catch (SQLException ex) {
+                        this.customerDAO.create(customer);
+                    } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                     JOptionPane.showMessageDialog(null,"Tạo khách hàng thành công");

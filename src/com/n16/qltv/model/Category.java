@@ -23,10 +23,7 @@ public class Category implements IModels {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "cateId=" + cateId +
-                ", nameCate='" + nameCate + '\'' +
-                '}';
+        return this.getNameCate();
     }
 
     @Override

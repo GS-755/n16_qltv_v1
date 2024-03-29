@@ -80,6 +80,9 @@ public class Validation {
         else if(!isValidName(book.getBookName())) {
             createValidation("Tên sách KHÔNG hợp lệ");
         }
+        if(book.getQty() < 0) {
+            createValidation("Số lượng sách KHÔNG hợp lệ");
+        }
     }
     public static void customerValidation(Customer customer) {
         if(customer.getNameCus().isEmpty()

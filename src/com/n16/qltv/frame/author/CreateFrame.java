@@ -1,7 +1,6 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.facade.ServiceFacade;
+import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Author;
 
@@ -19,10 +18,10 @@ public class CreateFrame extends JFrame{
     private JLabel titleLabel;
     private JLabel addressLabel;
 
-    private DaoFacade daoFacade = new DaoFacade();
-    private ServiceFacade serviceFacade = new ServiceFacade(daoFacade.authorDAO.getListItem());
+    private AuthorDAO AuthorDAO;
 
     public CreateFrame(){
+        this.AuthorDAO = new AuthorDAO();
 
         setContentPane(labelNote);
         setTitle("Thêm tác giả ");
@@ -32,10 +31,10 @@ public class CreateFrame extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         btnAdd.addActionListener(e->{
             Validation.clearValidation();
-            if(!(daoFacade.authorDAO.checkExist(tfName.getText()))) {
+            if(!(this.AuthorDAO.checkExist(tfName.getText()))) {
                 Author author = new Author();
                 author.setAuthorName(tfName.getText());
-                String website = serviceFacade.authorServices.
+                String website = this.AuthorDAO.
                         formatWebsite(tfAddress.getText()).trim();
                 if(website.isEmpty()) {
                     author.setAuthorAddress(tfAddress.getText().trim());
@@ -53,8 +52,8 @@ public class CreateFrame extends JFrame{
                     JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                 else {
                     try {
-                        daoFacade.authorDAO.create(author);
-                    } catch (SQLException ex) {
+                        this.AuthorDAO.create(author);
+                    } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                     JOptionPane.showMessageDialog(null, "Tạo tác giả thành công");

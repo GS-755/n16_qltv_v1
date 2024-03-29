@@ -67,15 +67,13 @@ btnEdit.addActionListener(e -> {
     }
     public void addTableStyle(DefaultTableModel model) {
         model.addColumn("Mã sách");
-        model.addColumn("tên sách");
-        model.addColumn("NamXB");
+        model.addColumn("Tên sách");
+        model.addColumn("Năm Xuất bản");
         model.addColumn("Bìa Sách");
         model.addColumn("Số Lượng");
-        model.addColumn("NXB");
+        model.addColumn("Nhà xuất bản");
         model.addColumn("Tác Giả");
         model.addColumn("Thể Loại");
-
-
     }
     public void addTableData(DefaultTableModel model, ArrayList<Book> books) {
         for(Book book : books)

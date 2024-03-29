@@ -50,7 +50,7 @@ public class IndexFrame extends JFrame{
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         model = new DefaultTableModel();
         addTableStyle();
         addTableData(this.customerArrayList);
@@ -94,7 +94,7 @@ public class IndexFrame extends JFrame{
             this.customerArrayList = daoFacade.customerDAO.getListItem();
             addTableData(this.customerArrayList);
         });
-        escButton.addActionListener(e -> dispose());
+        escButton.addActionListener(e -> System.exit(0));
 
         btnIncrease.addActionListener(e -> {
             deleteTableData();

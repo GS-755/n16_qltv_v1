@@ -3,12 +3,11 @@ package com.n16.qltv.daos;
 import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PublisherDAO implements IDAOs {
@@ -37,7 +36,7 @@ public class PublisherDAO implements IDAOs {
         return foundPublishers;
     }
     @Override
-    public void create(IModels item) throws SQLException {
+    public void create(IModels item) {
         String query = "INSERT INTO NhaXB(TenNXB, Email, DiaChi, TenNgDaiDien) VALUES(?, ?, ?, ?)";
         try {
             Publisher publisher = (Publisher) item;

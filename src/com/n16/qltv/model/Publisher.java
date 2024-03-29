@@ -32,5 +32,10 @@ public class Publisher implements IModels {
     public Class<Publisher> getType() {
         return Publisher.class;
     }
+
+    @Override
+    public String toString() {
+        return this.publisherName.trim();
+    }
 }
 

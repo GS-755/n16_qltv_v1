@@ -4,13 +4,12 @@ import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AuthorDAO implements IDAOs {
@@ -22,7 +21,7 @@ public class AuthorDAO implements IDAOs {
     }
 
     @Override
-    public void create(IModels item) throws SQLException {
+    public void create(IModels item) {
         Author author = (Author) item;
         try {
             String query = "INSERT INTO tacgia("

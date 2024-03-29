@@ -1,8 +1,9 @@
 package com.n16.qltv.model;
 
 import com.n16.qltv.model.interfaces.IModels;
+import com.n16.qltv.patterns.prototype.IPrototype;
 
-public class Book implements IModels {
+public class Book implements IModels, IPrototype {
     private int bookId;
     private String bookName;
     private int bookYear;
@@ -55,5 +56,15 @@ public class Book implements IModels {
     @Override
     public Class<Book> getType() {
         return Book.class;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d - %s (Tác giả: %s)",
+                this.bookId, this.bookName, this.author.getAuthorName());
+    }
+    @Override
+    public IPrototype clone() {
+        return this::clone;
     }
 }

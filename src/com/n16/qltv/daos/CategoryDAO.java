@@ -3,7 +3,7 @@ package com.n16.qltv.daos;
 import com.n16.qltv.daos.interfaces.IDAOs;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.interfaces.IModels;
-import com.n16.qltv.utils.MySQL;
+import com.n16.qltv.patterns.singleton.MySQL;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public class CategoryDAO implements IDAOs {
         return foundCate;
     }
     @Override
-    public void create(IModels item) throws SQLException {
+    public void create(IModels item) {
         try {
             String query = "INSERT INTO TheLoai (TenTheLoai) VALUES (?)";
             Category category = (Category) item;

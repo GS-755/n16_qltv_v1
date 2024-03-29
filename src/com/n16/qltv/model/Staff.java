@@ -1,7 +1,6 @@
 package com.n16.qltv.model;
 
 import com.n16.qltv.model.interfaces.IModels;
-
 import java.sql.Date;
 
 public class Staff implements IModels {

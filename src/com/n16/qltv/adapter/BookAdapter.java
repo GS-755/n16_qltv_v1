@@ -7,7 +7,6 @@ import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class BookAdapter extends BookDAO {
     private Author author;
@@ -16,8 +15,8 @@ public class BookAdapter extends BookDAO {
 
     private ArrayList<Book> bookArrayList;
 
-    public BookAdapter(Object object){
-        this.author = (Author) object;
+    public BookAdapter(Author author){
+        this.author = author;
     }
 
     public ArrayList<Book> booksOfAuthor(){

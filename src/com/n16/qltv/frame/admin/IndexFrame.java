@@ -1,9 +1,9 @@
 package com.n16.qltv.frame.admin;
 
 import com.n16.qltv.adapter.BookAdapter;
-import com.n16.qltv.facade.ServiceFacade;
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.frame.borrowbook.BorrowBook;
+import com.n16.qltv.daos.AuthorDAO;
+import com.n16.qltv.daos.BookDAO;
+import com.n16.qltv.frame.login.LoginFrame;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.utils.Session;
@@ -31,7 +31,8 @@ public class IndexFrame extends JFrame {
     private final JMenuBar menuBar;
 
     //
-    private DaoFacade daoFacade;
+    private AuthorDAO AuthorDAO;
+    private BookDAO bookDAO;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
     private ArrayList<Book> bookArrayList;
@@ -40,40 +41,30 @@ public class IndexFrame extends JFrame {
     private ArrayList<Book> booksByYear;
     private int authorStatistical;
     private int bookStatistical;
-
-    ServiceFacade serviceFacade;
     //
 
     public IndexFrame() {
         setContentPane(indexPanel);
         setVisible(true);
         setResizable(false);
-        setTitle("Quản lý Thư viện v3.75.12");
-        setBounds(60, 60, 750, 750);
+        setTitle("Quản lý Thư viện");
+        setBounds(60, 60, 1024, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuBar = new JMenuBar();
-        setToolbar();
+        setToolbarDecorationAndAction();
         setJMenuBar(menuBar);
 
-        daoFacade = new DaoFacade();
-
         model = new DefaultTableModel();
-        //this.bookDAO = new BookDAO();
-        //this.AuthorDAO = new AuthorDAO();
-
-        //bookArrayList = bookDAO.getListItem();
-        bookArrayList = daoFacade.bookDAO.getListItem();
+        this.bookDAO = new BookDAO();
+        this.AuthorDAO = new AuthorDAO();
+        bookArrayList = bookDAO.getListItem();
+        addTableStyle(model);
         addTableData(model, bookArrayList);
-
-        bookStatistical = daoFacade.bookDAO.getItemCount();
+        bookStatistical = bookDAO.getItemCount();
         CountBookList.setText(String.valueOf(bookStatistical));
-
-
-        authorArrayList = daoFacade.authorDAO.getListItem();
-        this.authorStatistical= daoFacade.authorDAO.getItemCount();
-
+        authorArrayList = AuthorDAO.getListItem();
+        this.authorStatistical= this.AuthorDAO.getItemCount();
         authorListVisible(authorStatistical);
-
         AuthorTitle.setVisible(true);
         author = new Author();
 
@@ -82,16 +73,16 @@ public class IndexFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 // đếm lại sách - tác giả
-                authorStatistical = daoFacade.authorDAO.getItemCount();
-                bookStatistical = daoFacade.bookDAO.getItemCount();
+                authorStatistical = AuthorDAO.getItemCount();
+                bookStatistical = bookDAO.getItemCount();
 
                 // xóa danh sách tác giả - sách cũ
                 authorArrayList.clear();
                 bookArrayList.clear();
 
                 // lấy lại danh sách tác giả - sách mới
-                authorArrayList = daoFacade.authorDAO.getListItem();
-                bookArrayList = daoFacade.bookDAO.getListItem();
+                authorArrayList = AuthorDAO.getListItem();
+                bookArrayList = bookDAO.getListItem();
 
                 // cập nhật số sách - tác giả
                 CountBookList.setText(String.valueOf(bookStatistical));
@@ -123,7 +114,7 @@ public class IndexFrame extends JFrame {
                 if (e.getStateChange() == ItemEvent.SELECTED){
 
                     // danh sách tác giả
-                    authorArrayList = daoFacade.authorDAO.getListItem();
+                    authorArrayList = AuthorDAO.getListItem();
                     String authorName = AuthorList_combobox.getSelectedItem().toString();
 
                     // tìm tác giả theo tên
@@ -145,11 +136,11 @@ public class IndexFrame extends JFrame {
                         Title_Label.setText("Sách được phát hành bởi Tác Giả: \n"+author.getAuthorName());
                         addTableStyle(model);
                         addTableData(model,bookArrayList);
-                    }else {
+                    }
+                    else {
                         Title_Label.setText("Tác Giả "+ author.getAuthorName() +" chưa có tựa sách nào phát hành!");
 
                     }
-
                 }
             }
         });
@@ -160,14 +151,14 @@ public class IndexFrame extends JFrame {
                 if (e.getStateChange() == ItemEvent.SELECTED){
                     // sách theo năm:
                     int year = (int)BookByYear_combobox.getSelectedItem();
-                    // set tiều đề:
-                    year_txt.setText(String.valueOf(year));
 
+                    year_txt.setText(String.valueOf(year));
                     model.setRowCount(0);
                     model.setColumnCount(0);
                     refreshTableData();
 
                     booksByYear = new ArrayList<>();
+
                     for (Book bookItem : bookArrayList){
                         if(bookItem.getBookYear() == year)
                             booksByYear.add(bookItem);
@@ -188,8 +179,8 @@ public class IndexFrame extends JFrame {
     public void addTableStyle(DefaultTableModel model) {
         model.addColumn("Tên Sách");
         model.addColumn("Thể Loại");
-        model.addColumn("số bản in");
-        model.addColumn("NXB");
+        model.addColumn("Số bản in");
+        model.addColumn("Nhà Xuất Bản");
 
     }
     public void addTableData(DefaultTableModel model, ArrayList<Book> books) {
@@ -204,21 +195,20 @@ public class IndexFrame extends JFrame {
         AuthorTable.setModel(model);
     }
     public void setComboBoxComponents() {
-        for(Author author : daoFacade.authorDAO.getListItem()) {
+        for(Author author : this.AuthorDAO.getListItem()) {
             AuthorList_combobox.addItem(author.getAuthorName());
         }
-
-        serviceFacade = new ServiceFacade(bookArrayList);
-        bookArrayList = serviceFacade.bookServices.bubbleSortByBooks();
         // xóa những năm bị trùng trong danh sách
-        bookArrayList = serviceFacade.bookServices.removeDuplicatesByYear();
-        for(Book book : bookArrayList){
+        ArrayList<Book> booklist = bookDAO.removeDuplicatesByYear(bookArrayList);
+        //sắp xếp năm tăng dần
+        bookDAO.BubbleSortByBooks(booklist);
+        for(Book book : booklist){
             BookByYear_combobox.addItem(book.getBookYear());
         }
     }
     public void refreshTableData() {
         deleteTableData();
-        bookArrayList = daoFacade.bookDAO.getListItem();
+        bookArrayList = this.bookDAO.getListItem();
         addTableData(model, bookArrayList);
     }
     public void authorListVisible(int authorList) {
@@ -229,7 +219,7 @@ public class IndexFrame extends JFrame {
         else{
             setComboBoxComponents();
             AuthorList_combobox.setVisible(true);
-            String count = "Số lượng: " + String.valueOf(daoFacade.authorDAO.getItemCount());
+            String count = "Số lượng: " + String.valueOf(this.AuthorDAO.getItemCount());
             AuthorStatistical.setText(count);
         }
     }
@@ -237,13 +227,12 @@ public class IndexFrame extends JFrame {
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
     }
-    public void setToolbar() {
+    public void setToolbarDecorationAndAction() {
         JMenu menu1 = new JMenu("Quản lý");
         menuBar.add(menu1);
         menu1.add("Khách hàng");
         menu1.getItem(0).addActionListener(e -> {
-            com.n16.qltv.frame.customer.IndexFrame
-                    indexFrame = new com.n16.qltv.frame.customer.IndexFrame();
+            JOptionPane.showMessageDialog(null, "Không được xem thông tin khách hàng");
         });
         menu1.add("Nhân viên");
         menu1.getItem(1).addActionListener(e -> {
@@ -274,7 +263,7 @@ public class IndexFrame extends JFrame {
         });
         menu1.add("Mượn trả sách");
         menu1.getItem(8).addActionListener(e -> {
-            BorrowBook borrowBook = new BorrowBook();
+            com.n16.qltv.frame.borrowbook.IndexFrame indexFrame = new com.n16.qltv.frame.borrowbook.IndexFrame();
         });
         JMenu menu2 = new JMenu("Tài khoản");
         menuBar.add(menu2);

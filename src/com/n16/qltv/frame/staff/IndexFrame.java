@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.staff;
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.frame.borrowbook.BorrowBook;
+
+import com.n16.qltv.daos.StaffDAO;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.utils.Session;
 
@@ -25,21 +25,20 @@ public class IndexFrame extends JFrame {
     private JButton btnManageBooks;
     private JLabel tf_NameStaff;
     private JButton btnLogout;
-
-    //
     private DefaultTableModel model;
     private ArrayList<Staff> staffArrayList;
-    private DaoFacade daoFacade = new DaoFacade();
-    //
+    private StaffDAO staffDAO;
+
 
     public IndexFrame() {
+        this.staffDAO = new StaffDAO();
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
         setResizable(false);
         setBounds(50, 50, 1024, 768);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.staffArrayList = daoFacade.staffDAO.getListItem();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.staffArrayList = this.staffDAO.getListItem();
         // info Staff //
         if(Session.get("admin") != null) {
             setVisible(true);
@@ -51,7 +50,6 @@ public class IndexFrame extends JFrame {
         }
         else {
             dispose();
-            LoginFrame loginFrame = new LoginFrame();
         }
 
         model = new DefaultTableModel();
@@ -69,7 +67,12 @@ public class IndexFrame extends JFrame {
             }
         });
         btnExit.addActionListener(e -> {
-            System.exit(3);
+            if(Session.get("staff") != null) {
+
+            }
+            else {
+                System.exit(0);
+            }
         });
         btnAdd.addActionListener(e -> {
             CreateFrame cf = new CreateFrame();
@@ -89,13 +92,13 @@ public class IndexFrame extends JFrame {
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = daoFacade.staffDAO.sortUsrName(1);
+            staffArrayList = this.staffDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, staffArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = daoFacade.staffDAO.sortUsrName(2);
+            staffArrayList = this.staffDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, staffArrayList);
         });
@@ -105,23 +108,21 @@ public class IndexFrame extends JFrame {
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            staffArrayList = daoFacade.staffDAO.findStaffName(mode, keyword);
+            staffArrayList = this.staffDAO.findStaffName(mode, keyword);
             addTableData(model, staffArrayList);
         });
         btnBorrowBook.addActionListener(e -> {
             if(Session.get("staff") == null )  {
                 dispose();
-                LoginFrame loginFrame = new LoginFrame();
             }
             else  {
-                 BorrowBook borrowBook = new BorrowBook();
+                 //BorrowBook borrowBook = new BorrowBook();
             }
         });
         btnLogout.addActionListener(e -> {
             tf_NameStaff.setText("");
             Session.remove("staff");
             dispose();
-            LoginFrame loginFrame = new LoginFrame();
         });
     }
     public void addTableStyle(DefaultTableModel model) {
@@ -147,7 +148,7 @@ public class IndexFrame extends JFrame {
     }
     public void refreshTableData() {
         deleteTableData();
-        staffArrayList = daoFacade.staffDAO.getListItem();
+        staffArrayList = this.staffDAO.getListItem();
         addTableData(model, staffArrayList);
     }
     public void deleteTableData() {
