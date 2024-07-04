@@ -1,9 +1,9 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.vendor.SHA256;
+import com.n16.qltv.utils.SHA256;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
@@ -28,39 +28,43 @@ public class EditFrame extends JFrame{
     private JLabel nameLabel;
     private JLabel usrLabel;
     private JLabel repasswordLabel,titleLabel;
+    //
+    private DaoFacade daoFacade = new DaoFacade();
 
-    public EditFrame(String usrName){
+    public EditFrame(Customer customer) {
         setContentPane(panel1);
         setTitle("Chỉnh sửa Tác giả");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 560, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setComponents(usrName);
+        setComponents(customer);
         setGenderComponents();
 
-        updateButton.addActionListener(e->{
+        updateButton.addActionListener(e -> {
+
             Validation.clearValidation();
             char gender = 'm';
             if(!(maleRadio.isSelected()))
                 gender = 'f';
-            if(CustomerAdapter.checkExistCustomer(usrName.trim())) {
-                Customer cus = new Customer();
-                if(txtRePassword.getText().isEmpty()){
-                    cus.setNameCus(txtCusName.getText());
-                    cus.setGender(gender);
-                    cus.setAddressCus(txtAddress.getText());
-                    cus.setPhoneCus(txtPhone.getText());
-                    cus.setUsrName(usrName.trim());
-                    cus.setPassword(CustomerAdapter.
-                            getPassword(usrName.trim()));
-                    Validation.customerValidation(cus);
-                    if(Validation.getErrCount() > 0){
+            if(daoFacade.customerDAO.getItem(customer.getUsrName()) != null) {
+                Customer editedCustomer = new Customer();
+                if(txtPassword.getText().isBlank()
+                        || txtRePassword.getText().isEmpty()){
+                    editedCustomer.setNameCus(txtCusName.getText());
+                    editedCustomer.setGender(gender);
+                    editedCustomer.setPassword(customer.getPassword());
+                    editedCustomer.setAddressCus(txtAddress.getText());
+                    editedCustomer.setPhoneCus(txtPhone.getText());
+                    editedCustomer.setUsrName(customer.getUsrName());
+                    Validation.customerValidation(editedCustomer);
+                    if(Validation.getErrCount() > 0) {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                     }
                     else{
-                        CustomerAdapter.editCustomer(cus);
+                        daoFacade.customerDAO.edit(editedCustomer);
                         JOptionPane.showMessageDialog(null,"Cập nhật thông tin thành công");
+                        dispose();
                     }
                 }
                 else {
@@ -70,29 +74,30 @@ public class EditFrame extends JFrame{
                             Validation.createValidation("Mật khẩu KHÔNG trùng khớp");
                         }
                         else{
-                            cus.setNameCus(txtCusName.getText()) ;
-                            cus.setGender(gender);
-                            cus.setPhoneCus(txtPhone.getText());
-                            cus.setAddressCus(txtAddress.getText());
-                            cus.setUsrName(txtUsrname.getText());
-                            cus.setPassword(txtPassword.getText());
-                            if(Validation.isStrongPassword(cus.getPassword())) {
+                            editedCustomer.setNameCus(txtCusName.getText()) ;
+                            editedCustomer.setGender(gender);
+                            editedCustomer.setPhoneCus(txtPhone.getText());
+                            editedCustomer.setAddressCus(txtAddress.getText());
+                            editedCustomer.setUsrName(txtUsrname.getText());
+                            editedCustomer.setPassword(txtPassword.getText());
+                            if(Validation.isStrongPassword(editedCustomer.getPassword())) {
                                 String authTmp = SHA256.toSHA256(SHA256.
-                                        getSHA256(cus.getPassword()));
-                                cus.setPassword(authTmp);
+                                        getSHA256(editedCustomer.getPassword()));
+                                editedCustomer.setPassword(authTmp);
                             } else{
                                 Validation.createValidation("Mật khẩu không mạnh"
                                         +"\n(Phải có ký tự hoa, thường, đặc biệt và số");
                             }
 
-                            Validation.customerValidation(cus);
+                            Validation.customerValidation(editedCustomer);
                             if(Validation.getErrCount() > 0) {
                                 JOptionPane.showMessageDialog(null, Validation.getStrValidation());
                             }
                             else {
-                                CustomerAdapter.editCustomer(cus);
+                                daoFacade.customerDAO.edit(editedCustomer);
                                 JOptionPane.showMessageDialog(
                                         null, "Cập nhật thông tin thành công.");
+                                this.dispose();
                             }
                         }
                     } catch(NoSuchAlgorithmException ex ){
@@ -105,14 +110,15 @@ public class EditFrame extends JFrame{
             }
         });
     }
-    public void setComponents(String usrName) {
-        char gender = CustomerAdapter.getCustoGender(usrName);
-        txtCusName.setText(CustomerAdapter.getCustoName(usrName));
-        txtAddress.setText(CustomerAdapter.getCustoAddress(usrName));
-        txtPhone.setText(CustomerAdapter.getCustoPhone(usrName));
-        txtUsrname.setText(usrName);
+
+
+    public void setComponents(Customer customer) {
+        txtCusName.setText(customer.getNameCus());
+        txtAddress.setText(customer.getAddressCus());
+        txtPhone.setText(customer.getPhoneCus());
+        txtUsrname.setText(customer.getUsrName());
         txtUsrname.setEditable(false);
-        if(gender == 'm')
+        if(customer.getGender() == 'm')
             maleRadio.setSelected(true);
         else
             femaleRadio.setSelected(true);
@@ -130,7 +136,4 @@ public class EditFrame extends JFrame{
             femaleRadio.setSelected(true);
         });
     }
-
-
 }
-

@@ -1,14 +1,11 @@
 package com.n16.qltv.frame.staff;
 
-import com.n16.qltv.adaptor.StaffAdapter;
-import com.n16.qltv.frame.borrowbook.BorrowBook;
+import com.n16.qltv.daos.StaffDAO;
 import com.n16.qltv.model.Staff;
-import com.n16.qltv.vendor.Session;
+import com.n16.qltv.utils.Session;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
@@ -23,24 +20,25 @@ public class IndexFrame extends JFrame {
     private ButtonGroup radioSearchModeGroup;
     private JRadioButton approxModeRadio, absoluteModeRadio;
     private JLabel searchModeLabel;
-    private JButton bnt_BorrowBook_Form;
-    private JButton bnt_AddCustomer;
-    private JButton bnt_manageBooks;
+    private JButton btnBorrowBook;
+    private JButton btnToCustomers;
+    private JButton btnManageBooks;
     private JLabel tf_NameStaff;
-    private JButton bnt_Logout;
+    private JButton btnLogout;
     private DefaultTableModel model;
     private ArrayList<Staff> staffArrayList;
-    private final int DELAY_TIME = 1800;
+    private StaffDAO staffDAO;
 
 
     public IndexFrame() {
+        this.staffDAO = new StaffDAO();
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách nhân viên");
         setResizable(false);
-        setBounds(50, 50, 1024, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        staffArrayList = StaffAdapter.getStaffList();
+        setBounds(50, 50, 1024, 768);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.staffArrayList = this.staffDAO.getListItem();
         // info Staff //
         if(Session.get("admin") != null) {
             setVisible(true);
@@ -52,7 +50,6 @@ public class IndexFrame extends JFrame {
         }
         else {
             dispose();
-            com.n16.qltv.frame.admin.LoginFrame loginFrame = new com.n16.qltv.frame.admin.LoginFrame();
         }
 
         model = new DefaultTableModel();
@@ -70,7 +67,12 @@ public class IndexFrame extends JFrame {
             }
         });
         btnExit.addActionListener(e -> {
-            System.exit(3);
+            if(Session.get("staff") != null) {
+
+            }
+            else {
+                System.exit(0);
+            }
         });
         btnAdd.addActionListener(e -> {
             CreateFrame cf = new CreateFrame();
@@ -79,8 +81,9 @@ public class IndexFrame extends JFrame {
             if(tableStaff.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
             else {
-                EditFrame ef = new EditFrame(model.getValueAt(
-                        tableStaff.getSelectedRow(), 5).toString());
+               String SaffName  = model.getValueAt(tableStaff.getSelectedRow(), 5).toString();
+                EditFrame ef = new EditFrame(SaffName);
+                refreshTableData();
             }
         });
 
@@ -89,13 +92,13 @@ public class IndexFrame extends JFrame {
         });
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = StaffAdapter.sortUsrName(1);
+            staffArrayList = this.staffDAO.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, staffArrayList);
         });
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            staffArrayList = StaffAdapter.sortUsrName(2);
+            staffArrayList = this.staffDAO.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, staffArrayList);
         });
@@ -105,52 +108,23 @@ public class IndexFrame extends JFrame {
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            staffArrayList = StaffAdapter
-                    .findStaffName(mode, keyword);
+            staffArrayList = this.staffDAO.findStaffName(mode, keyword);
             addTableData(model, staffArrayList);
         });
-
-
-// todo  ****************************************** chức năng ******************************************  //
-
-
-
-
-        bnt_BorrowBook_Form.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(Session.get("staff") == null )
-                {
-                    dispose();
-                    LoginFrame loginFrame = new LoginFrame();
-                }
-                else
-                {
-                     BorrowBook borrowBook = new BorrowBook();
-                    //CreateFrame createFrame = new CreateFrame();
-                }
+        btnBorrowBook.addActionListener(e -> {
+            if(Session.get("staff") == null )  {
+                dispose();
+            }
+            else  {
+                 //BorrowBook borrowBook = new BorrowBook();
             }
         });
-        bnt_Logout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tf_NameStaff.setText("");
-                Session.remove("staff");
-                dispose();
-                LoginFrame loginFrame = new LoginFrame();
-
-            }
+        btnLogout.addActionListener(e -> {
+            tf_NameStaff.setText("");
+            Session.remove("staff");
+            dispose();
         });
     }
-
-
-
-
-
-
-
-
-// todo  ****************************************** chức năng ******************************************  //
     public void addTableStyle(DefaultTableModel model) {
         model.addColumn("Tên Nhân viên");
         model.addColumn("Giới tính");
@@ -174,8 +148,7 @@ public class IndexFrame extends JFrame {
     }
     public void refreshTableData() {
         deleteTableData();
-        staffArrayList = StaffAdapter.getStaffList();
-        //addTableStyle(model);
+        staffArrayList = this.staffDAO.getListItem();
         addTableData(model, staffArrayList);
     }
     public void deleteTableData() {
@@ -196,6 +169,4 @@ public class IndexFrame extends JFrame {
             approxModeRadio.setSelected(true);
         });
     }
-
-
 }

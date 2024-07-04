@@ -1,6 +1,8 @@
 package com.n16.qltv.model;
 
-public class Author {
+import com.n16.qltv.model.interfaces.IModels;
+
+public class Author implements IModels {
     private int authorId;
     private String authorName;
     private String authorAddress, authorNote;
@@ -18,7 +20,7 @@ public class Author {
 
     public int getAuthorId() { return this.authorId; }
     public String getAuthorName() { return this.authorName; }
-    public String getAuthorAddress() { return this.authorAddress; }
+    public String getAuthorSite() { return this.authorAddress; }
     public String getAuthorNote() { return this.authorNote; }
     public void setAuthorId(int authorId) { this.authorId = authorId; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }
@@ -26,12 +28,12 @@ public class Author {
     public void setAuthorNote(String authorNote) { this.authorNote = authorNote; }
 
     @Override
+    public Class<Author> getType() {
+        return Author.class;
+    }
+
+    @Override
     public String toString() {
-        return "Author{" +
-                "authorId=" + authorId +
-                ", authorName='" + authorName + '\'' +
-                ", authorAddress='" + authorAddress + '\'' +
-                ", authorNote='" + authorNote + '\'' +
-                '}';
+        return this.authorName.trim();
     }
 }

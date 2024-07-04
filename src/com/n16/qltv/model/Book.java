@@ -1,16 +1,20 @@
 package com.n16.qltv.model;
 
-public class Book {
+import com.n16.qltv.model.interfaces.IModels;
+import com.n16.qltv.patterns.prototype.IPrototype;
+
+public class Book implements IModels, IPrototype {
     private int bookId;
     private String bookName;
     private int bookYear;
+    private String cover; // Đường dẫn hình ảnh bìa sách
+    private int qty; // Số lượng sách cần mượn
     private Publisher publisher;
     private Author author;
     private Category category;
-    private String cover; //Đường dẫn hình ảnh bìa sách
-    private int qty; //Số lượng sách cần mượn
 
     public Book() {
+        this.cover = "";
         this.qty = 1;
     }
     public Book(String bookName, int bookYear, Publisher publisher, Author author, Category category) {
@@ -28,7 +32,7 @@ public class Book {
         this.publisher = publisher;
         this.author = author;
         this.category = category;
-        this.cover = cover;
+        this.cover = "";
         this.qty = 1;
     }
 
@@ -48,4 +52,19 @@ public class Book {
     public void setCategory(Category category) { this.category = category; }
     public void setCover(String cover) { this.cover = cover; }
     public void setQty(int qty) { this.qty = qty; }
+
+    @Override
+    public Class<Book> getType() {
+        return Book.class;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d - %s (Tác giả: %s)",
+                this.bookId, this.bookName, this.author.getAuthorName());
+    }
+    @Override
+    public IPrototype clone() {
+        return this::clone;
+    }
 }

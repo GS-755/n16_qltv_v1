@@ -1,24 +1,27 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.StaffAdapter;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
+import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
 public class IndexFrame extends JFrame{
     private JButton addButton;
     private JButton deleteButton;
-    private JButton EditButton;
-    private JTextField textField1;
+    private JButton editButton;
+    private JTextField txtSearchKeyword;
     private JButton searchButton;
     private JButton updateButton;
-    private JButton increButton;
-    private JButton decreButton;
+    private JButton btnIncrease;
+    private JButton btnDecrease;
     private JButton escButton;
     private JTable table1;
     private JRadioButton absoluteModeRadio;
@@ -29,75 +32,81 @@ public class IndexFrame extends JFrame{
     private JLabel searchLabel;
     private JLabel searchModeLabel;
     private JPanel IndexFrame;
-    private ArrayList<Customer> customers = new ArrayList<>();
+
+    //
+    private ArrayList<Customer> customerArrayList;
+    private ArrayList<Customer> foundCustomerArrayList;
     private ButtonGroup radioSearchModeGroup;
+    //
+    private DaoFacade daoFacade = new DaoFacade();
+    private ServiceFacade serviceFacade;
+
     public IndexFrame() {
+        this.foundCustomerArrayList = new ArrayList<>();
+        this.customerArrayList = daoFacade.customerDAO.getListItem();
         setSearchModeComponents();
         setContentPane(IndexFrame);
         setTitle("Danh sách khách hàng");
         setVisible(true);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        customers = CustomerAdapter.getCustoList();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         model = new DefaultTableModel();
         addTableStyle();
-        addTableData(model,customers);
+        addTableData(this.customerArrayList);
         table1.setModel(model);
+        this.setActionSearchCustomer();
 
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshTableData();
-            }
+        serviceFacade = new ServiceFacade(customerArrayList);
+
+        updateButton.addActionListener(e -> {
+            this.refreshTableData();
+            this.customerArrayList = daoFacade.customerDAO.getListItem();
+            this.addTableData(this.customerArrayList);
         });
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CreateFrame cf = new CreateFrame();
-            }
+        addButton.addActionListener(e -> {
+            CreateFrame cf = new CreateFrame();
         });
-        EditButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(table1.getSelectedRow() < 0)
-                    JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
-                else {
-                    EditFrame ef = new EditFrame(model.getValueAt(
-                            table1.getSelectedRow(), 5).toString());
-                }
+        editButton.addActionListener(e -> {
+            if(table1.getSelectedRow() < 0)
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
+            else {
+                String customerUserName = model.getValueAt(
+                        table1.getSelectedRow(), 4).toString();
+                Customer customer = daoFacade.customerDAO.getItem(customerUserName);
+                EditFrame editFrame = new EditFrame(customer);
+                editFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowDeactivated(WindowEvent e) {
+                        super.windowDeactivated(e);
+                        refreshTableData();
+                        customerArrayList = daoFacade.customerDAO.getListItem();
+                        addTableData(customerArrayList);
+                    }
+                });
             }
         });
         deleteButton.addActionListener(e -> {
             String id = model.getValueAt(
-                    table1.getSelectedRow(), 5).toString();
-            CustomerAdapter.deleteCustomer(id);
+                    table1.getSelectedRow(), 4).toString();
+            daoFacade.customerDAO.delete(id.trim());
             refreshTableData();
+            this.customerArrayList = daoFacade.customerDAO.getListItem();
+            addTableData(this.customerArrayList);
         });
-        escButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        escButton.addActionListener(e -> System.exit(0));
 
-        increButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteTableData();
-                customers = CustomerAdapter.sortUsrName(1);
-                addTableData(model, CustomerAdapter.sortUsrName(1));
-                model.fireTableDataChanged();
-            }
+        btnIncrease.addActionListener(e -> {
+            deleteTableData();
+            customerArrayList = serviceFacade.customerService.sortUsrName(1);
+            addTableData(this.customerArrayList);
+            model.fireTableDataChanged();
         });
-        decreButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteTableData();
-                customers = CustomerAdapter.sortUsrName(2);
-                addTableData(model, CustomerAdapter.sortUsrName(2));
-                model.fireTableDataChanged();
-            }
+        btnDecrease.addActionListener(e -> {
+            deleteTableData();
+            customerArrayList = serviceFacade.customerService.sortUsrName(2);
+            addTableData(this.customerArrayList);
+            model.fireTableDataChanged();
         });
     }
     public void addTableStyle() {
@@ -105,29 +114,77 @@ public class IndexFrame extends JFrame{
         model.addColumn("Giới tính");
         model.addColumn("Số ĐT");
         model.addColumn("Địa chỉ");
-        model.addColumn("Ngày sinh");
         model.addColumn("Tên đăng nhập");
     }
-    public void addTableData(DefaultTableModel model, ArrayList<Customer> customers) {
-        customers = CustomerAdapter.getCustoList();
+    public void addTableData(ArrayList<Customer> customers) {
         for (Customer customer : customers)
             model.addRow(new Object[]{
                     customer.getNameCus(),
                     customer.getStrGender(),
                     customer.getPhoneCus(),
                     customer.getAddressCus(),
-                    customer.getDobCus(),
                     customer.getUsrName()
             });
     }
     public void refreshTableData() {
         deleteTableData();
-        customers = CustomerAdapter.getCustoList();
-        //addTableStyle(model);
-        addTableData(model,customers);
+        this.customerArrayList.clear();
+        this.foundCustomerArrayList.clear();
+    }
+    public void setActionSearchCustomer() {
+        this.searchButton.addActionListener(e -> {
+            serviceFacade = new ServiceFacade(customerArrayList);
+
+            String keyword = this.txtSearchKeyword.getText().toString().trim();
+            if(keyword.equals("")){
+                refreshTableData();
+                addTableData(daoFacade.customerDAO.getListItem());
+                return;
+            }
+            this.refreshTableData();
+            if(this.approxModeRadio.isSelected()) {
+                this.foundCustomerArrayList = serviceFacade.customerService.
+                        findCustomerByName(keyword.toLowerCase().trim(), 2);
+            }
+            else {
+                this.foundCustomerArrayList = serviceFacade.customerService.
+                        findCustomerByName(keyword.trim(), 1);
+            }
+            this.addTableData(this.foundCustomerArrayList);
+        });
+
+
+        // tìm kiếm
+        txtSearchKeyword.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                String keyword = txtSearchKeyword.getText().toLowerCase().trim();
+                if(keyword.isEmpty() || keyword.equals("") || keyword.isBlank() || keyword.length() == 0)
+                {
+                    deleteTableData();
+                    customerArrayList = daoFacade.customerDAO.getListItem();
+                    addTableData(customerArrayList);
+
+                } else {
+                    customerArrayList.clear();
+                    deleteTableData();
+                    ArrayList<Customer> foundCus = new ArrayList<>();
+                    customerArrayList = daoFacade.customerDAO.getListItem();
+                    for (Customer cus : customerArrayList) {
+                        if(cus.getUsrName().contains(keyword))
+                        {
+                            foundCus.add(cus);
+                        }
+                    }
+                    addTableData(foundCus);
+                }
+            }
+        });
+
     }
     public void deleteTableData() {
-        model.getDataVector().removeAllElements();
+        model.setRowCount(0);
         model.fireTableDataChanged();
     }
     public void setSearchModeComponents() {

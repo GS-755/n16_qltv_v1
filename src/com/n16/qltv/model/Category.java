@@ -1,6 +1,8 @@
 package com.n16.qltv.model;
 
-public class Category {
+import com.n16.qltv.model.interfaces.IModels;
+
+public class Category implements IModels {
     private int cateId;
     private String nameCate;
 
@@ -21,9 +23,11 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "cateId=" + cateId +
-                ", nameCate='" + nameCate + '\'' +
-                '}';
+        return this.getNameCate();
+    }
+
+    @Override
+    public Class<Category> getType() {
+        return Category.class;
     }
 }

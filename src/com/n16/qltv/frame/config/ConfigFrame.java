@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.config;
 
-import com.n16.qltv.vendor.AppProperties;
+import com.n16.qltv.utils.AppProperties;
 
 import javax.swing.*;
 
@@ -15,7 +15,6 @@ public class ConfigFrame extends JFrame {
 
     public ConfigFrame() {
         setContentPane(mainPanel);
-        setVisible(true);
         setResizable(false);
         setBounds(70, 60, 480, 320);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

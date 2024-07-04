@@ -1,7 +1,10 @@
 package com.n16.qltv.frame.author;
 
-import com.n16.qltv.adaptor.AuthorAdapter;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Author;
+import com.n16.qltv.model.Book;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,8 +24,13 @@ public class IndexFrame extends JFrame{
     private JLabel searchModeLabel;
     private DefaultTableModel model;
     private ArrayList<Author> authorArrayList;
+    private ArrayList<Book> bookArrayList;
 
+    DaoFacade daoFacade = new DaoFacade();
+    ServiceFacade serviceFacade;
     public IndexFrame() {
+
+
         setSearchModeComponents();
         setContentPane(indexFrame);
         setTitle("Danh sách Tác giả");
@@ -30,66 +38,102 @@ public class IndexFrame extends JFrame{
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        authorArrayList = AuthorAdapter.getAuthorList();
+        authorArrayList =daoFacade.authorDAO.getListItem();
 
+        serviceFacade = new ServiceFacade(authorArrayList);
         model = new DefaultTableModel();
         addTableStyle(model);
         addTableData(model, authorArrayList);
 
+        //
         btnDelete.addActionListener(e -> {
-            AuthorAdapter.deleteAuthor(
-                    model.getValueAt(tableAuthor.getSelectedRow(), 0).toString());
-            deleteTableData();
+            if(tableAuthor.getSelectedRow() >= 0) {
+                bookArrayList = daoFacade.bookDAO.getListItem();
+                int select = (int) model.getValueAt(tableAuthor.getSelectedRow(), 0);
+                // duyệt qua danh sách book xem author đã được dùng chưa.
 
-            authorArrayList = AuthorAdapter.getAuthorList();
+
+                for (Book book : bookArrayList) {
+                    // author theo tên
+                    Author author = daoFacade.authorDAO.getItem(select);
+
+                    if(book.getAuthor().getAuthorId() == author.getAuthorId()){
+                        Validation.clearValidation();
+                        Validation.createValidation
+                                ("tác giả này đang có sách phát hành không thể xóa!" +
+                                        "\nSách: " +
+                                        book.getBookName());
+                    }
+                }
+
+                if(Validation.getErrCount() > 0) {
+                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+                }else {
+                    daoFacade.authorDAO.delete(
+                            model.getValueAt(tableAuthor.getSelectedRow(), 1).toString());
+                    deleteTableData();
+                }
+            }else {
+                JOptionPane.showMessageDialog(this,"hãy chọn 1 tác giả");
+            }
+
+            this.authorArrayList = daoFacade.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
         btnExit.addActionListener(e -> {
             dispose();
         });
+
         btnAdd.addActionListener(e -> {
             CreateFrame createFrame = new CreateFrame();
         });
+
         btnEdit.addActionListener(e -> {
             if(tableAuthor.getSelectedRow() < 0)
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn đối tượng :((");
             else {
-                String authorName = model.getValueAt(
-                        tableAuthor.getSelectedRow(), 0).toString().trim();
-                EditFrame ef = new EditFrame(authorName);
+                int authorId = Integer.parseInt(model.getValueAt(
+                        tableAuthor.getSelectedRow(), 0).toString().trim());
+                Author author = daoFacade.authorDAO.getItem(authorId);
+                EditFrame ef = new EditFrame(author);
             }
         });
+
         btnUpdate.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorAdapter.getAuthorList();
+            authorArrayList = (ArrayList<Author>) daoFacade.authorDAO.getListItem();
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnAscUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorAdapter.sortUsrName(1);
+            authorArrayList = serviceFacade.authorServices.sortUsrName(1);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnDescUsrName.addActionListener(e -> {
             deleteTableData();
-            authorArrayList = AuthorAdapter.sortUsrName(2);
+            authorArrayList = serviceFacade.authorServices.sortUsrName(2);
             //addTableStyle(model);
             addTableData(model, authorArrayList);
         });
+
         btnSearch.addActionListener( e -> {
             // Kiểm tra chế độ tìm kiếm
             int mode = 1; String keyword = tfSearch.getText().trim();
             if(!(absoluteModeRadio.isSelected()))
                 mode = 2;
             deleteTableData();
-            authorArrayList = AuthorAdapter
+            authorArrayList = serviceFacade.authorServices
                     .findAuthorName(mode, keyword);
             addTableData(model, authorArrayList);
         });
     }
     public void addTableStyle(DefaultTableModel model) {
+        model.addColumn("Mã tác giả");
         model.addColumn("Tên tác giả");
         model.addColumn("Địa chỉ website");
         model.addColumn("Ghi chú");
@@ -97,8 +141,9 @@ public class IndexFrame extends JFrame{
     public void addTableData(DefaultTableModel model, ArrayList<Author> authors) {
         for(Author author : authors)
             model.addRow(new Object[] {
+                    author.getAuthorId(),
                     author.getAuthorName(),
-                    author.getAuthorAddress(),
+                    author.getAuthorSite(),
                     author.getAuthorNote()
             });
 

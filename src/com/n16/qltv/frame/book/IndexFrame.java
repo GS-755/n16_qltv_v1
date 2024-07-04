@@ -1,89 +1,103 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.adaptor.*;
+import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.facade.ServiceFacade;
 import com.n16.qltv.model.Book;
-
+import com.n16.qltv.utils.Validation;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {
-    private JTable Book_Table;
-    private JButton bnt_Update;
-    private JButton bnt_Edit;
-    private JButton bnt_Delete;
-    private JButton bnt_Add;
-    private JTextField tf_NameBook;
-    private JTextField tf_NAMXB;
-    private JLabel Jlable_NameStaff;
-    private JPanel JPanel_Book;
-    private JComboBox comboBox_NXB;
-    private JComboBox comboBox_Author;
-    private JComboBox comboBox_Cate;
-    private ArrayList<Book> BookArrayList;
+    private JTable bookTable;
+    private JButton btnUpdate, btnEdit;
+    private JButton btnDelete, btnCreate;
+    private JLabel labelStaffName;
+    private JPanel bookPanel;
+    private JComboBox cmbPublisher, cmbAuthor, cmbCategory;
+    private DefaultTableModel model;
+    private ArrayList<Book> bookArrayList;
+
+    private ServiceFacade serviceFacade = new ServiceFacade(bookArrayList);
+
+    private DaoFacade daoFacade = new DaoFacade();
 
     public IndexFrame() {
-        BookArrayList = BookAdapter.getBookList();
-        // setup
-        setTitle("Book page");    setContentPane(JPanel_Book);
-        BookAdapter.DataToTable(Book_Table);
-        BookAdapter.updateTable(Book_Table);
+        this.bookArrayList = daoFacade.bookDAO.getListItem();
+        setTitle("Quản lý sách");
+        setContentPane(bookPanel);
         setResizable(false);
         setBounds(50, 50, 1024, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-        //ẩn trợ giúp tìm kiếm
-        // support_sreach.setVisible(false);
-        // bnt_suport.setVisible(false);
 
-        // setup
-        bnt_Add.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CreateFrame book = new CreateFrame();
-            }
+        model = new DefaultTableModel();
+        addTableStyle(model);
+        addTableData(model, bookArrayList);
+
+        btnCreate.addActionListener(e -> {
+            CreateFrame createFrame = new CreateFrame();
+            refreshTableData();
         });
-        bnt_Delete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Validation.clearValidation();
-                if(Book_Table.getSelectedRow() >= 0) {
-                    String idpuli = BookAdapter.model.getValueAt(
-                            Book_Table.getSelectedRow(), 1).toString();
-                    BookAdapter.deleteBook(idpuli);
-                    BookAdapter.updateTable(Book_Table);
-                }
-                else {
-                    Validation.createValidation("Hãy chọn 1 một Nhà Xuất Bản");
-                    JOptionPane.showMessageDialog(null, Validation.getStrValidation());
-                }
-            }
+
+btnDelete.addActionListener(e -> {
+    Validation.clearValidation();
+    if(bookTable.getSelectedRow() >= 0) {
+        int bookId = Integer.parseInt(model.getValueAt(
+                bookTable.getSelectedRow(), 0).toString());
+        daoFacade.bookDAO.delete(bookId);
+        refreshTableData();
+    }
+    else {
+        Validation.createValidation("Hãy chọn quyển sách cần xoá");
+        JOptionPane.showMessageDialog(null, Validation.getStrValidation());
+    }
+});
+
+btnEdit.addActionListener(e -> {
+            int bookId = Integer.parseInt(model.getValueAt(
+                    bookTable.getSelectedRow(), 0).toString());
+            Book book = daoFacade.bookDAO.getItem(bookId);
+            EditFrame editFrame = new EditFrame(book);
         });
-        bnt_Edit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String idpuli = BookAdapter.model.getValueAt(
-                        Book_Table.getSelectedRow(), 1).toString();
-                EditFrame editFrame = new EditFrame(idpuli);
-                BookAdapter.updateTable(Book_Table);
-            }
-        });
-        bnt_Update.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                BookAdapter.updateTable(Book_Table);
-            }
+        btnUpdate.addActionListener(e -> {
+            refreshTableData();
         });
     }
-    public void setCbComponents() {
-        for(String s : CategoryAdapter.getCateName()) {
-            comboBox_Cate.addItem(s);
-        }
-        for(String s : AuthorAdapter.getStrAuthorName()) {
-            comboBox_Author.addItem(s);
-        }
-        for(String s : PublisherAdapter.getStrPublisher())
-            comboBox_NXB.addItem(s);
+    public void addTableStyle(DefaultTableModel model) {
+        model.addColumn("Mã sách");
+        model.addColumn("Tên sách");
+        model.addColumn("Năm Xuất bản");
+        model.addColumn("Bìa Sách");
+        model.addColumn("Số Lượng");
+        model.addColumn("Nhà xuất bản");
+        model.addColumn("Tác Giả");
+        model.addColumn("Thể Loại");
+    }
+    public void addTableData(DefaultTableModel model, ArrayList<Book> books) {
+        for(Book book : books)
+            model.addRow(new Object[] {
+                    book.getBookId(),
+                    book.getBookName(),
+                    book.getBookYear(),
+                    book.getCover(),
+                    book.getQty(),
+                    book.getPublisher().getPublisherName(),
+                    book.getAuthor().getAuthorName(),
+                    book.getCategory().getNameCate()
+            });
+
+        bookTable.setModel(model);
+    }
+
+    public void refreshTableData() {
+        deleteTableData();
+        bookArrayList = daoFacade.bookDAO.getListItem();
+        addTableData(model, bookArrayList);
+    }
+    public void deleteTableData() {
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
     }
 }

@@ -1,87 +1,93 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.adaptor.*;
+import com.n16.qltv.daos.*;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.model.Category;
 import com.n16.qltv.model.Publisher;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 public class CreateFrame extends JFrame {
     private JPanel createFrame;
     private JLabel mainTitle;
-    private JTextField txtBookName, txtPublisherYear;
-    private JComboBox cbAuthor;
-    private JComboBox<String> cbCategory;
-    private JComboBox cbPublisher;
+    private JTextField txtBookName, txtPublishYear;
+    private JComboBox<Author> cmbAuthor;
+    private JComboBox<Category> cmbCategory;
+    private JComboBox<Publisher> cmbPublisher;
     private JButton btnCreate;
     private JLabel labelPublisher, labelCategory, labelAuthor;
     private JLabel labelYear, labelName;
+    private JTextField cover_txt;
+    private JTextField txtAmount;
+    private BookDAO bookDAO;
+    private AuthorDAO AuthorDAO;
+    private CategoryDAO categoryDAO;
+    private PublisherDAO publisherDAO;
+    private AuthorDAO authorDAO;
 
     public CreateFrame() {
+        this.categoryDAO = new CategoryDAO();
+        this.publisherDAO = new PublisherDAO();
+        this.authorDAO = new AuthorDAO();
+        this.bookDAO = new BookDAO();
+
         setContentPane(createFrame);
         setTitle("Thêm sách");
         setVisible(true);
         setResizable(true);
         setBounds(60, 60, 480, 320);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setCbComponents();
+        this.setComboBoxComponents();
 
         btnCreate.addActionListener(e -> {
             Validation.clearValidation();
             try {
-                if(!BookAdapter.checkExistBook(txtBookName.getText())) {
-                    ArrayList<Author> authors = AuthorAdapter.
-                            findAuthorName(1, cbAuthor.getSelectedItem().toString());
-                    ArrayList<Category> categories = CategoryAdapter.
-                            findCateName(cbCategory.getSelectedItem().toString());
-                    ArrayList<Publisher> publishers = PublisherAdapter.
-                            findPublisher(cbPublisher.getSelectedItem().toString());
+                Book book = new Book();
+                book.setBookName(txtBookName.getText().trim());
+                book.setBookYear(Integer.parseInt(txtPublishYear.getText().trim()));
+                book.setCover(cover_txt.getText().trim());
+                book.setQty(Integer.parseInt(txtAmount.getText().trim()));
+                Category category = (Category) this.cmbCategory.getSelectedItem();
+                book.setCategory(category);
+                Author author = (Author)this.cmbAuthor.getSelectedItem();
+                book.setAuthor(author);
+                Publisher publisher = (Publisher)this.cmbPublisher.getSelectedItem();
+                book.setPublisher(publisher);
 
-                    Book book = new Book();
-                    book.setBookName(txtBookName.getText());
-                    book.setCategory(categories.get(0));
-                    book.setAuthor(authors.get(0));
-                    book.setPublisher(publishers.get(0));
-                    book.getCategory().setCateId(CategoryAdapter.
-                            getCateId(book.getCategory().getNameCate()));
-                    book.getAuthor().setAuthorId(AuthorAdapter.
-                            getAuthorId(book.getAuthor().getAuthorName()));
-                    book.getPublisher().setPublisherId(PublisherAdapter.
-                            findPublisherId(book.getPublisher().getPublisherName(),
-                                    book.getPublisher().getPublisherAddress()));
-                    if(txtPublisherYear.getText().isEmpty()) {
-                        Validation.createValidation("Năm xuất bản KHÔNG để trống");
-                    } else {
-                        book.setBookYear(Integer.
-                                parseInt(txtPublisherYear.getText()));
-                    }
-
+                if(txtPublishYear.getText().isEmpty()
+                        || txtPublishYear.getText().isBlank()) {
+                    Validation.createValidation("Năm xuất bản KHÔNG để trống");
+                }
+                else {
+                    book.setBookYear(Integer.
+                            parseInt(txtPublishYear.getText()));
                     Validation.bookValidation(book);
                     if(Validation.getErrCount() > 0) {
                         JOptionPane.showMessageDialog(null, Validation.getStrValidation());
-                    } else {
-                        BookAdapter.addBook(book);
-                        JOptionPane.showMessageDialog(null, "Thêm sách thành công!");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Đã có sách trong hệ thống");
+                    else {
+                        bookDAO.create(book);
+                        JOptionPane.showMessageDialog(null, "Thêm sách thành công!");
+                        dispose();
+                    }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
     }
-    public void setCbComponents() {
-        for(String s : CategoryAdapter.getCateName()) {
-            cbCategory.addItem(s);
+    public void setComboBoxComponents() {
+        for(Publisher publisher : this.publisherDAO.getListItem()) {
+            cmbPublisher.addItem(publisher);
         }
-        for(String s : AuthorAdapter.getStrAuthorName()) {
-            cbAuthor.addItem(s);
+        //
+        for(Author author : this.authorDAO.getListItem()) {
+            cmbAuthor.addItem(author);
         }
-        for(String s : PublisherAdapter.getStrPublisher())
-            cbPublisher.addItem(s);
+        for(Category category : this.categoryDAO.getListItem()) {
+            cmbCategory.addItem(category);
+        }
     }
 }

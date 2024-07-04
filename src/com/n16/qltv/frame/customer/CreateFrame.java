@@ -1,10 +1,9 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.adaptor.CustomerAdapter;
-import com.n16.qltv.adaptor.Validation;
+import com.n16.qltv.daos.CustomerDAO;
 import com.n16.qltv.model.Customer;
-import com.n16.qltv.vendor.SHA256;
-import scala.Predef;
+import com.n16.qltv.utils.SHA256;
+import com.n16.qltv.utils.Validation;
 
 import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
@@ -29,8 +28,10 @@ public class CreateFrame extends JFrame {
     private JPasswordField txtRePassword;
     private JLabel labelRePassword;
     private JPanel createFrame;
+    private CustomerDAO customerDAO;
 
     public CreateFrame() {
+        this.customerDAO = new CustomerDAO();
         setContentPane(createFrame);
         setVisible(true);
         setResizable(false);
@@ -43,7 +44,7 @@ public class CreateFrame extends JFrame {
             char gender = 'm';
             if(!(radioMale.isSelected()))
                 gender = 'f';
-            if(!(CustomerAdapter.checkExistCustomer(txtUsrName.getText())))
+            if(!(this.customerDAO.isCustomerExist(txtUsrName.getText())))
             {
                 if(!(txtPassword.getText().equals(txtRePassword.getText()))){
                     Validation.createValidation("Mật khẩu không trùng khớp ");}
@@ -67,16 +68,20 @@ public class CreateFrame extends JFrame {
                     throw new RuntimeException(ex);
                 }
                 Validation.customerValidation(customer);
-                if(Validation.getErrCount()>0)
+                if(Validation.getErrCount() > 0)
                     JOptionPane.showMessageDialog(null,Validation.getStrValidation());
                 else{
-                    CustomerAdapter.addCustomer(customer);
+                    try {
+                        this.customerDAO.create(customer);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                     JOptionPane.showMessageDialog(null,"Tạo khách hàng thành công");
                     dispose();
                 }
             }
             else {
-                JOptionPane.showMessageDialog(null,"Đã có tên tác giả trong hệ thống");
+                JOptionPane.showMessageDialog(null,"Đã có khách hàng trong hệ thống");
             }
 
 
