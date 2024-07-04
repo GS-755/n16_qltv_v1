@@ -46,8 +46,7 @@ public class EditFrame extends JFrame{
                 gender = 'f';
             if(CustomerAdapter.checkExistCustomer(usrName.trim())) {
                 Customer cus = new Customer();
-                if(txtPassword.getText().isBlank()
-                        || txtRePassword.getText().isEmpty()){
+                if(txtRePassword.getText().isEmpty()){
                     cus.setNameCus(txtCusName.getText());
                     cus.setGender(gender);
                     cus.setAddressCus(txtAddress.getText());

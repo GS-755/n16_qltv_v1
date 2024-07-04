@@ -55,8 +55,7 @@ public class EditFrame extends JFrame {
                     book.getPublisher().setPublisherId(PublisherAdapter.
                             findPublisherId(book.getPublisher().getPublisherName(),
                                     book.getPublisher().getPublisherAddress()));
-                    if(tf_YearBook.getText().isEmpty()
-                            || tf_YearBook.getText().isBlank()) {
+                    if(tf_YearBook.getText().isEmpty()) {
                         Validation.createValidation("Năm xuất bản KHÔNG để trống");
                     } else {
                         book.setBookYear(Integer.

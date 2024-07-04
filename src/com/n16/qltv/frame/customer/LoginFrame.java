@@ -39,8 +39,7 @@ public class LoginFrame extends JFrame{
                         JOptionPane.showMessageDialog(null,
                                 "Thông tin đăng nhập KHÔNG chính xác");
                     }
-                } else if(txtPass.getText().isEmpty()
-                        || txtPass.getText().isBlank()) {
+                } else if(txtPass.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Mật khẩu KHÔNG được để trắng!");
                 } else {
                     JOptionPane.showMessageDialog(null, "KHÔNG có người dùng này trên máy chủ!");

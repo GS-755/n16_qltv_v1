@@ -52,8 +52,7 @@ public class CreateFrame extends JFrame {
                     book.getPublisher().setPublisherId(PublisherAdapter.
                             findPublisherId(book.getPublisher().getPublisherName(),
                                     book.getPublisher().getPublisherAddress()));
-                    if(txtPublisherYear.getText().isEmpty()
-                            || txtPublisherYear.getText().isBlank()) {
+                    if(txtPublisherYear.getText().isEmpty()) {
                         Validation.createValidation("Năm xuất bản KHÔNG để trống");
                     } else {
                         book.setBookYear(Integer.

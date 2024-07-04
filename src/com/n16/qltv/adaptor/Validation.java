@@ -13,8 +13,7 @@ public class Validation {
 
     public static void createValidation(String newErr) { err.add(newErr); }
     public static void authorValidation(Author author) {
-        if(author.getAuthorName().isEmpty()
-                || author.getAuthorName().isBlank()) {
+        if(author.getAuthorName().isEmpty()) {
             createValidation("Tên tác giả KHÔNG được để trống");
         }
         else if(!isString(author.getAuthorName())) {
@@ -24,8 +23,7 @@ public class Validation {
                 || author.getAuthorName().length() > 20) {
             createValidation("Tên tác giả phải từ 4 -> 20 ký tự");
         }
-        if(author.getAuthorAddress().isEmpty()
-                || author.getAuthorAddress().isBlank()) {
+        if(author.getAuthorAddress().isEmpty()) {
             createValidation("Website KHÔNG được để trống");
         }
         else if(!isValidWebsite(author.getAuthorAddress())) {
@@ -33,26 +31,22 @@ public class Validation {
         }
     }
     public static void loginValidation(String usrName, String password) {
-        if(usrName.isEmpty()
-                || usrName.isBlank()) {
+        if(usrName.isEmpty()) {
             createValidation("Tên đăng nhập KHÔNG để trống");
         }
-        if(password.isEmpty()
-                || password.isBlank())
+        if(password.isEmpty())
             createValidation("Mật khẩu KHÔNG để trống");
     }
     public static void staffValidation(Staff staff) {
         // Kiểm tra tên Nhân viên
-        if(staff.getStaffName().isEmpty()
-                || staff.getStaffName().isBlank()) {
+        if(staff.getStaffName().isEmpty()) {
             createValidation("Tên nhân viên KHÔNG để trống");
         }
         else if(!isString(staff.getStaffName())) {
             createValidation("Tên nhân viên KHÔNG hợp lệ.");
         }
         // Kiểm tra tài khoản Nhân viên
-        if(staff.getUsrName().isEmpty()
-                || staff.getUsrName().isBlank()) {
+        if(staff.getUsrName().isEmpty()) {
             createValidation("Tên người dùng KHÔNG được để trống");
         }
         else if(staff.getUsrName().length() < 4
@@ -60,8 +54,7 @@ public class Validation {
             createValidation("Tên người dùng phải từ 4 -> 20 ký tự");
         }
         // Kiểm tra mật khẩu Nhân viên
-        if(staff.getPassword().isEmpty()
-                || staff.getPassword().isBlank()) {
+        if(staff.getPassword().isEmpty()) {
             createValidation("Mật khẩu KHÔNG được để trống");
         }
         else if(staff.getPassword().length() < 8) {
@@ -73,8 +66,7 @@ public class Validation {
         }
     }
     public static void bookValidation(Book book) {
-        if(book.getBookName().isEmpty()
-                || book.getBookName().isBlank()) {
+        if(book.getBookName().isEmpty()) {
             createValidation("Tên sách KHÔNG để trống.");
         }
         else if(!isString(book.getBookName())) {
@@ -82,23 +74,20 @@ public class Validation {
         }
     }
     public static void customerValidation(Customer customer) {
-        if(customer.getNameCus().isEmpty()
-                || customer.getNameCus().isBlank()) {
+        if(customer.getNameCus().isEmpty()) {
             createValidation("Tên khách hàng KHÔNG để trống");
         }
         else if(!isString(customer.getNameCus())) {
             createValidation("Tên khách hàng KHÔNG hợp lệ");
         }
-        if(customer.getUsrName().isEmpty()
-                || customer.getUsrName().isBlank()) {
+        if(customer.getUsrName().isEmpty()) {
             createValidation("Tài khoản KHÔNG để trống");
         }
         else if(customer.getUsrName().length() < 4
                 || customer.getUsrName().length() > 20) {
             createValidation("Tài khoản PHẢI từ 4 -> 20 ký tự");
         }
-        if(customer.getPassword().isEmpty()
-                || customer.getPassword().isBlank()) {
+        if(customer.getPassword().isEmpty()) {
             createValidation("Mật khẩu KHÔNG để trống");
         }
     }

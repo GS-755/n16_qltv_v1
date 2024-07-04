@@ -36,8 +36,7 @@ public class CreateFrame extends JFrame{
                 } else {
                     author.setAuthorAddress(website);
                 }
-                if(tfNote.getText().isEmpty()
-                        || tfNote.getText().isBlank()) {
+                if(tfNote.getText().isEmpty()) {
                     author.setAuthorNote("");
                 } else {
                     author.setAuthorNote(tfNote.getText());

@@ -64,8 +64,7 @@ public class AuthorAdapter {
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setString(1, author.getAuthorAddress());
                 ps.setString(3, author.getAuthorName());
-                if(author.getAuthorNote().isEmpty()
-                        || author.getAuthorNote().isBlank()) {
+                if(author.getAuthorNote().isEmpty()) {
                     ps.setString(2, "");
                 } else {
                     ps.setString(2, author.getAuthorNote());
