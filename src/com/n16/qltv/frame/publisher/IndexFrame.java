@@ -1,12 +1,11 @@
 package com.n16.qltv.frame.publisher;
 
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.facade.ServiceFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.ServiceFacade;
 import com.n16.qltv.model.Publisher;
 import com.n16.qltv.utils.StrProcessor;
 import com.n16.qltv.utils.Validation;
 
-import javax.print.attribute.standard.JobMessageFromOperator;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyAdapter;

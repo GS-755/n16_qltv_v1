@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.admin;
 
-import com.n16.qltv.adapter.BookAdapter;
+import com.n16.qltv.patterns.adapter.BookAdapter;
 import com.n16.qltv.daos.AuthorDAO;
 import com.n16.qltv.daos.BookDAO;
 import com.n16.qltv.frame.login.LoginFrame;

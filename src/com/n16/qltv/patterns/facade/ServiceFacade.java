@@ -1,4 +1,4 @@
-package com.n16.qltv.facade;
+package com.n16.qltv.patterns.facade;
 
 import com.n16.qltv.model.*;
 import com.n16.qltv.service.*;

@@ -1,7 +1,7 @@
 package com.n16.qltv.frame.staff;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Staff;
 import com.n16.qltv.utils.SHA256;

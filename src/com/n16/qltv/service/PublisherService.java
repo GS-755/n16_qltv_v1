@@ -1,8 +1,7 @@
 package com.n16.qltv.service;
 
 import com.n16.qltv.daos.PublisherDAO;
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.model.Customer;
+import com.n16.qltv.patterns.facade.DaoFacade;
 import com.n16.qltv.model.Publisher;
 
 import java.util.ArrayList;

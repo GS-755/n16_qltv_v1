@@ -1,7 +1,6 @@
 package com.n16.qltv.daos;
 
 import com.n16.qltv.daos.interfaces.IDAOs;
-import com.n16.qltv.facade.DaoFacade;
 import com.n16.qltv.model.Author;
 import com.n16.qltv.model.interfaces.IModels;
 import com.n16.qltv.patterns.singleton.MySQL;

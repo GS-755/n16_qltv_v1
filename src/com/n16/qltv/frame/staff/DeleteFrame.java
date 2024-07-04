@@ -1,9 +1,8 @@
 package com.n16.qltv.frame.staff;
-import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
 import com.n16.qltv.model.Staff;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 public class DeleteFrame extends JFrame {
     private JLabel labelStaffName, labelGender, labelPhoneNum, labelDob, labelAddress;

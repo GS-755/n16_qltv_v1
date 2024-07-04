@@ -1,12 +1,11 @@
 package com.n16.qltv.frame.book;
 
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.facade.ServiceFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.ServiceFacade;
 import com.n16.qltv.model.Book;
 import com.n16.qltv.utils.Validation;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class IndexFrame extends JFrame {

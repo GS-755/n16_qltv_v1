@@ -1,6 +1,6 @@
 package com.n16.qltv.service;
 
-import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
 import com.n16.qltv.model.Author;
 
 import java.util.ArrayList;

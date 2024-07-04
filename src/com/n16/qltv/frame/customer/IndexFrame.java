@@ -1,8 +1,7 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.facade.DaoFacade;
-import com.n16.qltv.facade.ServiceFacade;
-import com.n16.qltv.model.Category;
+import com.n16.qltv.patterns.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.ServiceFacade;
 import com.n16.qltv.model.Customer;
 
 import javax.swing.*;

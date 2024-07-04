@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.category;
 
-import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
 import com.n16.qltv.model.Category;
 
 import javax.swing.*;

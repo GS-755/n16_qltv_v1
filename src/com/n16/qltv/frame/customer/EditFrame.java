@@ -1,6 +1,6 @@
 package com.n16.qltv.frame.customer;
 
-import com.n16.qltv.facade.DaoFacade;
+import com.n16.qltv.patterns.facade.DaoFacade;
 import com.n16.qltv.utils.Validation;
 import com.n16.qltv.model.Customer;
 import com.n16.qltv.utils.SHA256;
