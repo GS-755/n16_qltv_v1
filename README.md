@@ -3,7 +3,7 @@
 
 <h1 align="center">Xin Chào Thầy Đinh Minh Hoà - Giảng viên bộ môn Design Patterns và các bạn 👋, chúng mình là Nhóm 11</h1>
 <p align="center">
-    <img src="https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/f024fe1c-b546-441c-aaac-6cb07dfcfbe2" alt="logo" width="21%">
+    <img src="https://github.com/rudeusMSK/n16_qltv_v1/assets/104338354/f024fe1c-b546-441c-aaac-6cb07dfcfbe2" alt="logo" width="21%">
 </p>
 <h3 align="center">Đây là project của chúng mình xây dựng nhằm mục đích làm đề tài chính cho môn học MTKPM </h3>
 <img src="https://i.imgur.com/dBaSKWF.gif" height="20" width="100%">
@@ -25,14 +25,14 @@
       <br>
     <h4>Huỳnh Thiện Thệ</h4>
   <p align="left">
-    <a href="git@github.com:huynhthienthe">
-      <img align="center"  height="175px" src="https://github-readme-stats.vercel.app/api?username=huynhthienthe&show_icons=true&hide_border=true&title_color=94b4a4&amp&icon_color=FFFFFF&amp&text_color=FFFFFF&amp&bg_color=000000&count_private=true&include_all_commits=true"/>
+    <a href="git@github.com:rudeusMSK">
+      <img align="center"  height="175px" src="https://github-readme-stats.vercel.app/api?username=rudeusMSK&show_icons=true&hide_border=true&title_color=94b4a4&amp&icon_color=FFFFFF&amp&text_color=FFFFFF&amp&bg_color=000000&count_private=true&include_all_commits=true"/>
     </a>
-    <a href="git@github.com:huynhthienthe">
-      <img align="center" height="175px"  src="https://github-readme-stats.vercel.app/api/top-langs/?username=huynhthienthe&text_color=FFFFFF&bg_color=000000&title_color=94b4a4&langs_count=15&layout=compact&hide_border=true" />
+    <a href="git@github.com:rudeusMSK">
+      <img align="center" height="175px"  src="https://github-readme-stats.vercel.app/api/top-langs/?username=rudeusMSK&text_color=FFFFFF&bg_color=000000&title_color=94b4a4&langs_count=15&layout=compact&hide_border=true" />
     </a>
   </p>
-  <p align="left"><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=huynhthienthe&text_color=FFFFFF&bg_color=000000&title_color=94b4a4&langs_count=15&layout=compact&hide_border=true" alt="huynhthienthe" /></p>
+  <p align="left"><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=rudeusMSK&text_color=FFFFFF&bg_color=000000&title_color=94b4a4&langs_count=15&layout=compact&hide_border=true" alt="rudeusMSK" /></p>
 </details>
 <details lose="" align="left">
   <summary>
@@ -90,11 +90,11 @@
   B3: Hãy khởi động XAMPP của bạn và chọn phần admin của MySQL:
   <br><br>
   
-  ![image](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/35d52312-387c-46ee-82ff-7f47c1d9c562)
+  ![image](https://github.com/rudeusMSK/n16_qltv_v1/assets/104338354/35d52312-387c-46ee-82ff-7f47c1d9c562)
   <br><br>
   Còn đây là giao diện của phpmyadmin:
   <br><br>
-![image](https://github.com/huynhthienthe/n16_qltv_v1/assets/104338354/6329d820-3a35-4542-b3d2-4435a200bdfd)
+![image](https://github.com/rudeusMSK/n16_qltv_v1/assets/104338354/6329d820-3a35-4542-b3d2-4435a200bdfd)
   <br><br>
     B4: Bạn hãy chuyển sang phần SQL và hãy copy đoạn Script sau:
 
